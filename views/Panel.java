@@ -13,34 +13,54 @@ public class Panel extends JPanel{
 	Font fuente;
 	
 	public Panel() {
-		setBackground(Color.BLACK);
+		
+		setBackground(new Color(27,38,59));
 		setLayout(null);
 		
-		/*
-		JButton boton = new JButton ("Mi boton");
-		boton.setBounds(0, 0, 100, 30);
-		boton.setBackground(Color.WHITE);
-		boton.setForeground(Color.BLACK);
-		boton.setToolTipText("Haz click aqui");
-
-		add(boton);
-		*/
-		
+		//Texto de Bienvenida
 		JLabel saludo = new JLabel ("Bienvenido");
-		saludo.setFont(new Font ("Arial", Font.PLAIN, 30));
-		saludo.setBounds(0, 0, 300, 200);
-		saludo.setBackground(Color.GRAY);
+		saludo.setFont(new Font ("Arial", Font.PLAIN, 60));
+		saludo.setBounds(100, -30, 300, 200);
+		saludo.setForeground(new Color(224, 225, 221));
 		add(saludo);
 		
-		JTextField textField = new JTextField();
-		textField.setFont(new Font ("Arial", Font.PLAIN,30));
-		textField.setBounds(10,180,200,50);
-		add(textField);
+		//Texto de Inciar Sesion
+		JLabel textoIniciarSesion = new JLabel ("Iniciar Sesion:");
+		textoIniciarSesion.setFont(new Font ("Arial", Font.PLAIN, 25));
+		textoIniciarSesion.setBounds(160, 25, 200, 200);
+		textoIniciarSesion.setForeground(new Color(224, 225, 221));
+		add(textoIniciarSesion);
 		
-		JPasswordField password = new JPasswordField();
-		password.setBounds(10, 240, 200, 50);
-		password.setFont(new Font("Arial", Font.PLAIN, 40));
-		add (password);
+		
+		//Texto Usuario
+		JLabel textoUsuario = new JLabel ("Empleado:");
+		textoUsuario.setFont(new Font ("Arial", Font.PLAIN, 20));
+		textoUsuario.setBounds(135, 85, 200, 200);
+		textoUsuario.setForeground(new Color(224, 225, 221));
+		add(textoUsuario);
+		
+		//Usuario
+		JTextField usuario = new JTextField();
+		usuario.setFont(new Font ("Arial", Font.PLAIN,30));
+		usuario.setBounds(135,200,200,50);
+		usuario.setBackground(new Color(65, 90, 119));
+		usuario.setForeground(Color.WHITE);
+		add(usuario);
+		
+		//Texto de Clave de Seguridad
+		JLabel textoClaveDeSeguridad = new JLabel ("Clave de Seguridad:");
+		textoClaveDeSeguridad.setFont(new Font ("Arial", Font.PLAIN, 20));
+		textoClaveDeSeguridad.setBounds(135, 185, 200, 200);
+		textoClaveDeSeguridad.setForeground(new Color(224, 225, 221));
+		add(textoClaveDeSeguridad);
+		
+		//Clave de seguridad
+		JPasswordField claveDeSeguridad = new JPasswordField();
+		claveDeSeguridad.setBounds(135, 300, 200, 50);
+		claveDeSeguridad.setFont(new Font("Arial", Font.PLAIN, 40));
+		claveDeSeguridad.setBackground(new Color(65, 90, 119));
+		claveDeSeguridad.setForeground(Color.WHITE);
+		add(claveDeSeguridad);
 		
 		
 	}
