@@ -62,6 +62,29 @@ public class Panel extends JPanel{
 		claveDeSeguridad.setForeground(Color.WHITE);
 		add(claveDeSeguridad);
 		
+		//Boton de inicio de sesion
+		JButton inicioSesion = new JButton("Iniciar sesion");
+		inicioSesion.setBounds(330, 400, 150, 50);
+		inicioSesion.setBackground(Color.WHITE);
+		inicioSesion.setForeground(Color.BLACK);
+		inicioSesion.setFont(new Font("Arial", Font.PLAIN, 15));
+		add(inicioSesion);
+		
+		//Mensaje de advertencia
+		JLabel mensajeAdvertencia = new JLabel ("Los datos ingresados son incorrectos");
+		mensajeAdvertencia.setFont(new Font ("Arial", Font.PLAIN, 12));
+		mensajeAdvertencia.setBounds(130, 335, 250, 50);
+		mensajeAdvertencia.setForeground(Color.YELLOW);
+		add(mensajeAdvertencia);
+		
+		//Mensaje de datos requeridos
+		JLabel mensajeDatoRequerido = new JLabel ("Se requiere un email");
+		mensajeDatoRequerido.setFont(new Font ("Arial", Font.PLAIN, 12));
+		mensajeDatoRequerido.setBounds(140, 235, 200, 50);
+		mensajeDatoRequerido.setForeground(Color.YELLOW);
+		add(mensajeDatoRequerido);
+
+		
 		
 	}
 
