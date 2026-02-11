@@ -1,2 +1,4 @@
-/LoginView.class
-/Panel.class
+/bin/
+/build/
+/out/
+*.class
