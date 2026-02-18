@@ -1,9 +1,8 @@
-package main;
+package views;
 
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
-import views.Panel;
 
 public class Ventana extends JFrame{
 	
@@ -13,7 +12,7 @@ public class Ventana extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setLocation(100,100);
 		setBounds (100,100,500,500);
-		setResizable(false);
+		setResizable(true);
 		setTitle("Sistema de Estacionamiento");
 		setLocationRelativeTo(null);
 		
@@ -21,7 +20,9 @@ public class Ventana extends JFrame{
 		Image icono = tk.getImage("img/imagenVehiculo.png");
 		setIconImage(icono);
 		
-		Panel panelito = new Panel();
+		//Panel panelito = new Panel();
+		
+		BorderPanel panelito = new BorderPanel();
 		add(panelito);
 		setVisible(true);
 	}

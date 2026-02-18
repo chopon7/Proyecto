@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 public class Panel extends JPanel{
 	
 	Font fuente;
-	
+
 	public Panel() {
 		
 		setBackground(new Color(27,38,59));
@@ -27,7 +27,7 @@ public class Panel extends JPanel{
 		//Texto de Inciar Sesion
 		JLabel textoIniciarSesion = new JLabel ("Iniciar Sesion:");
 		textoIniciarSesion.setFont(new Font ("Arial", Font.PLAIN, 25));
-		textoIniciarSesion.setBounds(160, 25, 200, 200);
+		textoIniciarSesion.setBounds(160, 25, 200, 200); 
 		textoIniciarSesion.setForeground(new Color(224, 225, 221));
 		add(textoIniciarSesion);
 		
