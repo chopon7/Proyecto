@@ -22,7 +22,7 @@ public class Ventana extends JFrame{
 		
 		//Panel panelito = new Panel();
 		
-		BorderPanel panelito = new BorderPanel();
+		GridBagPanel panelito = new GridBagPanel();
 		add(panelito);
 		setVisible(true);
 	}
