@@ -27,9 +27,10 @@ public class BorderPanel extends JPanel{
 
 		panelSuperior.add(saludo);
 		crearPanelCentro();
+		crearPanelIzquierda();
 		
 		
-		JButton btnSur = new JButton("");
+		JButton btnSur = new JButton("ni");
 		add(btnSur, BorderLayout.SOUTH);
 	}
 	
@@ -39,23 +40,6 @@ public class BorderPanel extends JPanel{
 		//PANEL CENTRO
 		JPanel panelCentro = new JPanel(new BorderLayout());
 		panelCentro.setBackground(new Color(27,38,59));
-		
-		//PANEL IZQUIERDA
-		JPanel panelIzquierda = new JPanel (new BorderLayout());
-		panelIzquierda.setBackground(new Color(27,38,59));
-		
-		//Texto de Inciar Sesion
-		JLabel textoIniciarSesion = new JLabel ("Iniciar Sesion:");
-		textoIniciarSesion.setFont(new Font ("Arial", Font.PLAIN, 25));
-		textoIniciarSesion.setForeground(new Color(224, 225, 221));
-		panelIzquierda.add(textoIniciarSesion, BorderLayout.WEST);
-		
-		
-		//Texto Usuario
-		JLabel textoUsuario = new JLabel ("Empleado:");
-		textoUsuario.setFont(new Font ("Arial", Font.PLAIN, 20));
-		textoUsuario.setForeground(Color.WHITE);
-		panelIzquierda.add(textoUsuario, BorderLayout.WEST);
 
 		
 		//PANEL CENTRO SUR
@@ -72,6 +56,38 @@ public class BorderPanel extends JPanel{
 		add(panelCentro, BorderLayout.CENTER);
 	
 	}
+	
+	public void crearPanelIzquierda() {
+		
+		//PANEL IZQUIERDA
+		JPanel panelIzquierda = new JPanel(new BorderLayout());
+		panelIzquierda.setBackground(new Color(0,0,0));
+		
+		//Texto de Inciar Sesion
+		JLabel textoIniciarSesion = new JLabel ("Iniciar Sesion:");
+		textoIniciarSesion.setFont(new Font ("Arial", Font.PLAIN, 25));
+		textoIniciarSesion.setForeground(Color.WHITE);
+		panelIzquierda.add(textoIniciarSesion, BorderLayout.WEST);
+		
+		//PANEL IZQUIERDA
+		JPanel panelIzquierdaAbajo = new JPanel(new BorderLayout());
+		panelIzquierdaAbajo.setBackground(new Color(0,0,0));
+		
+		//Texto Usuario
+		JLabel textoUsuario = new JLabel ("Empleado:");
+		textoUsuario.setFont(new Font ("Arial", Font.PLAIN, 20));
+		textoUsuario.setForeground(Color.WHITE);
+		panelIzquierdaAbajo.add(textoUsuario, BorderLayout.WEST);
+		
+		
+		add(panelIzquierda, BorderLayout.WEST);
+		
+		
+
+		
+	}
+	
+	
 }
 
 
