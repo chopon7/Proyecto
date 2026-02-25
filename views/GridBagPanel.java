@@ -98,7 +98,7 @@ public class GridBagPanel extends JPanel {
         JButton salir = new JButton ("Salir");
         gbc.gridx = 1;
         
-        add (salir, gbc);
+        add(salir, gbc);
 
 	}
 
