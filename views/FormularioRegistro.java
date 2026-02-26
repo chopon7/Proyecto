@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -42,66 +44,75 @@ public class FormularioRegistro  extends JFrame{
 	
 	public void inicializarComponentes() {
 		
+		//Titulo de la ventana
 		JLabel lblTitulo = new JLabel("Registro de Autos");
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-		add(lblTitulo, BorderLayout.NORTH);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblTitulo, BorderLayout.NORTH);
 
-		
-		JPanel panelComponentes = new JPanel();
-		panelComponentes.setLayout(new BoxLayout(panelComponentes, BoxLayout.Y_AXIS));
-		panelComponentes.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-		panelComponentes.setBackground(new Color(27,38,59));
-		
-		JLabel lblMarcaCarro = new JLabel("Ingresa la marca del auto: ");
-		lblMarcaCarro.setForeground(Color.WHITE);
-		panelComponentes.add(lblMarcaCarro);
-		JTextField txtMarcaCarro = new JTextField(20);
-		panelComponentes.add(txtMarcaCarro);
-		
-		JLabel lblPlacaCarro = new JLabel("Ingresa la placa del auto:");
-		lblPlacaCarro.setForeground(Color.WHITE);
-		panelComponentes.add(lblPlacaCarro);
-		JTextField txtPlacaCarro = new JTextField(20);
-		panelComponentes.add(txtPlacaCarro);
-		
-		
-		JLabel lblCantidadRuedas = new JLabel("Ingresa el modelo del auto:");
-		lblCantidadRuedas.setForeground(Color.WHITE);
-		panelComponentes.add(lblCantidadRuedas);
-		JTextField txtCantidadRuedas = new JTextField(20);
-		panelComponentes.add(txtCantidadRuedas);
+		//GridBagPanel
+		JPanel panelComponentes = new JPanel(new GridBagLayout()); 
+	    panelComponentes.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	    panelComponentes.setBackground(new Color(27, 38, 59));
+	    GridBagConstraints c = new GridBagConstraints();
+	    c.insets = new java.awt.Insets(5, 5, 5, 5); 
+	    c.fill = GridBagConstraints.HORIZONTAL; 
 
-		JLabel lblColorCarro = new JLabel("Ingresa el color del auto:");
-		lblColorCarro.setForeground(Color.WHITE);
-		panelComponentes.add(lblColorCarro);
-		JTextField txtColorCarro = new JTextField(20);
-		panelComponentes.add(txtColorCarro);
-		
-		JLabel lblTipoCarro = new JLabel("Ingresa el tipo de auto:");
-		lblTipoCarro.setForeground(Color.WHITE);
-		panelComponentes.add(lblTipoCarro);
-		
-		String[] opcionesTipoCarro = {"Camioneta", "Sedan", "Motocicleta", "Super Deportivo"};
-		JComboBox<String> cbTipoCarro = new JComboBox<String> (opcionesTipoCarro);
-		cbTipoCarro.setSelectedIndex(0);
-		panelComponentes.add(cbTipoCarro);
-		
-		
-		panelComponentes.add(Box.createRigidArea(new Dimension(0,15))); 
-		JButton enviarRegistro = new JButton ("Enviar");
-		panelComponentes.add(enviarRegistro, BorderLayout.SOUTH);
-		
-		
-		JScrollPane scroll = new JScrollPane(panelComponentes);
-		scroll.setHorizontalScrollBar(null);
-		
-		
-		add(scroll);
-		
+	    //Marca del auto
+	    c.gridx = 0; 
+	    c.gridy = 0;
+	    panelComponentes.add(crearLabel("Ingresa la marca del auto:"), c);
+	    c.gridx = 1; 
+	    panelComponentes.add(new JTextField(20), c);
+
+	    //Placa del auto
+	    c.gridx = 0; 
+	    c.gridy = 1;
+	    panelComponentes.add(crearLabel("Ingresa la placa del auto:"), c);
+	    c.gridx = 1;
+	    panelComponentes.add(new JTextField(20), c);
+
+	    //Modelo del auto
+	    c.gridx = 0; 
+	    c.gridy = 2;
+	    panelComponentes.add(crearLabel("Ingresa el modelo del auto:"), c);
+	    c.gridx = 1;
+	    panelComponentes.add(new JTextField(20), c);
+
+	    //Color del auto
+	    c.gridx = 0; 
+	    c.gridy = 3;
+	    panelComponentes.add(crearLabel("Ingresa el color del auto:"), c);
+	    c.gridx = 1;
+	    panelComponentes.add(new JTextField(20), c);
+
+	    //Tipo de auto
+	    c.gridx = 0; 
+	    c.gridy = 4;
+	    panelComponentes.add(crearLabel("Ingresa el tipo de auto:"), c);
+	    c.gridx = 1;
+	    String[] opcionesTipoCarro = {"Camioneta", "Sedan", "Motocicleta", "Super Deportivo"};
+	    panelComponentes.add(new JComboBox<>(opcionesTipoCarro), c);
+
+	    //Boton de registro
+	    c.gridx = 0; 
+	    c.gridy = 5;
+	    c.gridwidth = 2;
+	    c.insets = new java.awt.Insets(20, 0, 0, 0); 
+	    JButton enviarRegistro = new JButton("Enviar");
+	    panelComponentes.add(enviarRegistro, c);
+
+	    //Scroll
+	    JScrollPane scroll = new JScrollPane(panelComponentes);
+	    add(scroll, BorderLayout.CENTER);
 		
 	}
 	
+	private JLabel crearLabel(String texto) {
+	    JLabel label = new JLabel(texto);
+	    label.setForeground(Color.WHITE);
+	    return label;
+	}
 	
 	
 	
