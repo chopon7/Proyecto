@@ -97,10 +97,15 @@ public class FormularioRegistro  extends JFrame{
 	    //Boton de registro
 	    c.gridx = 0; 
 	    c.gridy = 5;
-	    c.gridwidth = 2;
-	    c.insets = new java.awt.Insets(20, 0, 0, 0); 
+	    c.insets = new java.awt.Insets(20, 10, 10, 10); 
 	    JButton enviarRegistro = new JButton("Enviar");
 	    panelComponentes.add(enviarRegistro, c);
+	    
+	    //Boton atras
+	    c.gridx = 1; 
+	    c.gridy = 5;
+	    JButton botonAtras = new JButton("Atras");
+	    panelComponentes.add(botonAtras, c);
 
 	    //Scroll
 	    JScrollPane scroll = new JScrollPane(panelComponentes);
@@ -113,8 +118,6 @@ public class FormularioRegistro  extends JFrame{
 	    label.setForeground(Color.WHITE);
 	    return label;
 	}
-	
-	
 	
 	
 	
