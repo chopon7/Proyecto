@@ -17,6 +17,12 @@ import javax.swing.JTextField;
 
 public class GridBagPanel extends JPanel {
 	
+	JTextField usuario;
+	JPasswordField contrasena;
+	JLabel mensajeUsuario;
+	JLabel mensajeContrasena;
+	
+	
 	//Por ahora todo se mantiene en el centro
 	public GridBagPanel() {
 		
@@ -52,13 +58,13 @@ public class GridBagPanel extends JPanel {
 
         add(textoUsuario,gbc);
 
-        JTextField usuario = new JTextField(15);
+        usuario = new JTextField(15);
         gbc.gridx = 1;
 
         add(usuario,gbc);
 
 		//Para el mensaje del usuario
-        JLabel mensajeUsuario = new JLabel("Empleado no encontrado");
+        mensajeUsuario = new JLabel("");
         mensajeUsuario.setFont(new Font("Arial", Font.PLAIN, 12));
         mensajeUsuario.setForeground(Color.YELLOW);
 
@@ -76,13 +82,13 @@ public class GridBagPanel extends JPanel {
         gbc.gridy = 3;
 
         add(textoContrasena,gbc);
-        JPasswordField contrasena = new JPasswordField(15);
+        contrasena = new JPasswordField(15);
         gbc.gridx = 1;
 
         add(contrasena,gbc);
         
         //Para el mensaje de la contraseña
-        JLabel mensajeContrasena = new JLabel("Contraseña incorrecta");
+        mensajeContrasena = new JLabel("");
         mensajeContrasena.setFont(new Font("Arial", Font.PLAIN, 12));
         mensajeContrasena.setForeground(Color.YELLOW);
 
@@ -103,17 +109,52 @@ public class GridBagPanel extends JPanel {
         add(salir, gbc);
         
         
-        iniciarSesion.addActionListener(e -> {
-        	JOptionPane.showMessageDialog(
-    				null, 
-    				"Se inicio sesion", 
-    				"Sesion iniciada", 
-    				JOptionPane.INFORMATION_MESSAGE);
-        	
-        });
+        iniciarSesion.addActionListener(e -> login());
         
-        
-
 	}
+	
+	//Metodo para la validacion del login
+	private void login() {
+    	
+    	String empleado = usuario.getText();
+    	String password = String.valueOf(contrasena.getPassword());
+    	
+    	mensajeUsuario.setText("");
+    	mensajeContrasena.setText("");
+    	
+    	boolean camposValidos = true;
+    	
+    	//Verifica si el campo de empleado esta vacio
+    	if (empleado.trim().isEmpty()) {
+    		mensajeUsuario.setText("El nombre del empleado es obligatorio");
+    		camposValidos = false;
+    	}
+    	
+    	//Verifica si el campo contraseña esta vacio
+    	if (password.trim().isEmpty()) {
+    		mensajeContrasena.setText("La contraseña es obligatoria");
+    		camposValidos = false;
+    	}
+    	
+    	//Si alguno de los dos campos esta vacio, se muestra el mensaje de error
+    	if (!camposValidos) {
+    		JOptionPane.showMessageDialog(
+    				this, 
+    				"No se han completado los campos solicitados", 
+    				"Error", 
+    				JOptionPane.ERROR_MESSAGE
+    		);
+    		return; //Se detiene la ejecucion del metodo
+    	}
+    	
+    	//Si esta todo correcto, se muestra el mensaje de exito
+    	JOptionPane.showMessageDialog(
+				null, 
+				"Se inicio sesion", 
+				"Sesion iniciada", 
+				JOptionPane.INFORMATION_MESSAGE
+		);
+    	
+    }
 
 }
