@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -89,7 +92,7 @@ public class GridBagPanel extends JPanel {
         add(mensajeContrasena,gbc);
         
         //Estos son los botones, se colocan en las coordenadas indicadas
-        JButton iniciarSesion= new JButton ("Iniciar sesion");
+        JButton iniciarSesion = new JButton ("Iniciar sesion");
         gbc.gridx = 0;
         gbc.gridy = 5;
         
@@ -97,8 +100,19 @@ public class GridBagPanel extends JPanel {
         
         JButton salir = new JButton ("Salir");
         gbc.gridx = 1;
-        
         add(salir, gbc);
+        
+        
+        iniciarSesion.addActionListener(e -> {
+        	JOptionPane.showMessageDialog(
+    				null, 
+    				"Se inicio sesion", 
+    				"Sesion iniciada", 
+    				JOptionPane.INFORMATION_MESSAGE);
+        	
+        });
+        
+        
 
 	}
 
