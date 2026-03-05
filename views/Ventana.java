@@ -18,7 +18,7 @@ public class Ventana extends JFrame{
 		Image icono = tk.getImage("img/imagenVehiculo.png");
 		setIconImage(icono);
 		
-		GridBagPanel panelito = new GridBagPanel();
+		GridBagPanel panelito = new GridBagPanel(this);
 		add(panelito);
 		setVisible(true);
 	}

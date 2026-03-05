@@ -19,20 +19,20 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import utils.AppFont;
 
-public class FormularioRegistro extends JFrame {
+public class FormularioEmpleado extends JFrame {
 
-	private JLabel lblErrorMarca;
-	private JLabel lblErrorPlaca;
-	private JLabel lblErrorModelo;
-	private JLabel lblErrorColor;
+	private JLabel lblErrorNombre;
+	private JLabel lblErrorEdad;
+	private JLabel lblErrorCodigo;
+	private JLabel lblErrorEmail;
 	private JLabel lblErrorCombo;
-	private JTextField color;
-	private JTextField marca;
-	private JTextField modelo;
-	private JTextField placa;
-	private JComboBox<String> cboOpcionesTipoCarro;
+	private JTextField nombre;
+	private JTextField edad;
+	private JTextField codigo;
+	private JTextField email;
+	private JComboBox<String> cboOpcionesGenero;
 	
-	public FormularioRegistro() {
+	public FormularioEmpleado() {
 
 		setSize(1000, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +53,7 @@ public class FormularioRegistro extends JFrame {
 	public void inicializarComponentes() {
 
 		// Titulo de la ventana
-		JLabel lblTitulo = new JLabel("Registro de Autos");
+		JLabel lblTitulo = new JLabel("Registro de Empleados");
 		lblTitulo.setFont(AppFont.title());
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTitulo, BorderLayout.NORTH);
@@ -69,59 +69,59 @@ public class FormularioRegistro extends JFrame {
 		// Marca del auto
 		c.gridx = 0;
 		c.gridy = 0;
-		panelComponentes.add(crearLabel("Ingresa la marca del auto:"), c);
+		panelComponentes.add(crearLabel("Ingresa el nombre del empleado:"), c);
 		c.gridx = 1;
-		marca =  new JTextField(20);
-		panelComponentes.add(marca, c);
+		nombre =  new JTextField(20);
+		panelComponentes.add(nombre, c);
 		c.gridy = 1;
-		lblErrorMarca = crearMensajeError("");
-		crearMensajeError(lblErrorMarca.getText());
-		panelComponentes.add(lblErrorMarca, c);
+		lblErrorNombre = crearMensajeError("");
+		crearMensajeError(lblErrorNombre.getText());
+		panelComponentes.add(lblErrorNombre, c);
 
 		// Placa del auto
 		c.gridx = 0;
 		c.gridy = 2;
-		panelComponentes.add(crearLabel("Ingresa la placa del auto:"), c);
+		panelComponentes.add(crearLabel("Ingresa la edad del empleado:"), c);
 		c.gridx = 1;
-		placa = new JTextField(20);
-		panelComponentes.add(placa, c);
-		lblErrorPlaca = crearMensajeError("");
+		edad = new JTextField(20);
+		panelComponentes.add(edad, c);
+		lblErrorEdad = crearMensajeError("");
 		c.gridy = 3;
-		crearMensajeError(lblErrorPlaca.getText());
-		panelComponentes.add(lblErrorPlaca, c);
+		crearMensajeError(lblErrorEdad.getText());
+		panelComponentes.add(lblErrorEdad, c);
 
 		// Modelo del auto
 		c.gridx = 0;
 		c.gridy = 4;
-		panelComponentes.add(crearLabel("Ingresa el modelo del auto:"), c);
+		panelComponentes.add(crearLabel("Ingresa el codigo unico del empleado:"), c);
 		c.gridx = 1;
-		modelo = new JTextField(20);
-		panelComponentes.add(modelo, c);
+		codigo = new JTextField(20);
+		panelComponentes.add(codigo, c);
 		c.gridy = 5;
-		lblErrorModelo = crearMensajeError("");
-		crearMensajeError(lblErrorModelo.getText());
-		panelComponentes.add(lblErrorModelo, c);
+		lblErrorCodigo = crearMensajeError("");
+		crearMensajeError(lblErrorCodigo.getText());
+		panelComponentes.add(lblErrorCodigo, c);
 		
 		// Color del auto
 		c.gridx = 0;
 		c.gridy = 6;
-		panelComponentes.add(crearLabel("Ingresa el color del auto:"), c);
+		panelComponentes.add(crearLabel("Ingresa el email del empleado"), c);
 		c.gridx = 1;
-		color = new JTextField(20);
-		panelComponentes.add(color, c);
-		lblErrorColor = crearMensajeError("");
+		email = new JTextField(20);
+		panelComponentes.add(email, c);
+		lblErrorEmail = crearMensajeError("");
 		c.gridy = 7;
-		panelComponentes.add(lblErrorColor, c);
+		panelComponentes.add(lblErrorEmail, c);
 		
 		
 		// Tipo de auto
 		c.gridx = 0;
 		c.gridy = 8;
-		panelComponentes.add(crearLabel("Ingresa el tipo de auto:"), c);
+		panelComponentes.add(crearLabel("Ingresa el genero del empleado:"), c);
 		c.gridx = 1;
-		String[] opcionesTipoCarro = {"Seleccione" ,"Camioneta", "Sedan", "Motocicleta", "Super Deportivo" };
-		cboOpcionesTipoCarro = new JComboBox<>(opcionesTipoCarro);
-		panelComponentes.add(cboOpcionesTipoCarro, c);
+		String[] opcionesGenero = {"Seleccione" ,"Masculino", "Femenino", "Prefiero no decirlo" };
+		cboOpcionesGenero = new JComboBox<>(opcionesGenero);
+		panelComponentes.add(cboOpcionesGenero, c);
 		c.gridy = 9;
 		lblErrorCombo = crearMensajeError("");
 		crearMensajeError(lblErrorCombo.getText());
@@ -159,10 +159,10 @@ public class FormularioRegistro extends JFrame {
 	}
 
 	private void reiniciarMensajeError() {
-		lblErrorModelo.setText("");
-		lblErrorColor.setText("");
-		lblErrorPlaca.setText("");
-		lblErrorMarca.setText("");
+		lblErrorNombre.setText("");
+		lblErrorEdad.setText("");
+		lblErrorCodigo.setText("");
+		lblErrorEmail.setText("");
 		lblErrorCombo.setText("");
 	}
 	
@@ -171,19 +171,19 @@ public class FormularioRegistro extends JFrame {
 
 		boolean validar = true;
 
-		if (!validarMarca())
+		if (!validarNombre())
 			validar = false;
 
-		if (!validarPlaca())
+		if (!validarCodigo())
 			validar = false;
 
 		if (!validarComboBox())
 			validar = false;
 
-		if (!validarModelo())
+		if (!validarEdad())
 			validar = false;
 
-		if (!validarColor())
+		if (!validarEmail())
 			validar = false;
 
 		if (validar) {
@@ -210,40 +210,40 @@ public class FormularioRegistro extends JFrame {
 		return label;
 	}
 	
-	private boolean validarMarca() {
+	private boolean validarNombre() {
 
-		if (marca.getText().trim().isEmpty()) {
-			lblErrorMarca.setText("La marca es obligatoria");
+		if (nombre.getText().trim().isEmpty()) {
+			lblErrorNombre.setText("El nombre es obligatorio");
 			return false;
 		}
 
 		return true;
 	}
 	
-	private boolean validarModelo() {
+	private boolean validarEdad() {
 
-		if (modelo.getText().trim().isEmpty()) {
-			lblErrorModelo.setText("El modelo es obligatorio");
+		if (edad.getText().trim().isEmpty()) {
+			lblErrorEdad.setText("La edad es obligatoria");
 			return false;
 		}
 
 		return true;
 	}
 	
-	private boolean validarPlaca() {
+	private boolean validarCodigo() {
 
-		if (placa.getText().trim().isEmpty()) {
-			lblErrorPlaca.setText("La placa es obligatoria");
+		if (codigo.getText().trim().isEmpty()) {
+			lblErrorCodigo.setText("El codigo es obligatorio");
 			return false;
 		}
 
 		return true;
 	}
 	
-	private boolean validarColor() {
+	private boolean validarEmail() {
 
-		if (color.getText().trim().isEmpty()) {
-			lblErrorColor.setText("El color es obligatorio");
+		if (email.getText().trim().isEmpty()) {
+			lblErrorEmail.setText("El email es obligatorio");
 			return false;
 		}
 
@@ -252,8 +252,8 @@ public class FormularioRegistro extends JFrame {
 
 	private boolean validarComboBox() {
 
-		if (cboOpcionesTipoCarro.getSelectedIndex() == 0) {
-			lblErrorCombo.setText("Seleccione un tipo de carro");
+		if (cboOpcionesGenero.getSelectedIndex() == 0) {
+			lblErrorCombo.setText("Seleccione un genero");
 			return false;
 		}
 
