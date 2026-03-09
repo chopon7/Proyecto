@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import utils.AppFont;
 
 public class FormularioEmpleado extends JFrame {
@@ -140,6 +143,16 @@ public class FormularioEmpleado extends JFrame {
 		c.gridx = 1;
 		c.gridy = 10;
 		JButton botonAtras = new JButton("Atras");
+		botonAtras.addActionListener(e -> {
+			
+			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas regresar? Se perderán todos los datos");
+			
+			if(option == JOptionPane.YES_OPTION) {
+				new Ventana();
+				dispose();
+			}
+			
+		});
 		panelComponentes.add(botonAtras, c);
 
 		// Scroll
@@ -147,7 +160,7 @@ public class FormularioEmpleado extends JFrame {
 		add(scroll, BorderLayout.CENTER);
 
 		
-		
+		asignarOyentes();
 		
 	}
 
@@ -164,6 +177,7 @@ public class FormularioEmpleado extends JFrame {
 		lblErrorCodigo.setText("");
 		lblErrorEmail.setText("");
 		lblErrorCombo.setText("");
+		
 	}
 	
 	private void validar() {
@@ -210,6 +224,95 @@ public class FormularioEmpleado extends JFrame {
 		return label;
 	}
 	
+	private void asignarOyentes() {
+		
+		cboOpcionesGenero.addActionListener(e -> {
+			validarComboBox();
+		});
+		
+		
+		codigo.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarCodigo();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarCodigo();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarCodigo();
+			}
+		});
+		
+		
+		email.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarEmail();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarEmail();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarEmail();
+			}
+		});
+		
+		
+		edad.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarEdad();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarEdad();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarEdad();
+			}
+		});
+		
+		nombre.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarNombre();
+				validarComboBox();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarNombre();
+				validarComboBox();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarNombre();
+				validarComboBox();
+			}
+		});
+		
+		
+	}
+	
+	
+	
 	private boolean validarNombre() {
 
 		if (nombre.getText().trim().isEmpty()) {
@@ -217,6 +320,8 @@ public class FormularioEmpleado extends JFrame {
 			return false;
 		}
 
+		
+		lblErrorNombre.setText("");
 		return true;
 	}
 	
