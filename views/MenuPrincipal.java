@@ -3,13 +3,15 @@ package views;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
- 
-
+import javax.swing.JPanel;
 
 
 public class MenuPrincipal extends JFrame{
@@ -38,6 +40,19 @@ public class MenuPrincipal extends JFrame{
 	}
 	
 	private void inicializarComponentes() {
+		
+		JPanel panel = new JPanel();
+		add(panel);
+		panel.addMouseListener(new MouseAdapter() {
+			
+			
+			
+			
+			
+			
+			
+		});
+		
 		
 		JMenuBar mb = new JMenuBar();
 		setJMenuBar(mb);

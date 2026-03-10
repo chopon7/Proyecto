@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +23,7 @@ public class GridBagPanel extends JPanel {
 	JPasswordField contrasena;
 	JLabel mensajeUsuario;
 	JLabel mensajeContrasena;
+	Color botonColorNormal;
 
 	// Por ahora todo se mantiene en el centro
 	public GridBagPanel(Ventana miVentana) {
@@ -29,8 +32,9 @@ public class GridBagPanel extends JPanel {
 		setLayout(new GridBagLayout());
 		setBackground(new Color(27, 38, 59));
 
-		GridBagConstraints gbc = new GridBagConstraints();
 
+		GridBagConstraints gbc = new GridBagConstraints();
+		
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.CENTER; // Esto hace que nada se salga del centro
@@ -103,11 +107,16 @@ public class GridBagPanel extends JPanel {
 		gbc.gridy = 5;
 
 		add(iniciarSesion, gbc);
+		asignarOyenteMouse(iniciarSesion);
 
 		JButton registrar = new JButton("Registrar");
 		gbc.gridx = 1;
 		add(registrar, gbc);
-
+		botonColorNormal = registrar.getBackground();
+		
+		//Evento cambio de imagen del boton (registrar) 
+		asignarOyenteMouse(registrar);
+		
 		registrar.addActionListener(e -> registrar());
 		iniciarSesion.addActionListener(e -> login());
 	}
@@ -152,6 +161,24 @@ public class GridBagPanel extends JPanel {
 	private void registrar() {
 		new FormularioEmpleado();
 		miVentana.dispose();
+	}
+	
+	private void asignarOyenteMouse(JButton miBoton) {
+	
+		miBoton.addMouseListener(new MouseAdapter() {
+			
+			public void mouseEntered(MouseEvent e) {
+				miBoton.setBackground(Color.GRAY);
+				
+			}
+			
+			public void mouseExited(MouseEvent e) {
+				miBoton.setBackground(botonColorNormal);
+			}
+			
+		});
+		
+		
 	}
 	
 
