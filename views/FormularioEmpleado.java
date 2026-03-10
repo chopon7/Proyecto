@@ -209,7 +209,6 @@ public class FormularioEmpleado extends JFrame {
 			return; 
 		}
 		
-		
 		return;	
 	}
 	
@@ -226,92 +225,57 @@ public class FormularioEmpleado extends JFrame {
 	
 	private void asignarOyentes() {
 		
+		agregarListener(nombre);
+		agregarListener(edad);
+		agregarListener(codigo);
+		agregarListener(email);
+		
 		cboOpcionesGenero.addActionListener(e -> {
 			validarComboBox();
 		});
-		
-		
-		codigo.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validarCodigo();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validarCodigo();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				validarCodigo();
-			}
-		});
-		
-		
-		email.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validarEmail();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validarEmail();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				validarEmail();
-			}
-		});
-		
-		
-		edad.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validarEdad();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validarEdad();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				validarEdad();
-			}
-		});
-		
-		nombre.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validarNombre();
-				validarComboBox();
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validarNombre();
-				validarComboBox();
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				validarNombre();
-				validarComboBox();
-			}
-		});
-		
-		
 	}
 	
+	//Cree el metodo que agrega el listener al JTextField
+	private void agregarListener(JTextField campo) {
+		
+		campo.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+		});
+	}
 	
+	//Este metodo revisa que campo fue modificado y llama a su validacion
+	private void validarCampo(JTextField campo) {
+		
+		if(campo == nombre) {
+			validarNombre();
+		}
+		
+		if(campo == edad) {
+			validarEdad();
+		}
+		
+		if(campo == codigo) {
+			validarCodigo();
+		}
+		
+		if(campo == email) {
+			validarEmail();
+		}
+	}
 	
 	private boolean validarNombre() {
 
@@ -331,7 +295,8 @@ public class FormularioEmpleado extends JFrame {
 			lblErrorEdad.setText("La edad es obligatoria");
 			return false;
 		}
-
+		
+		lblErrorEdad.setText("");
 		return true;
 	}
 	
@@ -342,6 +307,7 @@ public class FormularioEmpleado extends JFrame {
 			return false;
 		}
 
+		lblErrorCodigo.setText("");
 		return true;
 	}
 	
@@ -352,6 +318,7 @@ public class FormularioEmpleado extends JFrame {
 			return false;
 		}
 
+		lblErrorEmail.setText("");
 		return true;
 	}
 
@@ -362,6 +329,7 @@ public class FormularioEmpleado extends JFrame {
 			return false;
 		}
 
+		lblErrorCombo.setText("");
 		return true;
 	}
 	

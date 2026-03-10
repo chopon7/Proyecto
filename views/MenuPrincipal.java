@@ -17,8 +17,10 @@ public class MenuPrincipal extends JFrame{
 	JMenuItem salir;
 	JMenuItem cerrarSesion;
 	JMenuItem registrarVehiculo;
-	
-	
+	JMenuItem estadoEstacionamiento;
+	JMenuItem reporteDiario;
+	JMenuItem reporteSemanal;
+	JMenuItem reporteMensual;
 	
 	MenuPrincipal() {
 		setSize(1000, 600);
@@ -69,6 +71,34 @@ public class MenuPrincipal extends JFrame{
 		registrarEmpleado.setMnemonic(KeyEvent.VK_B);
 		registro.add(registrarEmpleado);
 
+		
+		JMenu estacionamiento = new JMenu("Estacionamiento");
+		estacionamiento.setMnemonic(KeyEvent.VK_B);
+		mb.add(estacionamiento);
+		
+		estadoEstacionamiento = new JMenuItem("Ver estado del estacionamiento");
+		estadoEstacionamiento.setMnemonic(KeyEvent.VK_B);
+		estacionamiento.add(estadoEstacionamiento);
+		
+		
+		//Posible opcion que podriamos dejar aparte o combinarla con la de estacionamiento
+		JMenu reportes = new JMenu("Reportes");
+		reportes.setMnemonic(KeyEvent.VK_A);
+		mb.add(reportes);
+		
+		reporteDiario = new JMenuItem("Ver reporte diario del estacionamiento");
+		reporteDiario.setMnemonic(KeyEvent.VK_B);
+		reportes.add(reporteDiario);
+		
+		reporteSemanal = new JMenuItem("Ver reporte semanal del estacionamiento");
+		reporteSemanal.setMnemonic(KeyEvent.VK_B);
+		reportes.add(reporteSemanal);
+		
+		reporteMensual = new JMenuItem("Ver reporte mensual del estacionamiento");
+		reporteMensual.setMnemonic(KeyEvent.VK_B);
+		reportes.add(reporteMensual);
+		
+		
 		asignarOyentes();
 	}
 	
@@ -82,7 +112,7 @@ public class MenuPrincipal extends JFrame{
 		});
 		
 		cerrarSesion.addActionListener(e -> {
-			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas cerrar sesion? Se perderán todos los datos", "¿Seguro?", JOptionPane.YES_NO_OPTION);
+			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas cerrar sesion? Los datos no guardados se perderán", "¿Seguro?", JOptionPane.YES_NO_OPTION);
 			
 			if(option == JOptionPane.YES_OPTION) {
 				new Ventana();
