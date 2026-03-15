@@ -8,7 +8,7 @@ public class Ventana extends JFrame{
 	
 	public Ventana () {
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds (100,100,500,500);
 		setResizable(true);
 		setTitle("Sistema de Estacionamiento");

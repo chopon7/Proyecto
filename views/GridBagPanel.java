@@ -3,10 +3,17 @@ package views;
 import java.awt.Color;	
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,14 +34,62 @@ public class GridBagPanel extends JPanel {
 
 	// Por ahora todo se mantiene en el centro
 	public GridBagPanel(Ventana miVentana) {
-
+			
 		this.miVentana = miVentana;
 		setLayout(new GridBagLayout());
 		setBackground(new Color(27, 38, 59));
-
-
-		GridBagConstraints gbc = new GridBagConstraints();
 		
+		miVentana.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.out.println("Se abrió la ventana");
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.out.println("Se minimizó");
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				System.out.println("Se volvió a abrir");
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				System.out.println("Perdió el focus");
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				handleClose();
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.out.println("Se cerró");
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				System.out.println("Obtuvo el focus");
+				
+			}
+		});
+		
+		iniciarlizarComponentes();
+	}
+	
+	private void iniciarlizarComponentes() {
+		
+		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.CENTER; // Esto hace que nada se salga del centro
@@ -43,28 +98,22 @@ public class GridBagPanel extends JPanel {
 		JLabel saludo = new JLabel("Bienvenido");
 		saludo.setFont(AppFont.bigTitle());
 		saludo.setForeground(Color.WHITE);
-
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 2;
-
 		add(saludo, gbc);
 
 		// Texto Usuario
 		gbc.gridwidth = 1;
-
 		JLabel textoUsuario = new JLabel("Empleado:");
 		textoUsuario.setFont(AppFont.normal());
 		textoUsuario.setForeground(Color.WHITE);
-
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-
 		add(textoUsuario, gbc);
-
 		usuario = new JTextField(15);
+		asignarFocusCampoTexto(usuario);
 		gbc.gridx = 1;
-
 		add(usuario, gbc);
 
 		// Para el mensaje del usuario
@@ -87,6 +136,7 @@ public class GridBagPanel extends JPanel {
 
 		add(textoContrasena, gbc);
 		contrasena = new JPasswordField(15);
+		asignarFocusCampoCodigo(contrasena);
 		gbc.gridx = 1;
 
 		add(contrasena, gbc);
@@ -101,15 +151,23 @@ public class GridBagPanel extends JPanel {
 
 		add(mensajeContrasena, gbc);
 
+		ImageIcon ilustracionBotonInicioSesion = new ImageIcon("img/inicioSesion.png");
+		Image imagenActualizadaBotonInicioSesion = ilustracionBotonInicioSesion.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinalBotonInicioSesion = new ImageIcon(imagenActualizadaBotonInicioSesion);
+		
 		// Estos son los botones, se colocan en las coordenadas indicadas
-		JButton iniciarSesion = new JButton("Iniciar sesion");
+		JButton iniciarSesion = new JButton("Iniciar sesion", iconoFinalBotonInicioSesion);
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 
 		add(iniciarSesion, gbc);
 		asignarOyenteMouse(iniciarSesion);
 
-		JButton registrar = new JButton("Registrar");
+		ImageIcon ilustracionBotonRegistro = new ImageIcon("img/usuarioNuevo.png");
+		Image imagenActualizada = ilustracionBotonRegistro.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinal = new ImageIcon(imagenActualizada);
+		
+		JButton registrar = new JButton("Registrar", iconoFinal);
 		gbc.gridx = 1;
 		add(registrar, gbc);
 		botonColorNormal = registrar.getBackground();
@@ -119,6 +177,8 @@ public class GridBagPanel extends JPanel {
 		
 		registrar.addActionListener(e -> registrar());
 		iniciarSesion.addActionListener(e -> login());
+		
+		
 	}
 
 	// Metodo para la validacion del login
@@ -152,7 +212,6 @@ public class GridBagPanel extends JPanel {
 
 		// Si esta todo correcto, se muestra el mensaje de exito
 		JOptionPane.showMessageDialog(null, "Se inicio sesion", "Sesion iniciada", JOptionPane.INFORMATION_MESSAGE);
-		//new FormularioRegistro();
 		new MenuPrincipal();
 		miVentana.dispose();
 		
@@ -178,8 +237,51 @@ public class GridBagPanel extends JPanel {
 			
 		});
 		
+	}
+	
+	private void asignarFocusCampoTexto(JTextField miTextito) {
+		
+		miTextito.addFocusListener(new FocusAdapter() {
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				miTextito.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+			}
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				miTextito.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			}
+			
+		});
 		
 	}
 	
+	private void asignarFocusCampoCodigo(JPasswordField miTextito) {
+		
+		miTextito.addFocusListener(new FocusAdapter() {
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				miTextito.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+			}
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				miTextito.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			}
+			
+		});
+		
+	}
+	
+	private void handleClose() {
+		int opcion = JOptionPane.showConfirmDialog(miVentana, "Seguro que desea cerrar la ventana?");
+		
+		if(opcion == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+		
+	}
 
 }

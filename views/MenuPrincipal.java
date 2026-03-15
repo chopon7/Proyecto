@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -41,16 +43,49 @@ public class MenuPrincipal extends JFrame{
 	
 	private void inicializarComponentes() {
 		
-		JPanel panel = new JPanel();
-		add(panel);
-		panel.addMouseListener(new MouseAdapter() {
+		addWindowListener(new WindowListener() {
 			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.out.println("Se abrió la ventana");
+				
+			}
 			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.out.println("Se minimizó");
+				
+			}
 			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				System.out.println("Se volvió a abrir");
+				
+			}
 			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				System.out.println("Perdió el focus");
+				
+			}
 			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				handleClose();
+				
+			}
 			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.out.println("Se cerró");
+				
+			}
 			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				System.out.println("Obtuvo el focus");
+				
+			}
 		});
 		
 		
@@ -134,6 +169,15 @@ public class MenuPrincipal extends JFrame{
 				dispose();
 			}
 		});
+	}
+	
+	private void handleClose() {
+		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana?");
+		
+		if(opcion == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+		
 	}
 	
 }
