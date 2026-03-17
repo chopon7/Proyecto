@@ -316,6 +316,8 @@ public class FormularioEmpleado extends JFrame {
 
 		if (validar) {
 			JOptionPane.showMessageDialog(this, "Registro exitoso");
+			new Ventana();
+			dispose();
 		}
 		
 		if (!validar) {
