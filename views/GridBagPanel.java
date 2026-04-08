@@ -22,6 +22,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import utils.AppFont;
+import utils.InvalidPasswordException;
+import utils.InvalidUserException;
 
 public class GridBagPanel extends JPanel {
 
@@ -176,13 +178,22 @@ public class GridBagPanel extends JPanel {
 		asignarOyenteMouse(registrar);
 		
 		registrar.addActionListener(e -> registrar());
-		iniciarSesion.addActionListener(e -> login());
+		iniciarSesion.addActionListener(e -> {
+			try {
+				login();
+			} catch (InvalidUserException e1) {
+				e1.printStackTrace();
+			} catch (InvalidPasswordException e1) {
+				e1.printStackTrace();
+			}
+		});
 		
 		
 	}
 
 	// Metodo para la validacion del login
-	private void login() {
+	private void login() throws InvalidUserException, InvalidPasswordException {
+		
 
 		String empleado = usuario.getText();
 		String password = String.valueOf(contrasena.getPassword());
@@ -191,30 +202,48 @@ public class GridBagPanel extends JPanel {
 		mensajeContrasena.setText("");
 
 		boolean camposValidos = true;
-
-		// Verifica si el campo de empleado esta vacio
-		if (empleado.trim().isEmpty()) {
-			mensajeUsuario.setText("El nombre del empleado es obligatorio");
-			camposValidos = false;
-		}
-
+		
 		// Verifica si el campo contraseña esta vacio
 		if (password.trim().isEmpty()) {
 			mensajeContrasena.setText("La contraseña es obligatoria");
 			camposValidos = false;
 		}
 
-		// Si alguno de los dos campos esta vacio, se muestra el mensaje de error
+		// Verifica si el campo de empleado esta vacio
+		if (empleado.trim().isEmpty() ) {
+			mensajeUsuario.setText("El empleado es obligatorio");
+			camposValidos = false;
+		}
+		
+		if (!empleado.trim().isEmpty() && !empleado.equals("jacobo@gmail.com")) {
+			camposInvalidos(camposValidos);
+			mensajeUsuario.setText("Las credenciales son invalidas");
+			throw new InvalidUserException ("El usuario es invalido");
+		}
+		
+		if (!password.trim().isEmpty() && !password.equals("1234")) {
+			camposInvalidos(camposValidos);
+			mensajeContrasena.setText("Las credenciales son invalidas");
+			throw new InvalidPasswordException ("La contraseña es invalida");
+		}
+		
+		camposInvalidos(camposValidos);
+		
+		if(camposValidos) {
+			// Si esta todo correcto, se muestra el mensaje de exito
+			JOptionPane.showMessageDialog(null, "Se inicio sesion", "Sesion iniciada", JOptionPane.INFORMATION_MESSAGE);
+			new MenuPrincipal();
+			miVentana.dispose();
+		}
+		
+	}
+		
+	public void camposInvalidos(boolean camposValidos) 
+	{
 		if (!camposValidos) {
 			JOptionPane.showMessageDialog(this, "No se han completado los campos solicitados", "Error", JOptionPane.ERROR_MESSAGE);
 			return; // Se detiene la ejecucion del metodo
 		}
-
-		// Si esta todo correcto, se muestra el mensaje de exito
-		JOptionPane.showMessageDialog(null, "Se inicio sesion", "Sesion iniciada", JOptionPane.INFORMATION_MESSAGE);
-		new MenuPrincipal();
-		miVentana.dispose();
-		
 	}
 	
 	private void registrar() {
