@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import utils.AppFont;
 import utils.InvalidPasswordException;
@@ -86,10 +88,10 @@ public class GridBagPanel extends JPanel {
 			}
 		});
 		
-		iniciarlizarComponentes();
+		inicializarComponentes();
 	}
 	
-	private void iniciarlizarComponentes() {
+	private void inicializarComponentes() {
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);
@@ -115,6 +117,7 @@ public class GridBagPanel extends JPanel {
 		add(textoUsuario, gbc);
 		usuario = new JTextField(15);
 		asignarFocusCampoTexto(usuario);
+		agregarListener(usuario);
 		gbc.gridx = 1;
 		add(usuario, gbc);
 
@@ -139,6 +142,7 @@ public class GridBagPanel extends JPanel {
 		add(textoContrasena, gbc);
 		contrasena = new JPasswordField(15);
 		asignarFocusCampoCodigo(contrasena);
+		agregarListener(contrasena);
 		gbc.gridx = 1;
 
 		add(contrasena, gbc);
@@ -312,5 +316,61 @@ public class GridBagPanel extends JPanel {
 		}
 		
 	}
+	
+	private void agregarListener(JTextField campo) {
+		
+		campo.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validarCampo(campo);
+			}
+		});
+	}
+	
+	private void validarCampo(JTextField campo) {
 
+	    if(campo == usuario) {
+	        validarUsuario();
+	    }
+
+	    if(campo == contrasena) {
+	        validarContrasena();
+	    }
+	}
+	
+	private boolean validarUsuario() {
+
+	    if(usuario.getText().trim().isEmpty()) {
+	        mensajeUsuario.setText("El nombre del empleado es obligatorio");
+	        return false;
+	    }
+
+	    mensajeUsuario.setText("");
+	    return true;
+	}
+	
+	private boolean validarContrasena() {
+
+	    String password = String.valueOf(contrasena.getPassword());
+
+	    if(password.trim().isEmpty()) {
+	        mensajeContrasena.setText("La contraseña es obligatoria");
+	        return false;
+	    }
+
+	    mensajeContrasena.setText("");
+	    return true;
+	}
+	
 }
