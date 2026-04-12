@@ -26,7 +26,7 @@ public class MenuPrincipal extends JFrame{
 	JMenuItem reporteSemanal;
 	JMenuItem reporteMensual;
 	
-	MenuPrincipal() {
+	public MenuPrincipal() {
 		setSize(1000, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
