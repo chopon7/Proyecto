@@ -1,6 +1,6 @@
 package views;
 
-import java.awt.Color;	
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -23,9 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import exceptions.InvalidPasswordException;
+import exceptions.InvalidUserException;
 import utils.AppFont;
-import utils.InvalidPasswordException;
-import utils.InvalidUserException;
 
 public class GridBagPanel extends JPanel {
 
@@ -38,61 +38,61 @@ public class GridBagPanel extends JPanel {
 
 	// Por ahora todo se mantiene en el centro
 	public GridBagPanel(Ventana miVentana) {
-			
+
 		this.miVentana = miVentana;
 		setLayout(new GridBagLayout());
 		setBackground(new Color(27, 38, 59));
-		
+
 		miVentana.addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {
 				System.out.println("Se abrió la ventana");
-				
+
 			}
-			
+
 			@Override
 			public void windowIconified(WindowEvent e) {
 				System.out.println("Se minimizó");
-				
+
 			}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 				System.out.println("Se volvió a abrir");
-				
+
 			}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 				System.out.println("Perdió el focus");
-				
+
 			}
-			
+
 			@Override
 			public void windowClosing(WindowEvent e) {
 				handleClose();
-				
+
 			}
-			
+
 			@Override
 			public void windowClosed(WindowEvent e) {
 				System.out.println("Se cerró");
-				
+
 			}
-			
+
 			@Override
 			public void windowActivated(WindowEvent e) {
 				System.out.println("Obtuvo el focus");
-				
+
 			}
 		});
-		
+
 		inicializarComponentes();
 	}
-	
+
 	private void inicializarComponentes() {
-		
+
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(8, 8, 8, 8);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -158,9 +158,10 @@ public class GridBagPanel extends JPanel {
 		add(mensajeContrasena, gbc);
 
 		ImageIcon ilustracionBotonInicioSesion = new ImageIcon("img/inicioSesion.png");
-		Image imagenActualizadaBotonInicioSesion = ilustracionBotonInicioSesion.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		Image imagenActualizadaBotonInicioSesion = ilustracionBotonInicioSesion.getImage().getScaledInstance(18, 18,
+				Image.SCALE_SMOOTH);
 		ImageIcon iconoFinalBotonInicioSesion = new ImageIcon(imagenActualizadaBotonInicioSesion);
-		
+
 		// Estos son los botones, se colocan en las coordenadas indicadas
 		JButton iniciarSesion = new JButton("Iniciar sesion", iconoFinalBotonInicioSesion);
 		gbc.gridx = 0;
@@ -172,15 +173,15 @@ public class GridBagPanel extends JPanel {
 		ImageIcon ilustracionBotonRegistro = new ImageIcon("img/usuarioNuevo.png");
 		Image imagenActualizada = ilustracionBotonRegistro.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinal = new ImageIcon(imagenActualizada);
-		
+
 		JButton registrar = new JButton("Registrar", iconoFinal);
 		gbc.gridx = 1;
 		add(registrar, gbc);
 		botonColorNormal = registrar.getBackground();
-		
-		//Evento cambio de imagen del boton (registrar) 
+
+		// Evento cambio de imagen del boton (registrar)
 		asignarOyenteMouse(registrar);
-		
+
 		registrar.addActionListener(e -> registrar());
 		iniciarSesion.addActionListener(e -> {
 			try {
@@ -191,13 +192,11 @@ public class GridBagPanel extends JPanel {
 				e1.printStackTrace();
 			}
 		});
-		
-		
+
 	}
 
 	// Metodo para la validacion del login
 	private void login() throws InvalidUserException, InvalidPasswordException {
-		
 
 		String empleado = usuario.getText();
 		String password = String.valueOf(contrasena.getPassword());
@@ -206,7 +205,7 @@ public class GridBagPanel extends JPanel {
 		mensajeContrasena.setText("");
 
 		boolean camposValidos = true;
-		
+
 		// Verifica si el campo contraseña esta vacio
 		if (password.trim().isEmpty()) {
 			mensajeContrasena.setText("La contraseña es obligatoria");
@@ -214,163 +213,163 @@ public class GridBagPanel extends JPanel {
 		}
 
 		// Verifica si el campo de empleado esta vacio
-		if (empleado.trim().isEmpty() ) {
+		if (empleado.trim().isEmpty()) {
 			mensajeUsuario.setText("El empleado es obligatorio");
 			camposValidos = false;
 		}
-		
+
 		if (!empleado.trim().isEmpty() && !empleado.equals("jacobo@gmail.com")) {
 			camposInvalidos(camposValidos);
 			mensajeUsuario.setText("Las credenciales son invalidas");
-			throw new InvalidUserException ("El usuario es invalido");
+			throw new InvalidUserException("El usuario es invalido");
 		}
-		
+
 		if (!password.trim().isEmpty() && !password.equals("1234")) {
 			camposInvalidos(camposValidos);
 			mensajeContrasena.setText("Las credenciales son invalidas");
-			throw new InvalidPasswordException ("La contraseña es invalida");
+			throw new InvalidPasswordException("La contraseña es invalida");
 		}
-		
+
 		camposInvalidos(camposValidos);
-		
-		if(camposValidos) {
+
+		if (camposValidos) {
 			// Si esta todo correcto, se muestra el mensaje de exito
 			JOptionPane.showMessageDialog(null, "Se inicio sesion", "Sesion iniciada", JOptionPane.INFORMATION_MESSAGE);
 			new MenuPrincipal();
 			miVentana.dispose();
 		}
-		
+
 	}
-		
-	public void camposInvalidos(boolean camposValidos) 
-	{
+
+	public void camposInvalidos(boolean camposValidos) {
 		if (!camposValidos) {
-			JOptionPane.showMessageDialog(this, "No se han completado los campos solicitados", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "No se han completado los campos solicitados", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return; // Se detiene la ejecucion del metodo
 		}
 	}
-	
+
 	private void registrar() {
 		new FormularioEmpleado();
 		miVentana.dispose();
 	}
-	
+
 	private void asignarOyenteMouse(JButton miBoton) {
-	
+
 		miBoton.addMouseListener(new MouseAdapter() {
-			
+
 			public void mouseEntered(MouseEvent e) {
 				miBoton.setBackground(Color.GRAY);
-				
+
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
 				miBoton.setBackground(botonColorNormal);
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	private void asignarFocusCampoTexto(JTextField miTextito) {
-		
+
 		miTextito.addFocusListener(new FocusAdapter() {
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				miTextito.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				miTextito.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	private void asignarFocusCampoCodigo(JPasswordField miTextito) {
-		
+
 		miTextito.addFocusListener(new FocusAdapter() {
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				miTextito.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				miTextito.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			}
-			
+
 		});
-		
+
 	}
-	
+
 	private void handleClose() {
 		int opcion = JOptionPane.showConfirmDialog(miVentana, "Seguro que desea cerrar la ventana?");
-		
-		if(opcion == JOptionPane.YES_OPTION) {
+
+		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
-		
+
 	}
-	
+
 	private void agregarListener(JTextField campo) {
-		
+
 		campo.getDocument().addDocumentListener(new DocumentListener() {
-			
+
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				validarCampo(campo);
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				validarCampo(campo);
 			}
-			
+
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				validarCampo(campo);
 			}
 		});
 	}
-	
+
 	private void validarCampo(JTextField campo) {
 
-	    if(campo == usuario) {
-	        validarUsuario();
-	    }
+		if (campo == usuario) {
+			validarUsuario();
+		}
 
-	    if(campo == contrasena) {
-	        validarContrasena();
-	    }
+		if (campo == contrasena) {
+			validarContrasena();
+		}
 	}
-	
+
 	private boolean validarUsuario() {
 
-	    if(usuario.getText().trim().isEmpty()) {
-	        mensajeUsuario.setText("El nombre del empleado es obligatorio");
-	        return false;
-	    }
+		if (usuario.getText().trim().isEmpty()) {
+			mensajeUsuario.setText("El nombre del empleado es obligatorio");
+			return false;
+		}
 
-	    mensajeUsuario.setText("");
-	    return true;
+		mensajeUsuario.setText("");
+		return true;
 	}
-	
+
 	private boolean validarContrasena() {
 
-	    String password = String.valueOf(contrasena.getPassword());
+		String password = String.valueOf(contrasena.getPassword());
 
-	    if(password.trim().isEmpty()) {
-	        mensajeContrasena.setText("La contraseña es obligatoria");
-	        return false;
-	    }
+		if (password.trim().isEmpty()) {
+			mensajeContrasena.setText("La contraseña es obligatoria");
+			return false;
+		}
 
-	    mensajeContrasena.setText("");
-	    return true;
+		mensajeContrasena.setText("");
+		return true;
 	}
-	
+
 }
