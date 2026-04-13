@@ -26,7 +26,7 @@ import javax.swing.event.DocumentListener;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
 import utils.AppFont;
-
+import controllers.FormularioEmpleadoController;
 import controllers.LoginController;
 import models.User;
 
@@ -223,7 +223,7 @@ public class GridBagPanel extends JPanel {
 	}
 
 	private void registrar() {
-		new FormularioEmpleado();
+		new FormularioEmpleadoController(new FormularioEmpleado(), new User());
 		miVentana.dispose();
 	}
 

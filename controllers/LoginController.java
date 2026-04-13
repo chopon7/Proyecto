@@ -11,8 +11,7 @@ public class LoginController {
 
 		validarCampos(usuario, password);
 
-		// Por ahora es una simulacion del usuario para cuando la conectemos a una base
-		// de datos
+		// Por ahora es una simulacion del usuario para cuando la conectemos a una base de datos
 		User user = new User("jacobo@gmail.com", "1234");
 
 		// Se valida que las credenciales coincidan

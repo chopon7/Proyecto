@@ -7,16 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,15 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import utils.AppFont;
 
 public class FormularioEmpleado extends JFrame {
 
+	//Atributos
+	private FormularioEmpleado formularioEmpleado;
 	private JLabel lblErrorNombre;
 	private JLabel lblErrorComboEdad;
-	private JLabel lblErrorCodigo;
+	private JLabel lblErrorPassword;
 	private JLabel lblErrorEmail;
 	private JLabel lblErrorCombo;
 	private JLabel lblErrorApellidoPaterno;
@@ -44,12 +36,16 @@ public class FormularioEmpleado extends JFrame {
 	private JTextField nombre;
 	private JTextField apellidoPaterno;
 	private JTextField apellidoMaterno;
-	private JTextField codigo;
+	private JTextField password;
 	private JTextField email;
 	private JComboBox<String> cboOpcionesEdad;
 	private JComboBox<String> cboOpcionesGenero;
 	private Color botonColorNormal;
+	private JButton enviarRegistro;
+	private JButton botonAtras;
+	private JPanel panelComponentes;
 	
+	//Constructores
 	public FormularioEmpleado() {
 
 		setSize(1000, 700);
@@ -57,18 +53,154 @@ public class FormularioEmpleado extends JFrame {
 		setResizable(true);
 		setTitle("Formulario de Registro");
 		setLocationRelativeTo(null);
-
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("img/imagenVehiculo.png");
 		setIconImage(icono);
-
 		inicializarComponentes();
-
 		setVisible(true);	
 		
-		
+	}
+	
+	//Getters y Setters de los mensajes de Error
+	public String getLblErrorNombre() {
+		return lblErrorNombre.getText();
 	}
 
+	public void setLblErrorNombre(String mensaje) {
+		this.lblErrorNombre.setText(mensaje);
+	}
+
+	public String getLblErrorComboEdad() {
+		return lblErrorComboEdad.getText();
+	}
+
+	public void setLblErrorComboEdad(String mensaje) {
+		this.lblErrorComboEdad.setText(mensaje);
+	}
+
+	public String getLblErrorPassword() {
+		return lblErrorPassword.getText();
+	}
+
+	public void setLblErrorPassword(String mensaje) {
+		this.lblErrorPassword.setText(mensaje);
+	}
+
+	public String getLblErrorEmail() {
+		return lblErrorEmail.getText();
+	}
+
+	public void setLblErrorEmail(String mensaje) {
+		this.lblErrorEmail.setText(mensaje);
+	}
+
+	public String getLblErrorCombo() {
+		return lblErrorCombo.getText();
+	}
+
+	public void setLblErrorCombo(String mensaje) {
+		this.lblErrorCombo.setText(mensaje);
+	}
+
+	public String getLblErrorApellidoPaterno() {
+		return lblErrorApellidoPaterno.getText();
+	}
+
+	public void setLblErrorApellidoPaterno(String mensaje) {
+		this.lblErrorApellidoPaterno.setText(mensaje);
+	}
+
+	public String getLblErrorApellidoMaterno() {
+		return lblErrorApellidoMaterno.getText();
+	}
+
+	public void setLblErrorApellidoMaterno(String mensaje) {
+		this.lblErrorApellidoMaterno.setText(mensaje);
+	}
+
+	//Getters y Setters para los datos 
+	public String getNombre() {
+		return nombre.getText().trim();
+	}
+
+	public String getApellidoPaterno() {
+		return apellidoPaterno.getText().trim();
+	}
+
+	public String getApellidoMaterno() {
+		return apellidoMaterno.getText().trim();
+	}
+
+	public String getPassword() {
+		return password.getText().trim();
+	}
+
+	public String getEmail() {
+		return email.getText().trim();
+	}
+
+	public String getEdadSeleccionada() {
+	    return (String) cboOpcionesEdad.getSelectedItem();
+	}
+
+	public int getIndiceEdad() {
+	    return cboOpcionesEdad.getSelectedIndex();
+	}
+	
+	public String getGeneroSelecionado() {
+		return (String) cboOpcionesGenero.getSelectedItem();
+	}
+	
+	public int getIndiceGenero() {
+		 return cboOpcionesGenero.getSelectedIndex();
+	}
+	
+	public JButton getBtnEnviar() {
+	    return enviarRegistro; 
+	}
+	
+	public JButton getBtnAtras() {
+	    return botonAtras; 
+	}
+	
+	public Color getColorBotonNormal() {
+		return botonColorNormal;
+	}
+	
+	public FormularioEmpleado getFormularioEmpleado() {
+        return formularioEmpleado ;
+    }
+	
+	//Getters y Setters para los JTextField y ComboBox
+	public JTextField getNombreTxt() {
+		return nombre;
+	}
+
+	public JTextField getApellidoPaternoTxt() {
+		return apellidoPaterno;
+	}
+
+	public JTextField getApellidoMaternoTxt() {
+		return apellidoMaterno;
+	}
+
+	public JTextField getPasswordTxt() {
+		return password;
+	}
+
+	public JTextField getEmailTxt() {
+		return email;
+	}
+	
+	public JComboBox<String> getCboOpcionesEdad(){
+		return cboOpcionesEdad;
+	}
+	
+	public JComboBox<String> getCboOpcionesGenero(){
+		return cboOpcionesGenero;
+	}
+
+	//Metodos
 	public void inicializarComponentes() {
 
 		addWindowListener(new WindowListener() {
@@ -116,7 +248,6 @@ public class FormularioEmpleado extends JFrame {
 			}
 		});
 		
-		
 		// Titulo de la ventana
 		JLabel lblTitulo = new JLabel("Registro de Empleados");
 		lblTitulo.setFont(AppFont.title());
@@ -124,7 +255,7 @@ public class FormularioEmpleado extends JFrame {
 		add(lblTitulo, BorderLayout.NORTH);
 
 		// GridBagPanel
-		JPanel panelComponentes = new JPanel(new GridBagLayout());
+		panelComponentes = new JPanel(new GridBagLayout());
 		panelComponentes.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 		panelComponentes.setBackground(new Color(27, 38, 59));
 		GridBagConstraints c = new GridBagConstraints();
@@ -137,7 +268,6 @@ public class FormularioEmpleado extends JFrame {
 		panelComponentes.add(crearLabel("Ingresa el nombre del empleado:"), c);
 		c.gridx = 1;
 		nombre =  new JTextField(20);
-		validarIngresoDatos(nombre);
 		panelComponentes.add(nombre, c);
 		c.gridy = 1;
 		lblErrorNombre = crearMensajeError("");
@@ -150,7 +280,6 @@ public class FormularioEmpleado extends JFrame {
 		panelComponentes.add(crearLabel("Ingresa el apellido paterno del empleado: "), c);
 		c.gridx = 1;
 		apellidoPaterno = new JTextField(20);
-		validarIngresoDatos(apellidoPaterno);
 		panelComponentes.add(apellidoPaterno, c);
 		c.gridy = 3;
 		lblErrorApellidoPaterno = crearMensajeError("");
@@ -163,7 +292,6 @@ public class FormularioEmpleado extends JFrame {
 		panelComponentes.add(crearLabel("Ingresa el apellido materno del empleado: "), c);
 		c.gridx = 1;
 		apellidoMaterno = new JTextField(20);
-		validarIngresoDatos(apellidoMaterno);
 		panelComponentes.add(apellidoMaterno, c);
 		c.gridy = 5;
 		lblErrorApellidoMaterno = crearMensajeError("");
@@ -186,12 +314,12 @@ public class FormularioEmpleado extends JFrame {
 		c.gridy = 8;
 		panelComponentes.add(crearLabel("Ingresa la contraseña del empleado:"), c);
 		c.gridx = 1;
-		codigo = new JTextField(20);
-		panelComponentes.add(codigo, c);
+		password = new JTextField(20);
+		panelComponentes.add(password, c);
 		c.gridy = 9;
-		lblErrorCodigo = crearMensajeError("");
-		crearMensajeError(lblErrorCodigo.getText());
-		panelComponentes.add(lblErrorCodigo, c);
+		lblErrorPassword = crearMensajeError("");
+		crearMensajeError(lblErrorPassword.getText());
+		panelComponentes.add(lblErrorPassword, c);
 		
 		// Edad del empleado
 		c.gridx = 0;
@@ -235,10 +363,8 @@ public class FormularioEmpleado extends JFrame {
 		ImageIcon ilustracionBotonEnviar = new ImageIcon("img/enviar.png");
 		Image imagenActualizadaBotonEnviar = ilustracionBotonEnviar.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinalBotonEnviar = new ImageIcon(imagenActualizadaBotonEnviar);
-		JButton enviarRegistro = new JButton("Enviar", iconoFinalBotonEnviar);
+		enviarRegistro = new JButton("Enviar", iconoFinalBotonEnviar);
 		botonColorNormal = enviarRegistro.getBackground();
-		asignarOyenteMouse(enviarRegistro);
-		enviarRegistro.addActionListener(e -> validar());
 		panelComponentes.add(enviarRegistro, c);
 
 		// Boton atras
@@ -248,27 +374,13 @@ public class FormularioEmpleado extends JFrame {
 		Image imagenActualizadaBotonAtras = ilustracionBotonAtras.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinalBotonAtras = new ImageIcon(imagenActualizadaBotonAtras);
 		
-		JButton botonAtras = new JButton("Atras", iconoFinalBotonAtras);
-		asignarOyenteMouse(botonAtras);
-		botonAtras.addActionListener(e -> {
-			
-			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas regresar? Se perderán todos los datos");
-			
-			if(option == JOptionPane.YES_OPTION) {
-				new Ventana();
-				dispose();
-			}
-			
-		});
+		botonAtras = new JButton("Atras", iconoFinalBotonAtras);
 		panelComponentes.add(botonAtras, c);
 
 		// Scroll
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		add(scroll, BorderLayout.CENTER);
 		botonColorNormal = botonAtras.getBackground();
-		
-		asignarOyentes();
-		
 	}
 
 	private JLabel crearLabel(String texto) {
@@ -277,55 +389,14 @@ public class FormularioEmpleado extends JFrame {
 		label.setForeground(Color.WHITE);
 		return label;
 	}
-
-	private void reiniciarMensajeError() {
-		lblErrorNombre.setText("");
-		lblErrorComboEdad.setText("");
-		lblErrorCodigo.setText("");
-		lblErrorEmail.setText("");
-		lblErrorCombo.setText("");
-		lblErrorApellidoMaterno.setText("");
-		lblErrorApellidoPaterno.setText("");		
-	}
 	
-	private void validar() {
-		reiniciarMensajeError();
-
-		boolean validar = true;
-
-		if (!validarNombre())
-			validar = false;
-
-		if (!validarCodigo())
-			validar = false;
-
-		if (!validarComboBoxGenero())
-			validar = false;
-
-		if (!validarComboBoxEdad())
-			validar = false;
-
-		if (!validarEmail())
-			validar = false;
+	private void handleClose() {
+		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana? Se perderan los datos del formulario");
 		
-		if (!validarApellidoMaterno())
-			validar = false;
-		
-		if (!validarApellidoPaterno())
-			validar = false;
-
-		if (validar) {
-			JOptionPane.showMessageDialog(this, "Registro exitoso");
-			new Ventana();
-			dispose();
+		if(opcion == JOptionPane.YES_OPTION) {
+			System.exit(0);
 		}
 		
-		if (!validar) {
-			JOptionPane.showMessageDialog(this, "No se han completado los campos solicitados", "Error", JOptionPane.ERROR_MESSAGE);
-			return; 
-		}
-		
-		return;	
 	}
 	
 	private JLabel crearMensajeError(String mensaje) {
@@ -337,254 +408,6 @@ public class FormularioEmpleado extends JFrame {
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
 
 		return label;
-	}
-	
-	private void asignarOyentes() {
-		
-		agregarListener(nombre);
-		agregarListener(codigo);
-		agregarListener(email);
-		agregarListener(apellidoMaterno);
-		agregarListener(apellidoPaterno);
-		
-		asignarOyenteCampotexto(nombre);
-		asignarOyenteCampotexto(apellidoPaterno);
-		asignarOyenteCampotexto(apellidoMaterno);
-		asignarOyenteCampotexto(codigo);
-		asignarOyenteCampotexto(email);
-		
-		asignarFocusCampoTexto(nombre);
-		asignarFocusCampoTexto(apellidoPaterno);
-		asignarFocusCampoTexto(apellidoMaterno);
-		asignarFocusCampoTexto(codigo);
-		asignarFocusCampoTexto(email);
-		
-		cboOpcionesGenero.addActionListener(e -> {
-			validarComboBoxGenero();
-		});
-		
-		cboOpcionesEdad.addActionListener(e -> {
-			validarComboBoxEdad();
-		});
-		
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-				cboOpcionesGenero.requestFocusInWindow();
-			}
-		});
-		
-	}
-	
-	//Cree el metodo que agrega el listener al JTextField
-	private void agregarListener(JTextField campo) {
-		
-		campo.getDocument().addDocumentListener(new DocumentListener() {
-			
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				validarCampo(campo);
-			}
-			
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				validarCampo(campo);
-			}
-			
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				validarCampo(campo);
-			}
-		});
-	}
-	
-	//Este metodo revisa que campo fue modificado y llama a su validacion
-	private void validarCampo(JTextField campo) {
-		
-		if(campo == nombre) {
-			validarNombre();
-		}
-		
-		if(campo == codigo) {
-			validarCodigo();
-		}
-		
-		if(campo == email) {
-			validarEmail();
-		}
-		
-		if(campo == apellidoMaterno) {
-			validarApellidoMaterno();
-		}
-		
-		if(campo == apellidoPaterno) {
-			validarApellidoPaterno();
-		}
-		
-	}
-	
-	private boolean validarNombre() {
-
-		if (nombre.getText().trim().isEmpty()) {
-			lblErrorNombre.setText("El nombre es obligatorio");
-			return false;
-		}
-
-		
-		lblErrorNombre.setText("");
-		return true;
-	}
-	
-	private boolean validarApellidoPaterno() {
-
-		if (apellidoPaterno.getText().trim().isEmpty()) {
-			lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
-			return false;
-		}
-
-		
-		lblErrorApellidoPaterno.setText("");
-		return true;
-	}
-	
-	private boolean validarApellidoMaterno() {
-
-		if (apellidoMaterno.getText().trim().isEmpty()) {
-			lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
-			return false;
-		}
-
-		
-		lblErrorApellidoMaterno.setText("");
-		return true;
-	}
-	
-	
-	
-	private boolean validarCodigo() {
-
-		if (codigo.getText().trim().isEmpty()) {
-			lblErrorCodigo.setText("La contraseña es obligatoria");
-			return false;
-		}
-
-		lblErrorCodigo.setText("");
-		return true;
-	}
-	
-	private boolean validarEmail() {
-
-		if (email.getText().trim().isEmpty()) {
-			lblErrorEmail.setText("El email es obligatorio");
-			return false;
-		}
-		
-		if (!email.getText().contains("@")) {
-			lblErrorEmail.setText("Email inválido");
-			return false;
-		}
-
-		lblErrorEmail.setText("");
-		return true;
-	}
-
-	private boolean validarComboBoxGenero() {
-		
-		
-		if (cboOpcionesGenero.getSelectedIndex() == 0) {
-			lblErrorCombo.setText("Seleccione un genero");
-			return false;
-		}
-
-		lblErrorCombo.setText("");
-		return true;
-	}
-	
-	private boolean validarComboBoxEdad() {
-		
-		
-		if (cboOpcionesEdad.getSelectedIndex() == 0) {
-			lblErrorComboEdad.setText("Seleccione una edad");
-			return false;
-		}
-
-		lblErrorComboEdad.setText("");
-		return true;
-	}
-	
-	
-	private void validarIngresoDatos(JTextField miTextito) {
-		
-		miTextito.addKeyListener(new KeyAdapter() {
-			
-			public void keyTyped(KeyEvent e) {
-				
-				// Al ingresar el o los nombre, no se puede poner el espacio (COMPLICA EL USO DE DOS NOMBRES)
-				if(Character.isDigit(e.getKeyChar()) || !Character.isAlphabetic(e.getKeyChar())){
-					System.out.println("Es numero o especial");
-					e.consume();
-				}
-			}
-			
-		});
-		
-		
-	}	
-	
-	private void asignarOyenteMouse(JButton miBoton) {
-		
-		miBoton.addMouseListener(new MouseAdapter() {
-			
-			public void mouseEntered(MouseEvent e) {
-				miBoton.setBackground(Color.GRAY);
-				
-			}
-			
-			public void mouseExited(MouseEvent e) {
-				miBoton.setBackground(botonColorNormal);
-			}
-			
-		});
-	
-	}
-	
-	private void asignarOyenteCampotexto(JTextField miTextito) {
-		
-		miTextito.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				miTextito.selectAll();
-			}
-		});
-		
-	}
-	
-	
-	private void asignarFocusCampoTexto(JTextField miTextito) {
-		
-		miTextito.addFocusListener(new FocusAdapter() {
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				miTextito.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
-			}
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				miTextito.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-			}
-			
-		});
-		
-	}
-	
-	private void handleClose() {
-		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana? Se perderan los datos del formulario");
-		
-		if(opcion == JOptionPane.YES_OPTION) {
-			System.exit(0);
-		}
-		
 	}
 	
 }
