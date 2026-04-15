@@ -47,7 +47,6 @@ public class FormularioEmpleadoController {
 		validarIngresoDatos(vista.getNombreTxt());
 		validarIngresoDatos(vista.getApellidoPaternoTxt());
 		validarIngresoDatos(vista.getApellidoMaternoTxt());
-		validarIngresoDatos(vista.getPasswordTxt());
 		
 
 		vista.getNombreTxt().getDocument().addDocumentListener(new DocumentListener() {

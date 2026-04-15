@@ -15,7 +15,7 @@ import models.User;
 
 public class UserRepository {
 
-	private final String FILE = "src/assets/files/users.csv";
+	private final String FILE = "src/files/users.csv";
 	
 	public void save(User user) throws IOException {
 		
