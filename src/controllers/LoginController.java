@@ -1,47 +1,145 @@
 package controllers;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
 import models.User;
+import views.GridBagPanel;
+import views.MenuPrincipal;
+import views.FormularioEmpleado;
+import controllers.FormularioEmpleadoController;
 
 public class LoginController {
 
-	// Metodo principal que usa la vista
-	public User iniciarSesion(String usuario, String password) throws InvalidUserException, InvalidPasswordException {
+	private GridBagPanel view;
 
-		validarCampos(usuario, password);
-
-		// Por ahora es una simulacion del usuario para cuando la conectemos a una base de datos
-		User user = new User("Ponchito Rodriguez", "1234");
-
-		// Se valida que las credenciales coincidan
-		validarCredenciales(usuario, password);
-
-		return user; // Si es correcto, se retorna el usuario
+	public LoginController(GridBagPanel view) {
+		this.view = view;
+		registerListeners();
+		agregarValidacionTiempoReal();
 	}
 
-	// Valida que los campos no esten vacios
-	private void validarCampos(String usuario, String password) throws InvalidUserException, InvalidPasswordException {
+	private void registerListeners() {
 
-		if (usuario == null || usuario.trim().isEmpty()) {
-			throw new InvalidUserException("El empleado es obligatorio");
-		}
+		view.getIniciarSesion().addActionListener(e -> handleLogin());
+		view.getRegistrar().addActionListener(e -> handleRegister());
 
-		if (password == null || password.trim().isEmpty()) {
-			throw new InvalidPasswordException("La contraseña es obligatoria");
+		KeyAdapter enter = new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					handleLogin();
+				}
+			}
+		};
+
+		view.getUsuarioField().addKeyListener(enter);
+		view.getContrasenaField().addKeyListener(enter);
+	}
+
+	private void agregarValidacionTiempoReal() {
+
+		view.getUsuarioField().getDocument().addDocumentListener(new DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validarUsuarioTiempoReal();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validarUsuarioTiempoReal();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validarUsuarioTiempoReal();
+			}
+		});
+
+		view.getContrasenaField().getDocument().addDocumentListener(new DocumentListener() {
+
+			public void insertUpdate(DocumentEvent e) {
+				validarContrasenaTiempoReal();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				validarContrasenaTiempoReal();
+			}
+
+			public void changedUpdate(DocumentEvent e) {
+				validarContrasenaTiempoReal();
+			}
+		});
+
+	}
+
+	private void validarUsuarioTiempoReal() {
+
+		String usuario = view.getUsuario();
+
+		if (usuario.trim().isEmpty()) {
+			view.setMensajeUsuario("El nombre del empleado es obligatorio");
+		} else {
+			view.setMensajeUsuario("");
 		}
 	}
 
-	// Valida que las credenciales sean correctas
-	private void validarCredenciales(String usuario, String password)
-			throws InvalidUserException, InvalidPasswordException {
+	private void validarContrasenaTiempoReal() {
 
-		if (!usuario.equals("Ponchito Rodriguez")) {
-			throw new InvalidUserException("Las credenciales son invalidas");
-		}
+		String password = view.getPassword();
 
-		if (!password.equals("1234")) {
-			throw new InvalidPasswordException("Las credenciales son invalidas");
+		if (password.trim().isEmpty()) {
+			view.setMensajeContrasena("La contraseña es obligatoria");
+		} else {
+			view.setMensajeContrasena("");
 		}
+	}
+
+	private void handleLogin() {
+
+		view.limpiarMensajes();
+
+		String usuario = view.getUsuario();
+		String password = view.getPassword();
+
+		try {
+
+			if (usuario.trim().isEmpty()) {
+				view.setMensajeUsuario("El empleado es obligatorio");
+				return;
+			}
+
+			if (password.trim().isEmpty()) {
+				view.setMensajeContrasena("La contraseña es obligatoria");
+				return;
+			}
+
+			if (!usuario.equals("jacobo@gmail.com")) {
+				throw new InvalidUserException("Las credenciales son incorrectas");
+			}
+
+			if (!password.equals("1234")) {
+				throw new InvalidPasswordException("Las credenciales son incorrectas");
+			}
+
+			JOptionPane.showMessageDialog(view, "Bienvenido " + usuario, "Sesión iniciada",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			new MenuPrincipal();
+			view.getVentana().dispose();
+
+		} catch (InvalidUserException e) {
+			view.setMensajeUsuario(e.getMessage());
+		} catch (InvalidPasswordException e) {
+			view.setMensajeContrasena(e.getMessage());
+		}
+	}
+
+	private void handleRegister() {
+		new FormularioEmpleadoController(new FormularioEmpleado());
+		view.getVentana().dispose();
 	}
 }
