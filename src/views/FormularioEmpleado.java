@@ -147,7 +147,7 @@ public class FormularioEmpleado extends JFrame {
 	    return cboOpcionesEdad.getSelectedIndex();
 	}
 	
-	public String getGeneroSelecionado() {
+	public String getGeneroSeleccionado() {
 		return (String) cboOpcionesGenero.getSelectedItem();
 	}
 	

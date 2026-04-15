@@ -12,7 +12,7 @@ public class LoginController {
 		validarCampos(usuario, password);
 
 		// Por ahora es una simulacion del usuario para cuando la conectemos a una base de datos
-		User user = new User("jacobo@gmail.com", "1234");
+		User user = new User("Ponchito Rodriguez", "1234");
 
 		// Se valida que las credenciales coincidan
 		validarCredenciales(usuario, password);
@@ -36,7 +36,7 @@ public class LoginController {
 	private void validarCredenciales(String usuario, String password)
 			throws InvalidUserException, InvalidPasswordException {
 
-		if (!usuario.equals("jacobo@gmail.com")) {
+		if (!usuario.equals("Ponchito Rodriguez")) {
 			throw new InvalidUserException("Las credenciales son invalidas");
 		}
 

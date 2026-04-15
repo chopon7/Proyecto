@@ -21,6 +21,15 @@ public class User {
         this.password = password;
     }
 
+    public User(String nombre, String apellidoPaterno, String apellidoMaterno, String email, String genero, String edad) {
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.email = email;
+        this.genero = genero;
+        this.edad = edad;
+    }
+    
     public User(String email, String password, String nombre, String apellidoPaterno, String apellidoMaterno, String genero, String edad) {
         this.email = email;
         this.password = password;
@@ -88,7 +97,40 @@ public class User {
 	public void setEdad(String edad) {
 		this.edad = edad;
 	}
+	
+	public String toString() {
+		return "Nombre: " + nombre + 
+				"\nApellido Paterno: " + apellidoPaterno 
+				+ "\nApellido Materno: " + apellidoMaterno
+				+ "\nEdad: " + edad 
+				+ "\nEmail: " + email 
+				+ "\nGénero: " + genero;
+	}
+
+	public String toCsv() {
+		return nombre + "," 
+			   + email + "," 
+			   + apellidoPaterno + "," 
+		       + apellidoMaterno + "," 
+			   + edad + "," 
+			   + genero + ","
+		       + email + ",";
+	}
     
+	public static User fromCsv(String userData) {
+		String data[] = userData.split(",");
+		
+		String nombre = data[0];
+		String apellidoPaterno = data[1];
+		String apellidoMaterno = data[2];
+	    String email = data[3];
+	    String edad = data[4];
+	    String genero = data[5];
+
+	    
+	    return new User(nombre, apellidoPaterno, apellidoMaterno, email, edad, genero);
+		
+	}
     
     
     

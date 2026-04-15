@@ -223,7 +223,7 @@ public class GridBagPanel extends JPanel {
 	}
 
 	private void registrar() {
-		new FormularioEmpleadoController(new FormularioEmpleado(), new User());
+		new FormularioEmpleadoController(new FormularioEmpleado());
 		miVentana.dispose();
 	}
 

@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -16,17 +18,19 @@ import javax.swing.event.DocumentListener;
 
 import exceptions.InvalidJTextFieldException;
 import models.User;
+import repository.UserRepository;
 import views.FormularioEmpleado;
 import views.Ventana;
 
 public class FormularioEmpleadoController {
 
 	private FormularioEmpleado vista;
-	private User empleado;
+	private UserRepository repository;
 
-	public FormularioEmpleadoController(FormularioEmpleado vista, User empleado) {
+	public FormularioEmpleadoController(FormularioEmpleado vista) {
 		this.vista = vista;
-		this.empleado = empleado;
+		this.repository = new UserRepository();
+		
 		
 		asignarOyenteCampotexto(vista.getNombreTxt());
 		asignarOyenteCampotexto(vista.getApellidoPaternoTxt());
@@ -78,7 +82,7 @@ public class FormularioEmpleadoController {
 			public void insertUpdate(DocumentEvent e) {
 				validarApellidoMaterno();
 			}
-
+			
 			public void removeUpdate(DocumentEvent e) {
 				validarApellidoMaterno();
 			}
@@ -239,14 +243,16 @@ public class FormularioEmpleadoController {
 			validar = false;
 
 		if (validar) {
-			empleado.setNombre(vista.getNombre());
-			empleado.setApellidoPaterno(vista.getApellidoPaterno());
-			empleado.setApellidoMaterno(vista.getApellidoMaterno());
-			empleado.setEdad(vista.getEdadSeleccionada());
-			empleado.setEmail(vista.getEmail());
-			empleado.setGenero(vista.getGeneroSelecionado());
-			empleado.setPassword(vista.getPassword());
-			JOptionPane.showMessageDialog(vista, "Registro exitoso");
+			User user = new User(
+                    vista.getNombre(),
+                    vista.getApellidoPaterno(),
+                    vista.getApellidoMaterno(),
+                    vista.getEmail(),
+                    vista.getEdadSeleccionada(),
+                    vista.getGeneroSeleccionado()
+            );
+			
+			registerUser(user);
 			new Ventana();
 			vista.dispose();
 		}
@@ -361,6 +367,19 @@ public class FormularioEmpleadoController {
 			vista.setLblErrorComboEdad(ex.getMessage());
 			return false;
 		}
+	}
+	
+	private void registerUser(User user) {
+
+		try {
+			repository.save(user);
+
+			JOptionPane.showMessageDialog(vista, "Usuario registrado");
+
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(vista, e.getMessage());
+		}
+
 	}
 	
 }
