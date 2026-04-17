@@ -128,7 +128,7 @@ public class LoginController {
 			JOptionPane.showMessageDialog(view, "Bienvenido " + usuario, "Sesión iniciada",
 					JOptionPane.INFORMATION_MESSAGE);
 
-			new MenuPrincipal();
+			new HomeController(new MenuPrincipal());
 			view.getVentana().dispose();
 
 		} catch (InvalidUserException e) {

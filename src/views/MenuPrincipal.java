@@ -1,14 +1,17 @@
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -17,15 +20,23 @@ import javax.swing.JPanel;
 
 
 public class MenuPrincipal extends JFrame{
-
-	JMenuItem salir;
-	JMenuItem cerrarSesion;
-	JMenuItem registrarVehiculo;
-	JMenuItem estadoEstacionamiento;
-	JMenuItem reporteDiario;
-	JMenuItem reporteSemanal;
-	JMenuItem reporteMensual;
 	
+	//Atributos
+	public static final String HOME = "HOME";
+	public static final String USERS = "USERS";
+	private CardLayout cardLayout;
+	private JPanel container;
+	public JButton btnUsers;
+	public UserView usersPanel;
+	private JMenuItem salir;
+	private JMenuItem cerrarSesion;
+	private JMenuItem registrarVehiculo;
+	private JMenuItem estadoEstacionamiento;
+	private JMenuItem reporteDiario;
+	private JMenuItem reporteSemanal;
+	private JMenuItem reporteMensual;
+	
+	//Constructores
 	public MenuPrincipal() {
 		setSize(1000, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,10 +47,109 @@ public class MenuPrincipal extends JFrame{
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("img/imagenVehiculo.png");
 		setIconImage(icono);
+		createNavbar();
+		createViews();
 		inicializarComponentes();
 		setVisible(true);
 		
 	}
+	
+	//Getters y setters
+	public JMenuItem getSalir() {
+		return salir;
+	}
+
+	public JMenuItem getCerrarSesion() {
+		return cerrarSesion;
+	}
+
+	public JMenuItem getRegistrarVehiculo() {
+		return registrarVehiculo;
+	}
+
+	public JMenuItem getEstadoEstacionamiento() {
+		return estadoEstacionamiento;
+	}
+
+	public JMenuItem getReporteDiario() {
+		return reporteDiario;
+	}
+
+	public JMenuItem getReporteSemanal() {
+		return reporteSemanal;
+	}
+
+	public JMenuItem getReporteMensual() {
+		return reporteMensual;
+	}
+
+	public void setSalir(JMenuItem salir) {
+		this.salir = salir;
+	}
+
+	public void setCerrarSesion(JMenuItem cerrarSesion) {
+		this.cerrarSesion = cerrarSesion;
+	}
+
+	public void setRegistrarVehiculo(JMenuItem registrarVehiculo) {
+		this.registrarVehiculo = registrarVehiculo;
+	}
+
+	public void setEstadoEstacionamiento(JMenuItem estadoEstacionamiento) {
+		this.estadoEstacionamiento = estadoEstacionamiento;
+	}
+
+	public void setReporteDiario(JMenuItem reporteDiario) {
+		this.reporteDiario = reporteDiario;
+	}
+
+	public void setReporteSemanal(JMenuItem reporteSemanal) {
+		this.reporteSemanal = reporteSemanal;
+	}
+
+	public void setReporteMensual(JMenuItem reporteMensual) {
+		this.reporteMensual = reporteMensual;
+	}
+	
+	public JButton getBtnUsers() {
+		return btnUsers;
+	}
+
+	public void setBtnUsers(JButton btnUsers) {
+		this.btnUsers = btnUsers;
+	}
+
+	//Metodos
+	public void createNavbar() {
+		JPanel navbar = new JPanel();
+		navbar.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		btnUsers = new JButton("Usuarios");
+		navbar.add(btnUsers);
+		
+		add(navbar, BorderLayout.NORTH);
+	}
+	
+	private void createViews() {
+		cardLayout = new CardLayout();
+		container = new JPanel(cardLayout);
+		
+		JPanel homePanel = new JPanel();
+		homePanel.add(new JLabel("Bienvenido al Sistema"));
+		
+		usersPanel = new UserView();
+		
+		container.add(homePanel, HOME);
+		container.add(usersPanel, USERS);
+		
+		add(container, BorderLayout.CENTER);
+		
+	}
+	
+	public void showView(String view) {
+		cardLayout.show(container, view);
+	}
+	
 	
 	private void inicializarComponentes() {
 		
@@ -72,7 +182,6 @@ public class MenuPrincipal extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				handleClose();
-				
 			}
 			
 			@Override
@@ -147,37 +256,14 @@ public class MenuPrincipal extends JFrame{
 		reporteMensual = new JMenuItem("Ver reporte mensual del estacionamiento");
 		reporteMensual.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteMensual);
-		
-		
-		asignarOyentes();
-	}
-	
-	public void asignarOyentes() {
-		salir.addActionListener(e -> {
-			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas salir? Se perderán todos los datos", "¿Seguro?", JOptionPane.YES_NO_OPTION);
-			
-			if(option == JOptionPane.YES_OPTION) {
-				dispose();
-			}
-		});
-		
-		cerrarSesion.addActionListener(e -> {
-			int option = JOptionPane.showConfirmDialog(this, "¿Seguro que deseas cerrar sesion? Los datos no guardados se perderán", "¿Seguro?", JOptionPane.YES_NO_OPTION);
-			
-			if(option == JOptionPane.YES_OPTION) {
-				new Ventana();
-				dispose();
-			}
-		});
 	}
 	
 	private void handleClose() {
 		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana?");
-		
-		if(opcion == JOptionPane.YES_OPTION) {
+
+		if (opcion == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
-		
 	}
 	
 }
