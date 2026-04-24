@@ -2,7 +2,6 @@ package utils;
 
 import java.awt.Font;
 
-import views.FormularioRegistro;
 
 public class AppFont {
 

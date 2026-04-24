@@ -1,9 +1,5 @@
 /controllers/
-/exceptions/
-/files/
-/main/
-/models/
-/repository/
-/tablemodels/
-/utils/
 /views/
+/files/
+/repository/
+/utils/

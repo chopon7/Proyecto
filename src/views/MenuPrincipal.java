@@ -21,13 +21,14 @@ import javax.swing.JPanel;
 
 public class MenuPrincipal extends JFrame{
 	
-	//Atributos
+	//Atributos  
 	public static final String HOME = "HOME";
 	public static final String USERS = "USERS";
 	private CardLayout cardLayout;
 	private JPanel container;
-	public JButton btnUsers;
 	public UserView usersPanel;
+	public JButton btnUsers;
+	public JButton btnHome;
 	private JMenuItem salir;
 	private JMenuItem cerrarSesion;
 	private JMenuItem registrarVehiculo;
@@ -35,6 +36,7 @@ public class MenuPrincipal extends JFrame{
 	private JMenuItem reporteDiario;
 	private JMenuItem reporteSemanal;
 	private JMenuItem reporteMensual;
+
 	
 	//Constructores
 	public MenuPrincipal() {
@@ -119,6 +121,10 @@ public class MenuPrincipal extends JFrame{
 		this.btnUsers = btnUsers;
 	}
 
+	public JButton getBtnHome() {
+		return btnHome;
+	}
+	
 	//Metodos
 	public void createNavbar() {
 		JPanel navbar = new JPanel();
@@ -126,6 +132,8 @@ public class MenuPrincipal extends JFrame{
 		
 		btnUsers = new JButton("Usuarios");
 		navbar.add(btnUsers);
+		btnHome = new JButton("Home");
+		navbar.add(btnHome);
 		
 		add(navbar, BorderLayout.NORTH);
 	}

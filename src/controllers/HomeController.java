@@ -1,16 +1,12 @@
 package controllers;
 
-import java.io.IOException;
-import java.util.List;
 import javax.swing.JOptionPane;
-import models.User;
-import repository.UserRepository;
-import tablemodels.UserTableModel;
 import views.MenuPrincipal;
 import views.Ventana;
 
 public class HomeController {
 
+	private UserController userController;
 	private MenuPrincipal vista;
 
 	public HomeController(MenuPrincipal vista) {
@@ -45,24 +41,33 @@ public class HomeController {
 		vista.getBtnUsers().addActionListener(e -> {
 			showUsers();
 		});
+		
+		
+		vista.getBtnHome().addActionListener(e -> {
+			vista.showView(MenuPrincipal.HOME);
+			updateMenuState(MenuPrincipal.HOME);
+		});
+		
+	
 	}
 
 	private void showUsers() {
-		UserRepository repository = new UserRepository();
-
-		try {
-			List<User> users = repository.getUsers();
-
-			UserTableModel model = new UserTableModel(users);
-
-			vista.usersPanel.setTableModel(model);
-
-			vista.showView(MenuPrincipal.USERS);
-
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(vista, ex.getMessage());
+		
+		if(userController == null) {
+			userController = new UserController(vista.usersPanel);
 		}
-
+		
+		
+		userController.loadUsers();
+		
+		vista.showView(MenuPrincipal.USERS);
+		updateMenuState(MenuPrincipal.USERS);
+		
+	}
+	
+	private void updateMenuState(String viewName) {
+		vista.btnUsers.setEnabled(!viewName.equals(MenuPrincipal.USERS));
+		vista.btnHome.setEnabled(!viewName.equals(MenuPrincipal.HOME));
 	}
 
 }

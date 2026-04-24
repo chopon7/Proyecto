@@ -9,11 +9,9 @@ import javax.swing.event.DocumentListener;
 
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidUserException;
-import models.User;
 import views.GridBagPanel;
 import views.MenuPrincipal;
 import views.FormularioEmpleado;
-import controllers.FormularioEmpleadoController;
 
 public class LoginController {
 
@@ -117,7 +115,7 @@ public class LoginController {
 				return;
 			}
 
-			if (!usuario.equals("jacobo@gmail.com")) {
+			if (!usuario.equals("a@")) {
 				throw new InvalidUserException("Las credenciales son incorrectas");
 			}
 
