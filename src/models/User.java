@@ -113,22 +113,21 @@ public class User {
 			   + apellidoPaterno + "," 
 		       + apellidoMaterno + "," 
 			   + edad + "," 
-			   + genero + ","
-		       + email + ",";
+			   + genero;
 	}
     
 	public static User fromCsv(String userData) {
 		String data[] = userData.split(",");
 		
 		String nombre = data[0];
-		String apellidoPaterno = data[1];
-		String apellidoMaterno = data[2];
-	    String email = data[3];
+		String email = data[1];
+		String apellidoPaterno = data[2];
+		String apellidoMaterno = data[3];
 	    String edad = data[4];
 	    String genero = data[5];
 
 	    
-	    return new User(nombre, apellidoPaterno, apellidoMaterno, email, edad, genero);
+	    return new User(nombre, apellidoPaterno, apellidoMaterno, email, genero, edad);
 		
 	}
     

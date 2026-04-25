@@ -10,9 +10,9 @@ public class UserTableModel extends AbstractTableModel{
 	
 	private final String[] columns = {
 		"Nombre",
-		"Email",
 		"Apellido Paterno",
 		"Apellido Materno",
+		"Email",
 		"Edad",
 		"Genero"
 	};

@@ -34,6 +34,32 @@ public class UserController {
 
 			openForm(model.getUserAt(row));
 		});
+		
+		this.vista.getBtnDelete().addActionListener(e -> {
+			int row = vista.getSelectedRow();
+			
+			if (row == -1) {
+				JOptionPane.showMessageDialog(vista, "Selecciona un usuario");
+				return;
+			}
+			
+			int confirm = JOptionPane.showConfirmDialog(
+				vista,
+				"¿Seguro que deseas eliminar este usuario?",
+				"Confirmar",
+				JOptionPane.YES_NO_OPTION
+			);
+			
+			if (confirm == JOptionPane.YES_OPTION) {
+				try {
+					repo.delete(row);
+					loadUsers();
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(vista, ex.getMessage());
+				}
+			}
+					
+		});
 
 	}
 
