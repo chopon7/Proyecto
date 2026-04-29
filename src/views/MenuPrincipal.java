@@ -18,10 +18,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+public class MenuPrincipal extends JFrame {
 
-public class MenuPrincipal extends JFrame{
-	
-	//Atributos  
+	// Atributos
 	public static final String HOME = "HOME";
 	public static final String USERS = "USERS";
 	private CardLayout cardLayout;
@@ -37,11 +36,10 @@ public class MenuPrincipal extends JFrame{
 	private JMenuItem reporteSemanal;
 	private JMenuItem reporteMensual;
 
-	
-	//Constructores
+	// Constructores
 	public MenuPrincipal() {
-		setSize(1000, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(1200, 600);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(true);
 		setTitle("Menu Principal");
 		setLocationRelativeTo(null);
@@ -53,10 +51,10 @@ public class MenuPrincipal extends JFrame{
 		createViews();
 		inicializarComponentes();
 		setVisible(true);
-		
+
 	}
-	
-	//Getters y setters
+
+	// Getters y setters
 	public JMenuItem getSalir() {
 		return salir;
 	}
@@ -112,7 +110,7 @@ public class MenuPrincipal extends JFrame{
 	public void setReporteMensual(JMenuItem reporteMensual) {
 		this.reporteMensual = reporteMensual;
 	}
-	
+
 	public JButton getBtnUsers() {
 		return btnUsers;
 	}
@@ -124,154 +122,156 @@ public class MenuPrincipal extends JFrame{
 	public JButton getBtnHome() {
 		return btnHome;
 	}
-	
-	//Metodos
+
+	// Metodos
 	public void createNavbar() {
 		JPanel navbar = new JPanel();
 		navbar.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
+
 		btnUsers = new JButton("Usuarios");
 		navbar.add(btnUsers);
 		btnHome = new JButton("Home");
 		navbar.add(btnHome);
-		
+
 		add(navbar, BorderLayout.NORTH);
 	}
-	
+
 	private void createViews() {
 		cardLayout = new CardLayout();
 		container = new JPanel(cardLayout);
-		
+
 		JPanel homePanel = new JPanel();
 		homePanel.add(new JLabel("Bienvenido al Sistema"));
-		
+
 		usersPanel = new UserView();
-		
+
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
-		
+
 		add(container, BorderLayout.CENTER);
-		
+
 	}
-	
+
 	public void showView(String view) {
 		cardLayout.show(container, view);
 	}
-	
-	
+
 	private void inicializarComponentes() {
-		
+
 		addWindowListener(new WindowListener() {
-			
+
 			@Override
 			public void windowOpened(WindowEvent e) {
 				System.out.println("Se abrió la ventana");
-				
+
 			}
-			
+
 			@Override
 			public void windowIconified(WindowEvent e) {
 				System.out.println("Se minimizó");
-				
+
 			}
-			
+
 			@Override
 			public void windowDeiconified(WindowEvent e) {
 				System.out.println("Se volvió a abrir");
-				
+
 			}
-			
+
 			@Override
 			public void windowDeactivated(WindowEvent e) {
 				System.out.println("Perdió el focus");
-				
+
 			}
-			
+
 			@Override
 			public void windowClosing(WindowEvent e) {
 				handleClose();
 			}
-			
+
 			@Override
 			public void windowClosed(WindowEvent e) {
 				System.out.println("Se cerró");
-				
+
 			}
-			
+
 			@Override
 			public void windowActivated(WindowEvent e) {
 				System.out.println("Obtuvo el focus");
-				
+
 			}
 		});
-		
-		
+
 		JMenuBar mb = new JMenuBar();
 		setJMenuBar(mb);
-		
-		JMenu opciones = new JMenu ("Opciones");
+
+		JMenu opciones = new JMenu("Opciones");
 		opciones.setMnemonic(KeyEvent.VK_A);
 		mb.add(opciones);
-		
+
 		JMenuItem guardar = new JMenuItem("Guardar");
 		guardar.setMnemonic(KeyEvent.VK_B);
 		opciones.add(guardar);
-		
+
 		salir = new JMenuItem("Salir");
 		salir.setMnemonic(KeyEvent.VK_B);
 		opciones.add(salir);
-		
+
 		cerrarSesion = new JMenuItem("Cerrar Sesion");
 		cerrarSesion.setMnemonic(KeyEvent.VK_B);
 		opciones.add(cerrarSesion);
-		
-		
+
 		JMenu registro = new JMenu("Registro");
 		registro.setMnemonic(KeyEvent.VK_A);
 		mb.add(registro);
-		
+
 		registrarVehiculo = new JMenuItem("Registrar Automovil");
 		registrarVehiculo.setMnemonic(KeyEvent.VK_B);
 		registro.add(registrarVehiculo);
-		
+
 		JMenuItem registrarEmpleado = new JMenuItem("Registrar Empleado");
 		registrarEmpleado.setMnemonic(KeyEvent.VK_B);
 		registro.add(registrarEmpleado);
 
-		
 		JMenu estacionamiento = new JMenu("Estacionamiento");
 		estacionamiento.setMnemonic(KeyEvent.VK_B);
 		mb.add(estacionamiento);
-		
+
 		estadoEstacionamiento = new JMenuItem("Ver estado del estacionamiento");
 		estadoEstacionamiento.setMnemonic(KeyEvent.VK_B);
 		estacionamiento.add(estadoEstacionamiento);
-		
-		
-		//Posible opcion que podriamos dejar aparte o combinarla con la de estacionamiento
+
+		// Posible opcion que podriamos dejar aparte o combinarla con la de
+		// estacionamiento
 		JMenu reportes = new JMenu("Reportes");
 		reportes.setMnemonic(KeyEvent.VK_A);
 		mb.add(reportes);
-		
+
 		reporteDiario = new JMenuItem("Ver reporte diario del estacionamiento");
 		reporteDiario.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteDiario);
-		
+
 		reporteSemanal = new JMenuItem("Ver reporte semanal del estacionamiento");
 		reporteSemanal.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteSemanal);
-		
+
 		reporteMensual = new JMenuItem("Ver reporte mensual del estacionamiento");
 		reporteMensual.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteMensual);
 	}
-	
-	private void handleClose() {
-		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana?");
 
-		if (opcion == JOptionPane.YES_OPTION) {
-			System.exit(0);
-		}
+	private void handleClose() {
+	    int opcion = JOptionPane.showConfirmDialog(
+	        this, 
+	        "¿Seguro que desea cerrar la ventana?", 
+	        "Confirmar salida", 
+	        JOptionPane.YES_NO_OPTION, 
+	        JOptionPane.QUESTION_MESSAGE
+	    );
+
+	    if (opcion == JOptionPane.YES_OPTION) {
+	        System.exit(0); 
+	    }
 	}
-	
+
 }
