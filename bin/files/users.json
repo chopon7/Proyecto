@@ -1,0 +1,33 @@
+[ {
+  "email" : "Alejandrito@gmail.com",
+  "password" : "1234",
+  "nombre" : "Alejandrito",
+  "apellidoPaterno" : "Cotita",
+  "apellidoMaterno" : "Ayalita",
+  "genero" : "Masculino",
+  "edad" : "22"
+}, {
+  "email" : "Jacobiño@gmail.com",
+  "password" : "34235",
+  "nombre" : "Jacobiño",
+  "apellidoPaterno" : "Rodriguiño",
+  "apellidoMaterno" : "Garciño",
+  "genero" : "Masculino",
+  "edad" : "20"
+}, {
+  "email" : "Otilin@gmail.com",
+  "password" : "235",
+  "nombre" : "Otilin",
+  "apellidoPaterno" : "Robles",
+  "apellidoMaterno" : "Zamora",
+  "genero" : "Femenino",
+  "edad" : "25"
+}, {
+  "email" : "Markitos@gmail.com",
+  "password" : "32435",
+  "nombre" : "Markitos",
+  "apellidoPaterno" : "Toys",
+  "apellidoMaterno" : "Zambada",
+  "genero" : "Prefiero no decirlo",
+  "edad" : "23"
+} ]

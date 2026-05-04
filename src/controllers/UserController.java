@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import models.User;
 import repository.UserRepository;
+import services.PDFExporter;
 import tablemodels.UserTableModel;
 import views.UserFormDialog;
 import views.UserView;
@@ -16,10 +19,12 @@ public class UserController {
 	private UserView vista;
 	private UserRepository repo;
 	private UserTableModel model;
+	private PDFExporter pdfExporter;
 
 	public UserController(UserView vista) {
 		this.vista = vista;
 		repo = new UserRepository();
+		pdfExporter = new PDFExporter();
 
 		this.vista.getBtnAdd().addActionListener(e -> {
 			openForm(null);
@@ -60,6 +65,8 @@ public class UserController {
 			}
 					
 		});
+		
+		this.vista.getBtnPdf().addActionListener(e -> generatePdf());
 
 	}
 
@@ -103,5 +110,28 @@ public class UserController {
 		}
 
 	}
+	
+	public void generatePdf() {
+		
+		File file = vista.selectPdfFile();
+		
+		if(file == null) {
+			return;
+		}
+		
+		try {
+			pdfExporter.exportUsers(repo.getUsers(), file);
+			if(Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(file);
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(vista, "Error al exportar");
+		}
+		
+		
+	}
+	
+	
 
 }
