@@ -1,6 +1,9 @@
 package controllers;
 
 import javax.swing.JOptionPane;
+
+import views.FormularioEmpleado;
+import views.FormularioRegistro;
 import views.MenuPrincipal;
 import views.Ventana;
 
@@ -18,8 +21,7 @@ public class HomeController {
 
 	public void asignarOyentes() {
 		vista.getSalir().addActionListener(e -> {
-			int option = JOptionPane.showConfirmDialog(vista, 
-					"¿Seguro que deseas salir? Se perderán todos los datos",
+			int option = JOptionPane.showConfirmDialog(vista, "¿Seguro que deseas salir? Se perderán todos los datos",
 					"¿Seguro?", JOptionPane.YES_NO_OPTION);
 
 			if (option == JOptionPane.YES_OPTION) {
@@ -37,34 +39,35 @@ public class HomeController {
 				vista.dispose();
 			}
 		});
-		
+
 		vista.getBtnUsers().addActionListener(e -> {
 			showUsers();
 		});
-		
-		
+
 		vista.getBtnHome().addActionListener(e -> {
 			vista.showView(MenuPrincipal.HOME);
 			updateMenuState(MenuPrincipal.HOME);
 		});
-		
-	
+
+		vista.getRegistrarVehiculo().addActionListener(e -> {
+			new FormularioRegistroController(new FormularioRegistro());
+		});
+
 	}
 
 	private void showUsers() {
-		
-		if(userController == null) {
+
+		if (userController == null) {
 			userController = new UserController(vista.usersPanel);
 		}
-		
-		
+
 		userController.loadUsers();
-		
+
 		vista.showView(MenuPrincipal.USERS);
 		updateMenuState(MenuPrincipal.USERS);
-		
+
 	}
-	
+
 	private void updateMenuState(String viewName) {
 		vista.btnUsers.setEnabled(!viewName.equals(MenuPrincipal.USERS));
 		vista.btnHome.setEnabled(!viewName.equals(MenuPrincipal.HOME));

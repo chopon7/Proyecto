@@ -1,4 +1,5 @@
 package views;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,7 +8,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -29,13 +34,17 @@ public class FormularioRegistro extends JFrame {
 	private JTextField color;
 	private JTextField marca;
 	private JTextField modelo;
+	private JButton enviarRegistro;
+	private JButton botonAtras;
 	private JTextField placa;
+	private Color botonColorNormal;
 	private JComboBox<String> cboOpcionesTipoCarro;
-	
+
+	// Constructores
 	public FormularioRegistro() {
 
 		setSize(1000, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(true);
 		setTitle("Formulario de Registro");
 		setLocationRelativeTo(null);
@@ -45,9 +54,113 @@ public class FormularioRegistro extends JFrame {
 		setIconImage(icono);
 
 		inicializarComponentes();
-
 		setVisible(true);
 
+	}
+
+	// Getters y setters
+	public JTextField getColor() {
+		return color;
+	}
+
+	public JTextField getMarca() {
+		return marca;
+	}
+
+	public JTextField getModelo() {
+		return modelo;
+	}
+
+	public JTextField getPlaca() {
+		return placa;
+	}
+
+	public JComboBox<String> getCboOpcionesTipoCarro() {
+		return cboOpcionesTipoCarro;
+	}
+
+	public void setColor(JTextField color) {
+		this.color = color;
+	}
+
+	public void setMarca(JTextField marca) {
+		this.marca = marca;
+	}
+
+	public void setModelo(JTextField modelo) {
+		this.modelo = modelo;
+	}
+
+	public void setPlaca(JTextField placa) {
+		this.placa = placa;
+	}
+
+	public void setCboOpcionesTipoCarro(JComboBox<String> cboOpcionesTipoCarro) {
+		this.cboOpcionesTipoCarro = cboOpcionesTipoCarro;
+	}
+
+	public JLabel getLblErrorMarca() {
+		return lblErrorMarca;
+	}
+
+	public JLabel getLblErrorPlaca() {
+		return lblErrorPlaca;
+	}
+
+	public JLabel getLblErrorModelo() {
+		return lblErrorModelo;
+	}
+
+	public JLabel getLblErrorColor() {
+		return lblErrorColor;
+	}
+
+	public JLabel getLblErrorCombo() {
+		return lblErrorCombo;
+	}
+
+	public void setLblErrorMarca(JLabel lblErrorMarca) {
+		this.lblErrorMarca = lblErrorMarca;
+	}
+
+	public void setLblErrorPlaca(JLabel lblErrorPlaca) {
+		this.lblErrorPlaca = lblErrorPlaca;
+	}
+
+	public void setLblErrorModelo(JLabel lblErrorModelo) {
+		this.lblErrorModelo = lblErrorModelo;
+	}
+
+	public void setLblErrorColor(JLabel lblErrorColor) {
+		this.lblErrorColor = lblErrorColor;
+	}
+
+	public void setLblErrorCombo(JLabel lblErrorCombo) {
+		this.lblErrorCombo = lblErrorCombo;
+	}
+
+	public Color getBotonColorNormal() {
+		return botonColorNormal;
+	}
+
+	public void setBotonColorNormal(Color botonColorNormal) {
+		this.botonColorNormal = botonColorNormal;
+	}
+
+	public JButton getEnviarRegistro() {
+		return enviarRegistro;
+	}
+
+	public JButton getBotonAtras() {
+		return botonAtras;
+	}
+
+	public void setEnviarRegistro(JButton enviarRegistro) {
+		this.enviarRegistro = enviarRegistro;
+	}
+
+	public void setBotonAtras(JButton botonAtras) {
+		this.botonAtras = botonAtras;
 	}
 
 	public void inicializarComponentes() {
@@ -71,7 +184,7 @@ public class FormularioRegistro extends JFrame {
 		c.gridy = 0;
 		panelComponentes.add(crearLabel("Ingresa la marca del auto:"), c);
 		c.gridx = 1;
-		marca =  new JTextField(20);
+		marca = new JTextField(20);
 		panelComponentes.add(marca, c);
 		c.gridy = 1;
 		lblErrorMarca = crearMensajeError("");
@@ -85,8 +198,8 @@ public class FormularioRegistro extends JFrame {
 		c.gridx = 1;
 		placa = new JTextField(20);
 		panelComponentes.add(placa, c);
-		lblErrorPlaca = crearMensajeError("");
 		c.gridy = 3;
+		lblErrorPlaca = crearMensajeError("");
 		crearMensajeError(lblErrorPlaca.getText());
 		panelComponentes.add(lblErrorPlaca, c);
 
@@ -101,7 +214,7 @@ public class FormularioRegistro extends JFrame {
 		lblErrorModelo = crearMensajeError("");
 		crearMensajeError(lblErrorModelo.getText());
 		panelComponentes.add(lblErrorModelo, c);
-		
+
 		// Color del auto
 		c.gridx = 0;
 		c.gridy = 6;
@@ -109,46 +222,49 @@ public class FormularioRegistro extends JFrame {
 		c.gridx = 1;
 		color = new JTextField(20);
 		panelComponentes.add(color, c);
-		lblErrorColor = crearMensajeError("");
 		c.gridy = 7;
+		lblErrorColor = crearMensajeError("");
+		crearMensajeError(lblErrorColor.getText());
 		panelComponentes.add(lblErrorColor, c);
-		
-		
+
 		// Tipo de auto
 		c.gridx = 0;
 		c.gridy = 8;
 		panelComponentes.add(crearLabel("Ingresa el tipo de auto:"), c);
 		c.gridx = 1;
-		String[] opcionesTipoCarro = {"Seleccione" ,"Camioneta", "Sedan", "Motocicleta", "Super Deportivo" };
+		String[] opcionesTipoCarro = { "Seleccione", "Camioneta", "Sedan", "Super Deportivo" };
 		cboOpcionesTipoCarro = new JComboBox<>(opcionesTipoCarro);
 		panelComponentes.add(cboOpcionesTipoCarro, c);
 		c.gridy = 9;
 		lblErrorCombo = crearMensajeError("");
 		crearMensajeError(lblErrorCombo.getText());
 		panelComponentes.add(lblErrorCombo, c);
-		
 
 		// Boton de registro
 		c.gridx = 0;
 		c.gridy = 10;
 		c.insets = new java.awt.Insets(20, 10, 10, 10);
-		JButton enviarRegistro = new JButton("Enviar");
-		enviarRegistro.addActionListener(e -> validar());
+		ImageIcon ilustracionBotonEnviar = new ImageIcon("img/enviar.png");
+		Image imagenActualizadaBotonEnviar = ilustracionBotonEnviar.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinalBotonEnviar = new ImageIcon(imagenActualizadaBotonEnviar);
+		enviarRegistro = new JButton("Enviar", iconoFinalBotonEnviar);
+		botonColorNormal = enviarRegistro.getBackground();
 		panelComponentes.add(enviarRegistro, c);
 
 		// Boton atras
 		c.gridx = 1;
 		c.gridy = 10;
-		JButton botonAtras = new JButton("Atras");
+		ImageIcon ilustracionBotonAtras = new ImageIcon("img/atras.png");
+		Image imagenActualizadaBotonAtras = ilustracionBotonAtras.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinalBotonAtras = new ImageIcon(imagenActualizadaBotonAtras);
+		botonAtras = new JButton("Atras", iconoFinalBotonAtras);
+		botonColorNormal = botonAtras.getBackground();
 		panelComponentes.add(botonAtras, c);
 
 		// Scroll
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		add(scroll, BorderLayout.CENTER);
 
-		
-		
-		
 	}
 
 	private JLabel crearLabel(String texto) {
@@ -158,47 +274,6 @@ public class FormularioRegistro extends JFrame {
 		return label;
 	}
 
-	private void reiniciarMensajeError() {
-		lblErrorModelo.setText("");
-		lblErrorColor.setText("");
-		lblErrorPlaca.setText("");
-		lblErrorMarca.setText("");
-		lblErrorCombo.setText("");
-	}
-	
-	private void validar() {
-		reiniciarMensajeError();
-
-		boolean validar = true;
-
-		if (!validarMarca())
-			validar = false;
-
-		if (!validarPlaca())
-			validar = false;
-
-		if (!validarComboBox())
-			validar = false;
-
-		if (!validarModelo())
-			validar = false;
-
-		if (!validarColor())
-			validar = false;
-
-		if (validar) {
-			JOptionPane.showMessageDialog(this, "Registro exitoso");
-		}
-		
-		if (!validar) {
-			JOptionPane.showMessageDialog(this, "No se han completado los campos solicitados", "Error", JOptionPane.ERROR_MESSAGE);
-			return; 
-		}
-		
-		
-		return;	
-	}
-	
 	private JLabel crearMensajeError(String mensaje) {
 		JLabel label = new JLabel();
 		label.setText(mensaje);
@@ -208,56 +283,6 @@ public class FormularioRegistro extends JFrame {
 		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
 
 		return label;
-	}
-	
-	private boolean validarMarca() {
-
-		if (marca.getText().trim().isEmpty()) {
-			lblErrorMarca.setText("La marca es obligatoria");
-			return false;
-		}
-
-		return true;
-	}
-	
-	private boolean validarModelo() {
-
-		if (modelo.getText().trim().isEmpty()) {
-			lblErrorModelo.setText("El modelo es obligatorio");
-			return false;
-		}
-
-		return true;
-	}
-	
-	private boolean validarPlaca() {
-
-		if (placa.getText().trim().isEmpty()) {
-			lblErrorPlaca.setText("La placa es obligatoria");
-			return false;
-		}
-
-		return true;
-	}
-	
-	private boolean validarColor() {
-
-		if (color.getText().trim().isEmpty()) {
-			lblErrorColor.setText("El color es obligatorio");
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean validarComboBox() {
-
-		if (cboOpcionesTipoCarro.getSelectedIndex() == 0) {
-			lblErrorCombo.setText("Seleccione un tipo de carro");
-			return false;
-		}
-
-		return true;
 	}
 	
 }

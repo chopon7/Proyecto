@@ -19,7 +19,7 @@ public class AppFont {
 	public static Font normal() {
 		return base.deriveFont(20f);
 	}
-
+	
 	public static Font small() {
 		return base.deriveFont(12f);
 	}
@@ -28,6 +28,10 @@ public class AppFont {
 		return base.deriveFont(Font.BOLD, 20f);
 	}
 
+	public static Font mediumTitle() {
+		return base.deriveFont(Font.BOLD, 35f);
+	}
+	
 	public static Font bigTitle() {
 		return base.deriveFont(Font.BOLD, 60f);
 	}

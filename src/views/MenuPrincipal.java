@@ -2,7 +2,9 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import utils.AppFont;
 
 public class MenuPrincipal extends JFrame {
 
@@ -38,7 +42,7 @@ public class MenuPrincipal extends JFrame {
 
 	// Constructores
 	public MenuPrincipal() {
-		setSize(1200, 600);
+		setSize(1400, 700);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(true);
 		setTitle("Menu Principal");
@@ -126,25 +130,36 @@ public class MenuPrincipal extends JFrame {
 	// Metodos
 	public void createNavbar() {
 		JPanel navbar = new JPanel();
+		navbar.setBackground(new Color(27, 38, 59));
 		navbar.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 
-		btnUsers = new JButton("Usuarios");
-		navbar.add(btnUsers);
-		btnHome = new JButton("Home");
+		btnHome = crearBotones("Home");
+		btnHome.putClientProperty("JButton.buttonType", "roundRect");
 		navbar.add(btnHome);
+		btnUsers = crearBotones("Usuarios");
+		btnUsers.putClientProperty("JButton.buttonType", "roundRect");
+		navbar.add(btnUsers);
+		
 
 		add(navbar, BorderLayout.NORTH);
+	}
+	
+	private JButton crearBotones(String text) {
+	    JButton btn = new JButton(text);
+	    btn.setForeground(Color.BLACK);
+	    btn.setFont(AppFont.normal());
+
+	    return btn;
 	}
 
 	private void createViews() {
 		cardLayout = new CardLayout();
 		container = new JPanel(cardLayout);
 
-		JPanel homePanel = new JPanel();
-		homePanel.add(new JLabel("Bienvenido al Sistema"));
-
+		JPanel homePanel = new HomeView();
+		
 		usersPanel = new UserView();
-
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
 
@@ -203,15 +218,13 @@ public class MenuPrincipal extends JFrame {
 		});
 
 		JMenuBar mb = new JMenuBar();
+		mb.setBackground(new Color(27, 38, 59));
 		setJMenuBar(mb);
 
 		JMenu opciones = new JMenu("Opciones");
+		opciones.setForeground(Color.WHITE);
 		opciones.setMnemonic(KeyEvent.VK_A);
 		mb.add(opciones);
-
-		JMenuItem guardar = new JMenuItem("Guardar");
-		guardar.setMnemonic(KeyEvent.VK_B);
-		opciones.add(guardar);
 
 		salir = new JMenuItem("Salir");
 		salir.setMnemonic(KeyEvent.VK_B);
@@ -222,6 +235,7 @@ public class MenuPrincipal extends JFrame {
 		opciones.add(cerrarSesion);
 
 		JMenu registro = new JMenu("Registro");
+		registro.setForeground(Color.WHITE);
 		registro.setMnemonic(KeyEvent.VK_A);
 		mb.add(registro);
 
@@ -229,11 +243,8 @@ public class MenuPrincipal extends JFrame {
 		registrarVehiculo.setMnemonic(KeyEvent.VK_B);
 		registro.add(registrarVehiculo);
 
-		JMenuItem registrarEmpleado = new JMenuItem("Registrar Empleado");
-		registrarEmpleado.setMnemonic(KeyEvent.VK_B);
-		registro.add(registrarEmpleado);
-
 		JMenu estacionamiento = new JMenu("Estacionamiento");
+		estacionamiento.setForeground(Color.WHITE);
 		estacionamiento.setMnemonic(KeyEvent.VK_B);
 		mb.add(estacionamiento);
 
@@ -244,6 +255,7 @@ public class MenuPrincipal extends JFrame {
 		// Posible opcion que podriamos dejar aparte o combinarla con la de
 		// estacionamiento
 		JMenu reportes = new JMenu("Reportes");
+		reportes.setForeground(Color.WHITE);
 		reportes.setMnemonic(KeyEvent.VK_A);
 		mb.add(reportes);
 

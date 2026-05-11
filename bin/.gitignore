@@ -1,3 +1,4 @@
-/controllers/
-/services/
 /views/
+/main/
+/controllers/
+/utils/

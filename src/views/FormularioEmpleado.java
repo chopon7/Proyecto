@@ -168,7 +168,7 @@ public class FormularioEmpleado extends JFrame {
 	}
 	
 	public FormularioEmpleado getFormularioEmpleado() {
-        return formularioEmpleado ;
+        return formularioEmpleado;
     }
 	
 	//Getters y Setters para los JTextField y ComboBox
@@ -394,7 +394,7 @@ public class FormularioEmpleado extends JFrame {
 		int opcion = JOptionPane.showConfirmDialog(this, "Seguro que desea cerrar la ventana? Se perderan los datos del formulario");
 		
 		if(opcion == JOptionPane.YES_OPTION) {
-			System.exit(0);
+			this.dispose();
 		}
 		
 	}

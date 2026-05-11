@@ -2,12 +2,15 @@ package views;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.ObjectInputFilter.Config;
+
 import javax.swing.JFrame;
 
 public class Ventana extends JFrame{
 	
 	public Ventana () {
 
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds (100,100,500,500);
 		setResizable(true);

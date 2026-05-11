@@ -20,6 +20,7 @@ import javax.swing.table.JTableHeader;
 
 import tablemodels.UserTableModel;
 import utils.AppFont;
+import utils.Config;
 
 public class UserView extends JPanel {
 
@@ -31,11 +32,13 @@ public class UserView extends JPanel {
 
 	public UserView() {
 		setLayout(new BorderLayout());
+		setBackground(new Color(27, 38, 59));
 		table = new JTable();
 		styleTable();
 		add(new JScrollPane(table), BorderLayout.CENTER);
 
 		JPanel panelButtons = new JPanel();
+		panelButtons.setBackground(new Color(27, 38, 59));
 		panelButtons.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		btnAdd = new JButton("Agregar");
@@ -54,9 +57,9 @@ public class UserView extends JPanel {
 	
 	public File selectPdfFile() {
 		
-		String path = System.getProperty("user.home");
+		String path = Config.get("users.export.pdf", System.getProperty("user.home"));
 		JFileChooser chooser = new JFileChooser(path);
-		
+			
 		chooser.setSelectedFile(new File("reporte-usuarios.pdf"));
 		
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -73,6 +76,8 @@ public class UserView extends JPanel {
 		}
 		
 		File file = chooser.getSelectedFile();
+		Config.set("users.export.pdf", file.getParent());
+		
 		
 		if(!file.getName().toLowerCase().endsWith(".pdf")) {
 			file = new File(file.getAbsolutePath() + ".pdf");
