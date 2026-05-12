@@ -6,9 +6,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import exceptions.InvalidPasswordException;
-import exceptions.InvalidUserException;
+import models.User;
+import repository.LoginRepository;
 import views.GridBagPanel;
 import views.MenuPrincipal;
 import views.FormularioEmpleado;
@@ -16,8 +15,10 @@ import views.FormularioEmpleado;
 public class LoginController {
 
 	private GridBagPanel view;
+	private LoginRepository repository;
 
 	public LoginController(GridBagPanel view) {
+		repository = new LoginRepository();	
 		this.view = view;
 		registerListeners();
 		agregarValidacionTiempoReal();
@@ -98,46 +99,44 @@ public class LoginController {
 
 	private void handleLogin() {
 
-		view.limpiarMensajes();
-
-		String usuario = view.getUsuario();
-		String password = view.getPassword();
-
-		try {
-
-			if (usuario.trim().isEmpty()) {
-				view.setMensajeUsuario("El empleado es obligatorio");
-				return;
-			}
-
-			if (password.trim().isEmpty()) {
-				view.setMensajeContrasena("La contraseña es obligatoria");
-				return;
-			}
-
-			if (!usuario.equals("a@")) {
-				throw new InvalidUserException("Las credenciales son incorrectas");
-			}
-
-			if (!password.equals("1234")) {
-				throw new InvalidPasswordException("Las credenciales son incorrectas");
-			}
-
-			JOptionPane.showMessageDialog(view, "Bienvenido " + usuario, "Sesión iniciada",
-					JOptionPane.INFORMATION_MESSAGE);
-
-			new HomeController(new MenuPrincipal());
-			view.getVentana().dispose();
-
-		} catch (InvalidUserException e) {
-			view.setMensajeUsuario(e.getMessage());
-		} catch (InvalidPasswordException e) {
-			view.setMensajeContrasena(e.getMessage());
+		if(!validateCredentials(new User(view.getUsuario(), view.getPassword()))){
+			return;
 		}
+		
+		User user = repository.login(view.getUsuario(), view.getPassword());
+		
+		if(user == null) {
+			view.setMensajeContrasena("Credenciales incorrectas");
+			return;
+		}
+		
+		JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
+		new HomeController(new MenuPrincipal());
+		
+		view.getVentana().dispose();
+		
 	}
 
 	private void handleRegister() {
 		new FormularioEmpleadoController(new FormularioEmpleado());
 		view.getVentana().dispose();
+	}
+	
+	private boolean validateCredentials(User user) {
+		view.limpiarMensajes();
+		
+		boolean valid = true;
+
+		if (user.getEmail().trim().isEmpty()) {
+			view.setMensajeUsuario("El empleado es obligatorio");
+			valid = false;
+		}
+
+		if (user.getPassword().trim().isEmpty()) {
+			view.setMensajeContrasena("La contraseña es obligatoria");
+			valid = false;
+		}
+		
+		return valid;
 	}
 }

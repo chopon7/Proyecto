@@ -3,6 +3,7 @@ package models;
 public class User {
 	
 	//Atributos
+	private int id;
 	private String email;
     private String password;
     private String nombre;
@@ -23,6 +24,16 @@ public class User {
 
     public User(String nombre, String apellidoPaterno, String apellidoMaterno, String email, String genero, String edad) {
         this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.email = email;
+        this.genero = genero;
+        this.edad = edad;
+    }
+    
+    public User(int id, String nombre, String apellidoPaterno, String apellidoMaterno, String email, String genero, String edad) {
+        this.id = id;
+    	this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.email = email;
@@ -70,6 +81,14 @@ public class User {
 		return apellidoPaterno;
 	}
 
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public void setApellidoPaterno(String apellidoPaterno) {
 		this.apellidoPaterno = apellidoPaterno;
 	}
@@ -96,7 +115,7 @@ public class User {
 
 	public void setEdad(String edad) {
 		this.edad = edad;
-	}
+	}	
 	
 	public String toString() {
 		return "Nombre: " + nombre + 

@@ -1,4 +1,7 @@
-/views/
-/main/
-/controllers/
+/config/
+/models/
 /utils/
+/views/
+/repository/
+/controllers/
+/files/
