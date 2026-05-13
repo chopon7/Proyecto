@@ -11,12 +11,8 @@
 	public class LoginRepository {
 	
 		public User login(String email, String password) {
-			/*
-			 * String sql = "SELECT id, email, password FROM users WHERE email = '" + email
-			 * + "' AND password = '" + password + "'";
-			 */
 	
-			String sql = "SELECT idUser, userEmail, userPassword FROM User WHERE userEmail = ? AND userPassword = ?";
+			String sql = "SELECT idUser, userEmail, userPassword FROM users WHERE userEmail = ? AND userPassword = ?";
 	
 			try (
 					Connection conn = DatabaseConnection.getConnection();

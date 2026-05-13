@@ -4,22 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import utils.AppFont;
 
 public class MenuPrincipal extends JFrame {
@@ -132,7 +126,6 @@ public class MenuPrincipal extends JFrame {
 		JPanel navbar = new JPanel();
 		navbar.setBackground(new Color(27, 38, 59));
 		navbar.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
 
 		btnHome = crearBotones("Home");
 		btnHome.putClientProperty("JButton.buttonType", "roundRect");
@@ -140,17 +133,16 @@ public class MenuPrincipal extends JFrame {
 		btnUsers = crearBotones("Usuarios");
 		btnUsers.putClientProperty("JButton.buttonType", "roundRect");
 		navbar.add(btnUsers);
-		
 
 		add(navbar, BorderLayout.NORTH);
 	}
-	
-	private JButton crearBotones(String text) {
-	    JButton btn = new JButton(text);
-	    btn.setForeground(Color.BLACK);
-	    btn.setFont(AppFont.normal());
 
-	    return btn;
+	private JButton crearBotones(String text) {
+		JButton btn = new JButton(text);
+		btn.setForeground(Color.BLACK);
+		btn.setFont(AppFont.normal());
+
+		return btn;
 	}
 
 	private void createViews() {
@@ -158,7 +150,7 @@ public class MenuPrincipal extends JFrame {
 		container = new JPanel(cardLayout);
 
 		JPanel homePanel = new HomeView();
-		
+
 		usersPanel = new UserView();
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
@@ -172,50 +164,6 @@ public class MenuPrincipal extends JFrame {
 	}
 
 	private void inicializarComponentes() {
-
-		addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-				System.out.println("Se abrió la ventana");
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				System.out.println("Se minimizó");
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				System.out.println("Se volvió a abrir");
-
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				System.out.println("Perdió el focus");
-
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				handleClose();
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-				System.out.println("Se cerró");
-
-			}
-
-			@Override
-			public void windowActivated(WindowEvent e) {
-				System.out.println("Obtuvo el focus");
-
-			}
-		});
 
 		JMenuBar mb = new JMenuBar();
 		mb.setBackground(new Color(27, 38, 59));
@@ -270,20 +218,6 @@ public class MenuPrincipal extends JFrame {
 		reporteMensual = new JMenuItem("Ver reporte mensual del estacionamiento");
 		reporteMensual.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteMensual);
-	}
-
-	private void handleClose() {
-	    int opcion = JOptionPane.showConfirmDialog(
-	        this, 
-	        "¿Seguro que desea cerrar la ventana?", 
-	        "Confirmar salida", 
-	        JOptionPane.YES_NO_OPTION, 
-	        JOptionPane.QUESTION_MESSAGE
-	    );
-
-	    if (opcion == JOptionPane.YES_OPTION) {
-	        System.exit(0); 
-	    }
 	}
 
 }

@@ -1,7 +1,13 @@
 package controllers;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.JOptionPane;
 
+import config.Config;
 import views.FormularioEmpleado;
 import views.FormularioRegistro;
 import views.MenuPrincipal;
@@ -13,13 +19,59 @@ public class HomeController {
 	private MenuPrincipal vista;
 
 	public HomeController(MenuPrincipal vista) {
-
 		this.vista = vista;
+		loadWindowPreferences();
 		asignarOyentes();
 
 	}
 
 	public void asignarOyentes() {
+
+		vista.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.out.println("Se abrió la ventana");
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.out.println("Se minimizó");
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				System.out.println("Se volvió a abrir");
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				System.out.println("Perdió el focus");
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				saveWindowPreferences();
+				handleClose();
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.out.println("Se cerró");
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				System.out.println("Obtuvo el focus");
+
+			}
+		});
+
 		vista.getSalir().addActionListener(e -> {
 			int option = JOptionPane.showConfirmDialog(vista, "¿Seguro que deseas salir? Se perderán todos los datos",
 					"¿Seguro?", JOptionPane.YES_NO_OPTION);
@@ -71,6 +123,47 @@ public class HomeController {
 	private void updateMenuState(String viewName) {
 		vista.btnUsers.setEnabled(!viewName.equals(MenuPrincipal.USERS));
 		vista.btnHome.setEnabled(!viewName.equals(MenuPrincipal.HOME));
+	}
+
+	private void saveWindowPreferences() {
+		Dimension size = vista.getSize();
+		Point point = vista.getLocation();
+
+		Config.set("registration.window.width", String.valueOf(size.width));
+
+		Config.set("registration.window.height", String.valueOf(size.height));
+
+		Config.set("registration.window.x", String.valueOf(point.x));
+
+		Config.set("registration.window.y", String.valueOf(point.y));
+
+	}
+
+	private void loadWindowPreferences() {
+		int width = Integer.parseInt(Config.get("registration.window.width", "700"));
+
+		int height = Integer.parseInt(Config.get("registration.window.height", "1500"));
+
+		String xValue = Config.get("registration.window.x", "");
+
+		String yValue = Config.get("registration.window.y", "");
+
+		if (!xValue.isBlank() && !yValue.isBlank()) {
+			vista.setLocation(Integer.parseInt(xValue), Integer.parseInt(yValue));
+		} else {
+			vista.setLocationRelativeTo(null);
+		}
+
+		vista.setSize(width, height);
+	}
+
+	private void handleClose() {
+		int opcion = JOptionPane.showConfirmDialog(vista, "¿Seguro que desea cerrar la ventana?", "Confirmar salida",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (opcion == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
 	}
 
 }

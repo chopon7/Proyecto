@@ -98,7 +98,7 @@ public class LoginController {
 	}
 
 	private void handleLogin() {
-
+		
 		if(!validateCredentials(new User(view.getUsuario(), view.getPassword()))){
 			return;
 		}
