@@ -433,8 +433,8 @@ public class UserFormDialog extends JDialog {
     		nombre.setText(userForm.getNombre());
     		apellidoPaterno.setText(userForm.getApellidoPaterno());
     		apellidoMaterno.setText(userForm.getApellidoMaterno());
+    		password.setText(userForm.getPassword());
             email.setText(userForm.getEmail());
-            password.setText(userForm.getPassword());
             cboOpcionesEdad.setSelectedItem(userForm.getEdad());
             cboOpcionesGenero.setSelectedItem(userForm.getGenero());
     	}
@@ -445,16 +445,20 @@ public class UserFormDialog extends JDialog {
 		String nombreTxt = getNombre();
 		String apellidoPaternoTxt = getApellidoPaterno();
 		String apellidoMaternoTxt = getApellidoMaterno();
-		String emailTxt = getEmail();
 		String passwordTxt = getPassword();
+		String emailTxt = getEmail();
 		String generoTxt = (String) cboOpcionesGenero.getSelectedItem();
 		String edadTtx = (String) cboOpcionesEdad.getSelectedItem();
 
 		if (userForm == null) { 
-			userForm = new User(emailTxt, passwordTxt, nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, generoTxt, edadTtx);
+			userForm = new User(emailTxt, passwordTxt , "ADMIN", nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, edadTtx, generoTxt);
 		} else {
-			User userTemp = new User(emailTxt, passwordTxt, nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, generoTxt, edadTtx);
-			userForm = userTemp;
+			String passwordFinal = passwordTxt;
+	        if (passwordTxt.equals(userForm.getPassword())) {
+	            passwordFinal = userForm.getPassword(); 
+	        }
+	        
+	        userForm = new User(userForm.getId(), emailTxt, passwordFinal , "ADMIN", nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, edadTtx, generoTxt);
 		}
 		
 		saved = true;

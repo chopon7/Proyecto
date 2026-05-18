@@ -210,14 +210,6 @@ public class MenuPrincipal extends JFrame {
 		reporteDiario = new JMenuItem("Ver reporte diario del estacionamiento");
 		reporteDiario.setMnemonic(KeyEvent.VK_B);
 		reportes.add(reporteDiario);
-
-		reporteSemanal = new JMenuItem("Ver reporte semanal del estacionamiento");
-		reporteSemanal.setMnemonic(KeyEvent.VK_B);
-		reportes.add(reporteSemanal);
-
-		reporteMensual = new JMenuItem("Ver reporte mensual del estacionamiento");
-		reporteMensual.setMnemonic(KeyEvent.VK_B);
-		reportes.add(reporteMensual);
 	}
 
 }

@@ -8,6 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import models.User;
 import repository.LoginRepository;
+import utils.Session;
 import views.GridBagPanel;
 import views.MenuPrincipal;
 import views.FormularioEmpleado;
@@ -102,19 +103,25 @@ public class LoginController {
 		if(!validateCredentials(new User(view.getUsuario(), view.getPassword()))){
 			return;
 		}
-		
+
 		User user = repository.login(view.getUsuario(), view.getPassword());
-		
-		if(user == null) {
+
+		if (user == null) {
 			view.setMensajeContrasena("Credenciales incorrectas");
 			return;
 		}
-		
-		JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión", "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
-		new HomeController(new MenuPrincipal());
-		
+
+		Session.login(user);
+		if (Session.getRole().equals("ADMIN")) {
+			
+			JOptionPane.showMessageDialog(view.getVentana(),  "Se inició la sesión " + Session.getRole(), "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
+			new HomeController(new MenuPrincipal());
+		} else {
+			JOptionPane.showMessageDialog(view.getVentana(), "No tienes permisos");
+		}
+
 		view.getVentana().dispose();
-		
+
 	}
 
 	private void handleRegister() {

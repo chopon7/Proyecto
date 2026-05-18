@@ -36,37 +36,33 @@ public class UserController {
 				JOptionPane.showMessageDialog(vista, "Selecciona un usuario");
 				return;
 			}
-
 			openForm(model.getUserAt(row));
 		});
-		
+
 		this.vista.getBtnDelete().addActionListener(e -> {
+
+			boolean deleted = repo.delete(model.getUserAt(vista.getSelectedRow()).getId());
+
+			if (deleted) {
+				model.removeRow(vista.getSelectedRow());
+			}
+
 			int row = vista.getSelectedRow();
-			
+
 			if (row == -1) {
 				JOptionPane.showMessageDialog(vista, "Selecciona un usuario");
 				return;
 			}
-			
-			int confirm = JOptionPane.showConfirmDialog(
-				vista,
-				"¿Seguro que deseas eliminar este usuario?",
-				"Confirmar",
-				JOptionPane.YES_NO_OPTION
-			);
-			
-			if (confirm == JOptionPane.YES_OPTION) {
-				try {
-					repo.delete(row);
-					loadUsers();
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(vista, ex.getMessage());
-				}
+
+			try {
+				JOptionPane.showMessageDialog(vista, "Se eliminó al usuario", "Usuario eliminado",
+						JOptionPane.INFORMATION_MESSAGE);
+				loadUsers();
+			} catch (Exception ex) {
+
 			}
-					
+
 		});
-		
-		this.vista.getBtnPdf().addActionListener(e -> generatePdf());
 
 	}
 
@@ -97,11 +93,16 @@ public class UserController {
 			try {
 				if (user == null) {
 					repo.save(savedUser);
+					model.addRow(savedUser);
 				} else {
 					int row = vista.getSelectedRow();
-					repo.update(row, savedUser);
+
+					boolean updated = repo.update(row, savedUser);
+					if (updated) {
+						model.updateRow(row, savedUser); // Actualiza el registro de la tabla
+					}
+					loadUsers();
 				}
-				loadUsers();
 			} catch (Exception e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(vista, e.getMessage());
@@ -110,28 +111,25 @@ public class UserController {
 		}
 
 	}
-	
+
 	public void generatePdf() {
-		
+
 		File file = vista.selectPdfFile();
-		
-		if(file == null) {
+
+		if (file == null) {
 			return;
 		}
-		
+
 		try {
 			pdfExporter.exportUsers(repo.getUsers(), file);
-			if(Desktop.isDesktopSupported()) {
+			if (Desktop.isDesktopSupported()) {
 				Desktop.getDesktop().open(file);
 			}
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(vista, "Error al exportar");
 		}
-		
-		
+
 	}
-	
-	
 
 }

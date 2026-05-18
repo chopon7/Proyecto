@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import exceptions.InvalidJTextFieldException;
 import models.User;
 import repository.UserRepository;
@@ -30,24 +32,22 @@ public class FormularioEmpleadoController {
 	public FormularioEmpleadoController(FormularioEmpleado vista) {
 		this.vista = vista;
 		this.repository = new UserRepository();
-		
-		
+
 		asignarOyenteCampotexto(vista.getNombreTxt());
 		asignarOyenteCampotexto(vista.getApellidoPaternoTxt());
 		asignarOyenteCampotexto(vista.getApellidoMaternoTxt());
 		asignarOyenteCampotexto(vista.getEmailTxt());
 		asignarOyenteCampotexto(vista.getPasswordTxt());
-		
+
 		asignarFocusCampoTexto(vista.getNombreTxt());
 		asignarFocusCampoTexto(vista.getApellidoPaternoTxt());
 		asignarFocusCampoTexto(vista.getApellidoMaternoTxt());
 		asignarFocusCampoTexto(vista.getEmailTxt());
 		asignarFocusCampoTexto(vista.getPasswordTxt());
-		
+
 		validarIngresoDatos(vista.getNombreTxt());
 		validarIngresoDatos(vista.getApellidoPaternoTxt());
 		validarIngresoDatos(vista.getApellidoMaternoTxt());
-		
 
 		vista.getNombreTxt().getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
@@ -81,7 +81,7 @@ public class FormularioEmpleadoController {
 			public void insertUpdate(DocumentEvent e) {
 				validarApellidoMaterno();
 			}
-			
+
 			public void removeUpdate(DocumentEvent e) {
 				validarApellidoMaterno();
 			}
@@ -129,7 +129,17 @@ public class FormularioEmpleadoController {
 		asignarOyenteMouse(vista.getBtnEnviar());
 		asignarOyenteMouse(vista.getBtnAtras());
 
-		vista.getBtnEnviar().addActionListener(e -> validar());
+		vista.getBtnEnviar().addActionListener(e -> {
+
+			if (validar()) {
+				User user = new User(vista.getEmail(), vista.getPassword(), "ADMIN", vista.getNombre(),
+						vista.getApellidoPaterno(), vista.getApellidoMaterno(), vista.getEdadSeleccionada(),
+						vista.getGeneroSeleccionado());
+				registerUser(user);
+				new Ventana();
+				vista.dispose();
+			}
+		});
 
 		vista.getBtnAtras().addActionListener(e -> {
 
@@ -148,7 +158,8 @@ public class FormularioEmpleadoController {
 		miTextito.addKeyListener(new KeyAdapter() {
 
 			public void keyTyped(KeyEvent e) {
-				// Al ingresar el o los nombre, no se puede poner el espacio (COMPLICA EL USO DE DOS NOMBRES)
+				// Al ingresar el o los nombre, no se puede poner el espacio (COMPLICA EL USO DE
+				// DOS NOMBRES)
 				if (Character.isDigit(e.getKeyChar()) || !Character.isAlphabetic(e.getKeyChar())) {
 					System.out.println("Es numero o especial");
 					e.consume();
@@ -158,7 +169,7 @@ public class FormularioEmpleadoController {
 		});
 
 	}
-	
+
 	private void asignarOyenteCampotexto(JTextField miTextito) {
 
 		miTextito.addFocusListener(new FocusAdapter() {
@@ -189,7 +200,7 @@ public class FormularioEmpleadoController {
 	}
 
 	private void asignarOyenteMouse(JButton miBoton) {
-
+		
 		miBoton.addMouseListener(new MouseAdapter() {
 
 			public void mouseEntered(MouseEvent e) {
@@ -215,7 +226,7 @@ public class FormularioEmpleadoController {
 		vista.setLblErrorApellidoPaterno("");
 	}
 
-	private void validar() {
+	private boolean validar() {
 		reiniciarMensajeError();
 
 		boolean validar = true;
@@ -241,28 +252,13 @@ public class FormularioEmpleadoController {
 		if (!validarApellidoPaterno())
 			validar = false;
 
-		if (validar) {
-			User user = new User(
-                    vista.getNombre(),
-                    vista.getApellidoPaterno(),
-                    vista.getApellidoMaterno(),
-                    vista.getEmail(),
-                    vista.getEdadSeleccionada(),
-                    vista.getGeneroSeleccionado()
-            );
-			
-			registerUser(user);
-			new Ventana();
-			vista.dispose();
-		}
-
 		if (!validar) {
 			JOptionPane.showMessageDialog(vista, "No se han completado los campos solicitados", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			return;
+			return false;
 		}
 
-		return;
+		return true;
 	}
 
 	private boolean validarNombre() {
@@ -367,7 +363,7 @@ public class FormularioEmpleadoController {
 			return false;
 		}
 	}
-	
+
 	private void registerUser(User user) {
 
 		try {
@@ -380,5 +376,5 @@ public class FormularioEmpleadoController {
 		}
 
 	}
-	
+
 }
