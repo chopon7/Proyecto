@@ -119,24 +119,24 @@ public class FormularioRegistro extends JFrame {
 		return lblErrorCombo;
 	}
 
-	public void setLblErrorMarca(JLabel lblErrorMarca) {
-		this.lblErrorMarca = lblErrorMarca;
+	public void setLblErrorMarca(String lblErrorMarca) {
+		this.lblErrorMarca.setText(lblErrorMarca);
 	}
 
-	public void setLblErrorPlaca(JLabel lblErrorPlaca) {
-		this.lblErrorPlaca = lblErrorPlaca;
+	public void setLblErrorPlaca(String lblErrorPlaca) {
+		this.lblErrorPlaca.setText(lblErrorPlaca);
 	}
 
-	public void setLblErrorModelo(JLabel lblErrorModelo) {
-		this.lblErrorModelo = lblErrorModelo;
+	public void setLblErrorModelo(String lblErrorModelo) {
+		this.lblErrorModelo.setText(lblErrorModelo);;
 	}
 
-	public void setLblErrorColor(JLabel lblErrorColor) {
-		this.lblErrorColor = lblErrorColor;
+	public void setLblErrorColor(String lblErrorColor) {
+		this.lblErrorColor.setText(lblErrorColor);;
 	}
 
-	public void setLblErrorCombo(JLabel lblErrorCombo) {
-		this.lblErrorCombo = lblErrorCombo;
+	public void setLblErrorCombo(String lblErrorCombo) {
+		this.lblErrorCombo.setText(lblErrorCombo);
 	}
 
 	public Color getBotonColorNormal() {

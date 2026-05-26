@@ -206,11 +206,11 @@ public class FormularioRegistroController {
 	}
 
 	private void reiniciarMensajeError() {
-		vista.setLblErrorModelo(new JLabel(""));
-		vista.setLblErrorColor(new JLabel(""));
-		vista.setLblErrorPlaca(new JLabel(""));
-		vista.setLblErrorMarca(new JLabel(""));
-		vista.setLblErrorCombo(new JLabel(""));
+		vista.setLblErrorModelo((""));
+		vista.setLblErrorColor((""));
+		vista.setLblErrorPlaca((""));
+		vista.setLblErrorMarca((""));
+		vista.setLblErrorCombo((""));
 	}
 
 	private void validar() {
@@ -252,10 +252,10 @@ public class FormularioRegistroController {
 			if (vista.getMarca().getText().trim().isEmpty()) {
 				throw new InvalidJTextFieldException("La marca es obligatoria");
 			}
-			vista.setLblErrorMarca(new JLabel(""));
+			vista.setLblErrorMarca((""));
 			return true;
 		} catch (InvalidJTextFieldException ex) {
-			vista.setLblErrorMarca(new JLabel(ex.getMessage()));
+			vista.setLblErrorMarca(ex.getMessage());
 			return false;
 		}
 
@@ -267,10 +267,10 @@ public class FormularioRegistroController {
 			if (vista.getModelo().getText().trim().isEmpty()) {
 				throw new InvalidJTextFieldException("El modelo es obligatorio");
 			}
-			vista.setLblErrorModelo(new JLabel(""));
+			vista.setLblErrorModelo((""));
 			return true;
 		} catch (InvalidJTextFieldException ex) {
-			vista.setLblErrorModelo(new JLabel(ex.getMessage()));
+			vista.setLblErrorModelo(ex.getMessage());
 			return false;
 		}
 	}
@@ -281,10 +281,10 @@ public class FormularioRegistroController {
 			if (vista.getPlaca().getText().trim().isEmpty()) {
 				throw new InvalidJTextFieldException("La placa es obligatoria");
 			}
-			vista.setLblErrorPlaca(new JLabel(""));
+			vista.setLblErrorPlaca("");
 			return true;
 		} catch (InvalidJTextFieldException ex) {
-			vista.setLblErrorPlaca(new JLabel(ex.getMessage()));
+			vista.setLblErrorPlaca(ex.getMessage());
 			return false;
 		}
 	}
@@ -295,10 +295,10 @@ public class FormularioRegistroController {
 			if (vista.getColor().getText().trim().isEmpty()) {
 				throw new InvalidJTextFieldException("El color es obligatorio");
 			}
-			vista.setLblErrorColor(new JLabel(""));
+			vista.setLblErrorColor("");
 			return true;
 		} catch (InvalidJTextFieldException ex) {
-			vista.setLblErrorColor(new JLabel(ex.getMessage()));
+			vista.setLblErrorColor(ex.getMessage());
 			return false;
 		}
 	}
@@ -309,10 +309,10 @@ public class FormularioRegistroController {
 			if (vista.getCboOpcionesTipoCarro().getSelectedIndex() == 0) {
 				throw new InvalidJTextFieldException("Seleccione un tipo de carro");
 			}
-			vista.setLblErrorCombo(new JLabel(""));
+			vista.setLblErrorCombo((""));
 			return true;
 		} catch (InvalidJTextFieldException ex) {
-			vista.setLblErrorCombo(new JLabel(ex.getMessage()));
+			vista.setLblErrorCombo(ex.getMessage());
 			return false;
 		}
 	}
