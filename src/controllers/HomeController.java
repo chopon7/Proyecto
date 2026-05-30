@@ -104,6 +104,12 @@ public class HomeController {
 		vista.getRegistrarVehiculo().addActionListener(e -> {
 			new FormularioRegistroController(new FormularioRegistro());
 		});
+		
+		vista.getReporteDiario().addActionListener(e -> {
+			vista.showView(MenuPrincipal.REPORTE_DIARIO);
+			updateMenuState(MenuPrincipal.REPORTE_DIARIO);
+		});
+
 
 	}
 

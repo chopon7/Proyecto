@@ -21,9 +21,11 @@ public class MenuPrincipal extends JFrame {
 	// Atributos
 	public static final String HOME = "HOME";
 	public static final String USERS = "USERS";
+	public static final String REPORTE_DIARIO = "REPORTE_DIARIO";
 	private CardLayout cardLayout;
 	private JPanel container;
 	public UserView usersPanel;
+	public ReporteDiarioView reporteDiarioPanel;
 	public JButton btnUsers;
 	public JButton btnHome;
 	private JMenuItem salir;
@@ -73,14 +75,6 @@ public class MenuPrincipal extends JFrame {
 		return reporteDiario;
 	}
 
-	public JMenuItem getReporteSemanal() {
-		return reporteSemanal;
-	}
-
-	public JMenuItem getReporteMensual() {
-		return reporteMensual;
-	}
-
 	public void setSalir(JMenuItem salir) {
 		this.salir = salir;
 	}
@@ -99,14 +93,6 @@ public class MenuPrincipal extends JFrame {
 
 	public void setReporteDiario(JMenuItem reporteDiario) {
 		this.reporteDiario = reporteDiario;
-	}
-
-	public void setReporteSemanal(JMenuItem reporteSemanal) {
-		this.reporteSemanal = reporteSemanal;
-	}
-
-	public void setReporteMensual(JMenuItem reporteMensual) {
-		this.reporteMensual = reporteMensual;
 	}
 
 	public JButton getBtnUsers() {
@@ -152,8 +138,10 @@ public class MenuPrincipal extends JFrame {
 		JPanel homePanel = new HomeView();
 
 		usersPanel = new UserView();
+		reporteDiarioPanel = new ReporteDiarioView();
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
+		container.add(reporteDiarioPanel, REPORTE_DIARIO);
 
 		add(container, BorderLayout.CENTER);
 
