@@ -2,10 +2,13 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
 
 import utils.AppFont;
 
@@ -32,86 +36,105 @@ public class ReporteDiarioView extends JPanel {
     }
 
     private void inicializarComponentes() {
-        setLayout(new BorderLayout());
-        setBackground(new Color(27, 38, 59));
-        setBorder(BorderFactory.createEmptyBorder(25, 40, 25, 40));
 
-        JLabel lblTitulo = new JLabel("Reporte Diario del Estacionamiento");
-        lblTitulo.setFont(AppFont.mediumTitle());
-        lblTitulo.setForeground(Color.WHITE);
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        add(lblTitulo, BorderLayout.NORTH);
+    	setLayout(new BorderLayout());
+    	setBackground(new Color(27, 38, 59));
+    	setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
-        JPanel panelCentro = new JPanel(new GridBagLayout());
-        panelCentro.setBackground(new Color(27, 38, 59));
+    	JPanel panelSuperior = new JPanel(new GridLayout(2, 1, 0, 0));
+    	panelSuperior.setBackground(new Color(27, 38, 59));
+    	panelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(12, 12, 12, 12);
-        c.fill = GridBagConstraints.BOTH;
+    	JLabel lblTitulo = new JLabel("Reporte General del Estacionamiento");
+    	lblTitulo.setFont(new Font("Times New Roman", Font.BOLD, 40));
+    	lblTitulo.setForeground(Color.WHITE);
+    	lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        lblFecha = new JLabel("Fecha: --/--/----");
-        lblFecha.setFont(AppFont.title());
-        lblFecha.setForeground(Color.WHITE);
-        lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
+    	lblFecha = new JLabel("Fecha: --/--/----");
+    	lblFecha.setFont(AppFont.title());
+    	lblFecha.setForeground(Color.WHITE);
+    	lblFecha.setHorizontalAlignment(SwingConstants.CENTER);
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        panelCentro.add(lblFecha, c);
+    	panelSuperior.add(lblTitulo, BorderLayout.NORTH);
+    	panelSuperior.add(lblFecha, BorderLayout.SOUTH);
 
-        c.gridwidth = 1;
-        c.gridy = 1;
-        c.gridx = 0;
-        panelCentro.add(crearTarjeta("Ingresos de hoy", "0"), c);
+    	add(panelSuperior, BorderLayout.NORTH);
 
-        c.gridx = 1;
-        panelCentro.add(crearTarjeta("Vehiculos dentro", "0"), c);
+    	JPanel panelCentro = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    	panelCentro.setBackground(new Color(27, 38, 59));
 
-        c.gridy = 2;
-        c.gridx = 0;
-        panelCentro.add(crearTarjeta("Salidas del dia", "0"), c);
+    	JPanel panelContenido = new JPanel(new BorderLayout(0, 22));
+    	panelContenido.setBackground(new Color(27, 38, 59));
+    	panelContenido.setPreferredSize(new Dimension(1130, 460));
 
-        c.gridx = 1;
-        panelCentro.add(crearTarjeta("Ganancias", "$0.00"), c);
+    	JPanel panelTarjetas = new JPanel(new GridLayout(2, 2, 22, 22));
+    	panelTarjetas.setBackground(new Color(27, 38, 59));
+    	panelTarjetas.setPreferredSize(new Dimension(1130, 210));
 
-        txtResumen = new JTextArea();
-        txtResumen.setText("Resumen del dia:\n\n- Aun no hay datos cargados.\n- Si lo conectamos a la base de datos con el registro de los vehiculos, aqui se mostrara el movimiento general del estacionamiento.");
-        txtResumen.setFont(AppFont.normal());
-        txtResumen.setForeground(new Color(220, 220, 220));
-        txtResumen.setBackground(new Color(27, 38, 59));
-        txtResumen.setLineWrap(true);
-        txtResumen.setWrapStyleWord(true);
-        txtResumen.setEditable(false);
-        txtResumen.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    	panelTarjetas.add(crearTarjeta("Vehículos registrados", "0"));
+    	panelTarjetas.add(crearTarjeta("Vehículos dentro", "0"));
+    	panelTarjetas.add(crearTarjeta("Espacios disponibles", "0"));
+    	panelTarjetas.add(crearTarjeta("Ganancias", "$0.00"));
 
-        c.gridx = 0;
-        c.gridy = 3;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.weighty = 1;
-        panelCentro.add(txtResumen, c);
+    	panelContenido.add(panelTarjetas, BorderLayout.NORTH);
 
-        add(panelCentro, BorderLayout.CENTER);
+    	JPanel panelResumen = new JPanel(new BorderLayout());
+    	panelResumen.setBackground(new Color(27, 38, 59));
+    	panelResumen.setBorder(BorderFactory.createTitledBorder(
+    			BorderFactory.createLineBorder(Color.WHITE),
+    			"",
+    			0,
+    			0,
+    			AppFont.normal(),
+    			Color.WHITE
+    	));
 
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelBotones.setBackground(new Color(27, 38, 59));
+    	txtResumen = new JTextArea();
+    	txtResumen.setText("Resumen general del estacionamiento:\n\n"
+    			+ "- Aún no hay datos cargados.\n"
+    			+ "- Aquí se mostrará la ocupación, disponibilidad y ganancias estimadas.\n"
+    			+ "- La tarifa actual es de $30 por hora o fracción.");
+    	txtResumen.setFont(AppFont.normal());
+    	txtResumen.setForeground(Color.WHITE);
+    	txtResumen.setBackground(new Color(27, 38, 59));
+    	txtResumen.setLineWrap(true);
+    	txtResumen.setWrapStyleWord(true);
+    	txtResumen.setEditable(false);
+    	txtResumen.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        btnActualizar = new JButton("Actualizar reporte");
-        btnActualizar.setFont(AppFont.normal());
+    	JScrollPane scrollResumen = new JScrollPane(txtResumen);
+    	scrollResumen.setBorder(BorderFactory.createEmptyBorder());
+    	scrollResumen.getViewport().setBackground(new Color(27, 38, 59));
 
-        btnExportarPdf = new JButton("Exportar PDF");
-        btnExportarPdf.setFont(AppFont.normal());
+    	panelResumen.add(scrollResumen, BorderLayout.CENTER);
 
-        panelBotones.add(btnActualizar);
-        panelBotones.add(btnExportarPdf);
+    	panelContenido.add(panelResumen, BorderLayout.CENTER);
 
-        add(panelBotones, BorderLayout.SOUTH);
+    	JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+    	panelBotones.setBackground(new Color(27, 38, 59));
+
+    	btnActualizar = new JButton("Actualizar reporte");
+    	btnActualizar.setFont(AppFont.normal());
+
+    	btnExportarPdf = new JButton("Exportar PDF");
+    	btnExportarPdf.setFont(AppFont.normal());
+
+    	panelBotones.add(btnActualizar);
+    	panelBotones.add(btnExportarPdf);
+
+    	panelContenido.add(panelBotones, BorderLayout.SOUTH);
+
+    	panelCentro.add(panelContenido);
+    	add(panelCentro, BorderLayout.CENTER);
     }
-
+    
     private JPanel crearTarjeta(String titulo, String valor) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
+        panel.setBorder(BorderFactory.createCompoundBorder(
+        		BorderFactory.createLineBorder(new Color(220, 220, 220)),
+    			BorderFactory.createEmptyBorder(18, 25, 18, 25)
+    	));
 
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(AppFont.normal());
@@ -123,11 +146,11 @@ public class ReporteDiarioView extends JPanel {
         lblValor.setForeground(new Color(65, 90, 119));
         lblValor.setHorizontalAlignment(SwingConstants.CENTER);
 
-        if (titulo.equals("Ingresos de hoy")) {
+        if (titulo.equals("Vehículos registrados")) {
             lblIngresos = lblValor;
-        } else if (titulo.equals("Vehiculos dentro")) {
+        } else if (titulo.equals("Vehículos dentro")) {
             lblVehiculosDentro = lblValor;
-        } else if (titulo.equals("Salidas del dia")) {
+        } else if (titulo.equals("Espacios disponibles")) {
             lblSalidas = lblValor;
         } else if (titulo.equals("Ganancias")) {
             lblGanancias = lblValor;

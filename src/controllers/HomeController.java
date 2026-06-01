@@ -16,6 +16,7 @@ import views.Ventana;
 public class HomeController {
 
 	private UserController userController;
+	private ReporteController reporteController;
 	private MenuPrincipal vista;
 
 	public HomeController(MenuPrincipal vista) {
@@ -106,12 +107,24 @@ public class HomeController {
 		});
 		
 		vista.getReporteDiario().addActionListener(e -> {
-			vista.showView(MenuPrincipal.REPORTE_DIARIO);
-			updateMenuState(MenuPrincipal.REPORTE_DIARIO);
+			showReporteDiario();
 		});
 
 
 	}
+	
+	private void showReporteDiario() {
+
+		if (reporteController == null) {
+			reporteController = new ReporteController(vista.reporteDiarioPanel);
+		} else {
+			reporteController.cargarReporte();
+		}
+
+		vista.showView(MenuPrincipal.REPORTE_DIARIO);
+		updateMenuState(MenuPrincipal.REPORTE_DIARIO);
+	}
+
 
 	private void showUsers() {
 
