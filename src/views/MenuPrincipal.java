@@ -21,10 +21,13 @@ public class MenuPrincipal extends JFrame {
 	// Atributos
 	public static final String HOME = "HOME";
 	public static final String USERS = "USERS";
+	public static final String VEHICULOS = "VEHICULOS";
 	private CardLayout cardLayout;
 	private JPanel container;
 	public UserView usersPanel;
+	public VehiculoView vehiculosPanel;
 	public JButton btnUsers;
+	public JButton btnVehiculos;
 	public JButton btnHome;
 	private JMenuItem salir;
 	private JMenuItem cerrarSesion;
@@ -121,6 +124,14 @@ public class MenuPrincipal extends JFrame {
 		return btnHome;
 	}
 
+	public JButton getBtnVehiculos() {
+		return btnVehiculos;
+	}
+
+	public void setBtnVehiculos(JButton btnVehiculos) {
+		this.btnVehiculos = btnVehiculos;
+	}
+
 	// Metodos
 	public void createNavbar() {
 		JPanel navbar = new JPanel();
@@ -133,7 +144,10 @@ public class MenuPrincipal extends JFrame {
 		btnUsers = crearBotones("Usuarios");
 		btnUsers.putClientProperty("JButton.buttonType", "roundRect");
 		navbar.add(btnUsers);
-
+		btnVehiculos = crearBotones("Vehiculos");
+		btnVehiculos.putClientProperty("JButton.buttonType", "roundRect");
+		navbar.add(btnVehiculos);
+		
 		add(navbar, BorderLayout.NORTH);
 	}
 
@@ -152,8 +166,10 @@ public class MenuPrincipal extends JFrame {
 		JPanel homePanel = new HomeView();
 
 		usersPanel = new UserView();
+		vehiculosPanel = new VehiculoView();
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
+		container.add(vehiculosPanel, VEHICULOS);
 
 		add(container, BorderLayout.CENTER);
 
@@ -200,8 +216,6 @@ public class MenuPrincipal extends JFrame {
 		estadoEstacionamiento.setMnemonic(KeyEvent.VK_B);
 		estacionamiento.add(estadoEstacionamiento);
 
-		// Posible opcion que podriamos dejar aparte o combinarla con la de
-		// estacionamiento
 		JMenu reportes = new JMenu("Reportes");
 		reportes.setForeground(Color.WHITE);
 		reportes.setMnemonic(KeyEvent.VK_A);

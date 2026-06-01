@@ -1,2 +1,8 @@
 /controllers/
 /views/
+/models/
+/utils/
+/repository/
+/tablemodels/
+/services/
+/config/

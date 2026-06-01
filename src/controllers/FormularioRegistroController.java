@@ -7,31 +7,41 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import exceptions.InvalidJTextFieldException;
+import models.Vehiculo;
+import repository.EspacioRepository;
+import views.EstacionamientoView;
+import repository.VehiculoRepository;
 import views.FormularioRegistro;
 
 public class FormularioRegistroController {
 
 	private FormularioRegistro vista;
+	private VehiculoRepository vehiculoRepository;
+	private EspacioRepository espacioRepository;
+	private EstacionamientoView vistaEstacionamiento;
 
-	public FormularioRegistroController(FormularioRegistro vista) {
+	public FormularioRegistroController(FormularioRegistro vista, EstacionamientoView vistaEstacionamiento) {
 		this.vista = vista;
+		this.vistaEstacionamiento = vistaEstacionamiento;
+		this.vehiculoRepository = new VehiculoRepository();
+		this.espacioRepository = new EspacioRepository();
 
 		vista.addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
 				System.out.println("Se abrió la ventana");
-
+				verificarEstacionamientoLleno();
 			}
 
 			@Override
@@ -70,6 +80,8 @@ public class FormularioRegistroController {
 
 			}
 		});
+
+		cargarEspaciosDisponibles();
 
 		asignarOyenteCampotexto(vista.getColor());
 		asignarOyenteCampotexto(vista.getMarca());
@@ -141,6 +153,10 @@ public class FormularioRegistroController {
 			validarComboBox();
 		});
 
+		vista.getCboNumeroEstacionamiento().addActionListener(e -> {
+			validarEspacioEstacionamiento();
+		});
+
 		asignarOyenteMouse(vista.getEnviarRegistro());
 		asignarOyenteMouse(vista.getBotonAtras());
 
@@ -157,6 +173,27 @@ public class FormularioRegistroController {
 
 		});
 
+	}
+
+	private void cargarEspaciosDisponibles() {
+		vista.getCboNumeroEstacionamiento().removeAllItems();
+		vista.getCboNumeroEstacionamiento().addItem("Seleccione un espacio");
+
+		List<Integer> disponibles = espacioRepository.getNumerosCajonesLibres();
+
+		for (Integer numero : disponibles) {
+			vista.getCboNumeroEstacionamiento().addItem("Espacio " + numero);
+		}
+	}
+
+	private void verificarEstacionamientoLleno() {
+		List<Integer> disponibles = espacioRepository.getNumerosCajonesLibres();
+		if (disponibles.isEmpty()) {
+			JOptionPane.showMessageDialog(vista,
+					"Estacionamiento Lleno. No se pueden registrar más vehículos por el momento.", "Capacidad Máxima",
+					JOptionPane.WARNING_MESSAGE);
+			vista.getEnviarRegistro().setEnabled(false);
+		}
 	}
 
 	private void asignarOyenteCampotexto(JTextField miTextito) {
@@ -211,6 +248,7 @@ public class FormularioRegistroController {
 		vista.setLblErrorPlaca((""));
 		vista.setLblErrorMarca((""));
 		vista.setLblErrorCombo((""));
+		vista.setLblErrorEstacionamiento("");
 	}
 
 	private void validar() {
@@ -224,6 +262,9 @@ public class FormularioRegistroController {
 		if (!validarPlaca())
 			validar = false;
 
+		if (!validarEspacioEstacionamiento())
+			validar = false;
+
 		if (!validarComboBox())
 			validar = false;
 
@@ -234,8 +275,43 @@ public class FormularioRegistroController {
 			validar = false;
 
 		if (validar) {
-			//REGISTRO POR TERMINAR
-			vista.dispose();
+
+			String txtPlaca = vista.getPlaca().getText().trim();
+			String txtMarca = vista.getMarca().getText().trim();
+			String txtModelo = vista.getModelo().getText().trim();
+			String txtColor = vista.getColor().getText().trim();
+			String txtTipo = (String) vista.getCboOpcionesTipoCarro().getSelectedItem();
+
+			String itemSeleccionado = (String) vista.getCboNumeroEstacionamiento().getSelectedItem();
+			int numeroCajon = Integer.parseInt(itemSeleccionado.replace("Espacio ", ""));
+
+			Vehiculo nuevoVehiculo = new Vehiculo(txtPlaca, txtMarca, txtModelo, txtColor, txtTipo);
+			int idVehiculoGenerado = vehiculoRepository.save(nuevoVehiculo);
+
+			if (idVehiculoGenerado != -1) {
+				boolean exitoEspacio = espacioRepository.ocuparEspacio(numeroCajon, idVehiculoGenerado);
+
+				if (exitoEspacio) {
+					nuevoVehiculo.setIdVehiculo(idVehiculoGenerado);
+					int indiceCajon = numeroCajon - 1;
+
+					if (vistaEstacionamiento != null) {
+						vistaEstacionamiento.ocuparEspacio(indiceCajon, idVehiculoGenerado, nuevoVehiculo);
+					}
+
+					JOptionPane.showMessageDialog(vista, "Vehículo registrado con éxito en el cajón: " + numeroCajon,
+							"Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+					vista.dispose();
+				} else {
+					JOptionPane.showMessageDialog(vista, "El vehículo se registró, pero no se pudo asignar al cajón.",
+							"Error de Asignación", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(vista,
+						"Error al guardar el vehículo en la base de datos.\nVerifique que la placa no esté duplicada.",
+						"Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+			}
+
 		}
 
 		if (!validar) {
@@ -245,6 +321,19 @@ public class FormularioRegistroController {
 		}
 
 		return;
+	}
+
+	private boolean validarEspacioEstacionamiento() {
+		try {
+			if (vista.getCboNumeroEstacionamiento().getSelectedIndex() == 0) {
+				throw new InvalidJTextFieldException("Seleccione un espacio de estacionamiento");
+			}
+			vista.setLblErrorEstacionamiento("");
+			return true;
+		} catch (InvalidJTextFieldException ex) {
+			vista.setLblErrorEstacionamiento(ex.getMessage());
+			return false;
+		}
 	}
 
 	private boolean validarMarca() {
@@ -276,10 +365,13 @@ public class FormularioRegistroController {
 	}
 
 	private boolean validarPlaca() {
-
 		try {
-			if (vista.getPlaca().getText().trim().isEmpty()) {
+			String textoPlaca = vista.getPlaca().getText().trim();
+			if (textoPlaca.isEmpty()) {
 				throw new InvalidJTextFieldException("La placa es obligatoria");
+			}
+			if (vehiculoRepository.existePlaca(textoPlaca)) {
+				throw new InvalidJTextFieldException("Esta placa ya está registrada en el sistema");
 			}
 			vista.setLblErrorPlaca("");
 			return true;

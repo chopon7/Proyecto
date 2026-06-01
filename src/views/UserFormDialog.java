@@ -2,7 +2,6 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -24,13 +23,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import models.User;
+import repository.UserRepository;
 import utils.AppFont;
 
 public class UserFormDialog extends JDialog {
 
-	// Atributos
-	private FormularioEmpleado formularioEmpleado;
 	private JLabel lblErrorNombre;
 	private JLabel lblErrorComboEdad;
 	private JLabel lblErrorPassword;
@@ -49,14 +49,16 @@ public class UserFormDialog extends JDialog {
 	private JButton enviarRegistro;
 	private JButton botonAtras;
 	private JPanel panelComponentes;
-	public User userForm;
-    private boolean saved = false;
 
-	// Constructores
+	public User userForm;
+	private boolean saved = false;
+
+	private UserRepository userRepository = new UserRepository();
+
 	public UserFormDialog(JFrame parent, User userForm) {
 		super(parent, true);
 		this.userForm = userForm;
-		
+
 		setSize(1000, 700);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(true);
@@ -65,70 +67,13 @@ public class UserFormDialog extends JDialog {
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Image icono = tk.getImage("img/imagenVehiculo.png");
 		setIconImage(icono);
+
 		inicializarComponentes();
 		loadData();
 		setVisible(true);
-		
 	}
 
-	// Getters y Setters de los mensajes de Error
-	public String getLblErrorNombre() {
-		return lblErrorNombre.getText();
-	}
-
-	public void setLblErrorNombre(String mensaje) {
-		this.lblErrorNombre.setText(mensaje);
-	}
-
-	public String getLblErrorComboEdad() {
-		return lblErrorComboEdad.getText();
-	}
-
-	public void setLblErrorComboEdad(String mensaje) {
-		this.lblErrorComboEdad.setText(mensaje);
-	}
-
-	public String getLblErrorPassword() {
-		return lblErrorPassword.getText();
-	}
-
-	public void setLblErrorPassword(String mensaje) {
-		this.lblErrorPassword.setText(mensaje);
-	}
-
-	public String getLblErrorEmail() {
-		return lblErrorEmail.getText();
-	}
-
-	public void setLblErrorEmail(String mensaje) {
-		this.lblErrorEmail.setText(mensaje);
-	}
-
-	public String getLblErrorCombo() {
-		return lblErrorCombo.getText();
-	}
-
-	public void setLblErrorCombo(String mensaje) {
-		this.lblErrorCombo.setText(mensaje);
-	}
-
-	public String getLblErrorApellidoPaterno() {
-		return lblErrorApellidoPaterno.getText();
-	}
-
-	public void setLblErrorApellidoPaterno(String mensaje) {
-		this.lblErrorApellidoPaterno.setText(mensaje);
-	}
-
-	public String getLblErrorApellidoMaterno() {
-		return lblErrorApellidoMaterno.getText();
-	}
-
-	public void setLblErrorApellidoMaterno(String mensaje) {
-		this.lblErrorApellidoMaterno.setText(mensaje);
-	}
-
-	// Getters y Setters para los datos
+	// Getters para recuperar datos limpios
 	public String getNombre() {
 		return nombre.getText().trim();
 	}
@@ -153,126 +98,65 @@ public class UserFormDialog extends JDialog {
 		return (String) cboOpcionesEdad.getSelectedItem();
 	}
 
-	public int getIndiceEdad() {
-		return cboOpcionesEdad.getSelectedIndex();
-	}
-
 	public String getGeneroSeleccionado() {
 		return (String) cboOpcionesGenero.getSelectedItem();
 	}
 
-	public int getIndiceGenero() {
-		return cboOpcionesGenero.getSelectedIndex();
-	}
-
-	public JButton getBtnEnviar() {
-		return enviarRegistro;
-	}
-
-	public JButton getBtnAtras() {
-		return botonAtras;
-	}
-
-	public Color getColorBotonNormal() {
-		return botonColorNormal;
-	}
-
-	public FormularioEmpleado getFormularioEmpleado() {
-		return formularioEmpleado;
-	}
-
-	// Getters y Setters para los JTextField y ComboBox
-	public JTextField getNombreTxt() {
-		return nombre;
-	}
-
-	public JTextField getApellidoPaternoTxt() {
-		return apellidoPaterno;
-	}
-
-	public JTextField getApellidoMaternoTxt() {
-		return apellidoMaterno;
-	}
-
-	public JTextField getPasswordTxt() {
-		return password;
-	}
-
-	public JTextField getEmailTxt() {
-		return email;
-	}
-
-	public JComboBox<String> getCboOpcionesEdad() {
-		return cboOpcionesEdad;
-	}
-
-	public JComboBox<String> getCboOpcionesGenero() {
-		return cboOpcionesGenero;
-	}
-	
 	public boolean isSaved() {
-    	return saved;
-    }
-    
-    public User getUser() {
-    	return userForm;
-    }
+		return saved;
+	}
 
-	// Metodos
+	public User getUser() {
+		return userForm;
+	}
+
+	private void reiniciarMensajesError() {
+		lblErrorNombre.setText("");
+		lblErrorApellidoPaterno.setText("");
+		lblErrorApellidoMaterno.setText("");
+		lblErrorEmail.setText("");
+		lblErrorPassword.setText("");
+		lblErrorComboEdad.setText("");
+		lblErrorCombo.setText("");
+	}
+
 	public void inicializarComponentes() {
-
 		addWindowListener(new WindowListener() {
-
 			@Override
 			public void windowOpened(WindowEvent e) {
-				System.out.println("Se abrió la ventana");
-
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				System.out.println("Se minimizó");
-
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				System.out.println("Se volvió a abrir");
-
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				System.out.println("Perdió el focus");
-
 			}
 
 			@Override
 			public void windowClosing(WindowEvent e) {
 				handleClose();
-
 			}
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.out.println("Se cerró");
-
 			}
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				System.out.println("Obtuvo el focus");
-
 			}
 		});
 
-		// Titulo de la ventana
 		JLabel lblTitulo = new JLabel("Registro de Empleados");
 		lblTitulo.setFont(AppFont.title());
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblTitulo, BorderLayout.NORTH);
 
-		// GridBagPanel
 		panelComponentes = new JPanel(new GridBagLayout());
 		panelComponentes.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 		panelComponentes.setBackground(new Color(27, 38, 59));
@@ -280,7 +164,7 @@ public class UserFormDialog extends JDialog {
 		c.insets = new java.awt.Insets(10, 10, 10, 10);
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-		// Nombre del empleado
+		// Nombre
 		c.gridx = 0;
 		c.gridy = 0;
 		panelComponentes.add(crearLabel("Ingresa el nombre del empleado:"), c);
@@ -289,22 +173,20 @@ public class UserFormDialog extends JDialog {
 		panelComponentes.add(nombre, c);
 		c.gridy = 1;
 		lblErrorNombre = crearMensajeError("");
-		crearMensajeError(lblErrorNombre.getText());
 		panelComponentes.add(lblErrorNombre, c);
 
-		// Apellido paterno del empleado
+		// Apellido Paterno
 		c.gridx = 0;
 		c.gridy = 2;
-		panelComponentes.add(crearLabel("Ingresa el apellido paterno del empleado: "), c);
+		panelComponentes.add(crearLabel("Ingresa el apellido patorno del empleado: "), c);
 		c.gridx = 1;
 		apellidoPaterno = new JTextField(20);
 		panelComponentes.add(apellidoPaterno, c);
 		c.gridy = 3;
 		lblErrorApellidoPaterno = crearMensajeError("");
-		crearMensajeError(lblErrorApellidoPaterno.getText());
 		panelComponentes.add(lblErrorApellidoPaterno, c);
 
-		// Apellido materno del empleado
+		// Apellido Materno
 		c.gridx = 0;
 		c.gridy = 4;
 		panelComponentes.add(crearLabel("Ingresa el apellido materno del empleado: "), c);
@@ -313,21 +195,20 @@ public class UserFormDialog extends JDialog {
 		panelComponentes.add(apellidoMaterno, c);
 		c.gridy = 5;
 		lblErrorApellidoMaterno = crearMensajeError("");
-		crearMensajeError(lblErrorApellidoMaterno.getText());
 		panelComponentes.add(lblErrorApellidoMaterno, c);
 
-		// Email del empleado
+		// Email
 		c.gridx = 0;
 		c.gridy = 6;
 		panelComponentes.add(crearLabel("Ingresa el email del empleado: "), c);
 		c.gridx = 1;
 		email = new JTextField(20);
 		panelComponentes.add(email, c);
-		lblErrorEmail = crearMensajeError("");
 		c.gridy = 7;
+		lblErrorEmail = crearMensajeError("");
 		panelComponentes.add(lblErrorEmail, c);
 
-		// Codigo unico del empleado
+		// Contraseña
 		c.gridx = 0;
 		c.gridy = 8;
 		panelComponentes.add(crearLabel("Ingresa la contraseña del empleado:"), c);
@@ -336,10 +217,9 @@ public class UserFormDialog extends JDialog {
 		panelComponentes.add(password, c);
 		c.gridy = 9;
 		lblErrorPassword = crearMensajeError("");
-		crearMensajeError(lblErrorPassword.getText());
 		panelComponentes.add(lblErrorPassword, c);
 
-		// Edad del empleado
+		// Edad
 		c.gridx = 0;
 		c.gridy = 10;
 		panelComponentes.add(crearLabel("Ingresa la edad del empleado:"), c);
@@ -352,12 +232,11 @@ public class UserFormDialog extends JDialog {
 				"98", "99", "100" };
 		cboOpcionesEdad = new JComboBox<>(opcionesEdad);
 		panelComponentes.add(cboOpcionesEdad, c);
-		lblErrorComboEdad = crearMensajeError("");
 		c.gridy = 11;
-		crearMensajeError(lblErrorComboEdad.getText());
+		lblErrorComboEdad = crearMensajeError("");
 		panelComponentes.add(lblErrorComboEdad, c);
 
-		// Genero del empleado
+		// Género
 		c.gridx = 0;
 		c.gridy = 12;
 		panelComponentes.add(crearLabel("Ingresa el genero del empleado:"), c);
@@ -367,37 +246,32 @@ public class UserFormDialog extends JDialog {
 		panelComponentes.add(cboOpcionesGenero, c);
 		c.gridy = 13;
 		lblErrorCombo = crearMensajeError("");
-		crearMensajeError(lblErrorCombo.getText());
 		panelComponentes.add(lblErrorCombo, c);
 
-		// Boton de registro
+		// Botón Enviar
 		c.gridx = 0;
 		c.gridy = 14;
 		c.insets = new java.awt.Insets(20, 10, 10, 10);
 		ImageIcon ilustracionBotonEnviar = new ImageIcon("img/enviar.png");
-		Image imagenActualizadaBotonEnviar = ilustracionBotonEnviar.getImage().getScaledInstance(18, 18,Image.SCALE_SMOOTH);
-		ImageIcon iconoFinalBotonEnviar = new ImageIcon(imagenActualizadaBotonEnviar);
-		enviarRegistro = new JButton("Enviar", iconoFinalBotonEnviar);
+		Image imagenActualizadaBotonEnviar = ilustracionBotonEnviar.getImage().getScaledInstance(18, 18,
+				Image.SCALE_SMOOTH);
+		enviarRegistro = new JButton("Enviar", new ImageIcon(imagenActualizadaBotonEnviar));
 		botonColorNormal = enviarRegistro.getBackground();
 		panelComponentes.add(enviarRegistro, c);
 
-		// Boton atras
+		// Botón Atrás
 		c.gridx = 1;
-		c.gridy = 14;
 		ImageIcon ilustracionBotonAtras = new ImageIcon("img/atras.png");
-		Image imagenActualizadaBotonAtras = ilustracionBotonAtras.getImage().getScaledInstance(18, 18,Image.SCALE_SMOOTH);
-		ImageIcon iconoFinalBotonAtras = new ImageIcon(imagenActualizadaBotonAtras);
-
-		botonAtras = new JButton("Atras", iconoFinalBotonAtras);
+		Image imagenActualizadaBotonAtras = ilustracionBotonAtras.getImage().getScaledInstance(18, 18,
+				Image.SCALE_SMOOTH);
+		botonAtras = new JButton("Atras", new ImageIcon(imagenActualizadaBotonAtras));
 		panelComponentes.add(botonAtras, c);
-		
+
 		botonAtras.addActionListener(e -> dispose());
 		enviarRegistro.addActionListener(e -> save());
 
-		// Scroll
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		add(scroll, BorderLayout.CENTER);
-		botonColorNormal = botonAtras.getBackground();
 	}
 
 	private JLabel crearLabel(String texto) {
@@ -407,62 +281,117 @@ public class UserFormDialog extends JDialog {
 		return label;
 	}
 
-	private void handleClose() {
-		int opcion = JOptionPane.showConfirmDialog(this,
-				"Seguro que desea cerrar la ventana? Se perderan los datos del formulario");
-
-		if (opcion == JOptionPane.YES_OPTION) {
-			System.exit(0);
-		}
-
-	}
-
 	private JLabel crearMensajeError(String mensaje) {
-		JLabel label = new JLabel();
-		label.setText(mensaje);
-		label.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		JLabel label = new JLabel(mensaje);
+		label.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		label.setForeground(Color.RED);
 		label.setHorizontalAlignment(SwingConstants.LEFT);
-		label.setMaximumSize(new Dimension(Integer.MAX_VALUE, label.getPreferredSize().height));
-
 		return label;
 	}
-	
+
+	private void handleClose() {
+		int opcion = JOptionPane.showConfirmDialog(this,
+				"¿Seguro que desea cerrar la ventana? Se perderán los datos del formulario");
+		if (opcion == JOptionPane.YES_OPTION) {
+			dispose();
+		}
+	}
+
 	private void loadData() {
-    	if(userForm != null) {
-    		nombre.setText(userForm.getNombre());
-    		apellidoPaterno.setText(userForm.getApellidoPaterno());
-    		apellidoMaterno.setText(userForm.getApellidoMaterno());
-    		password.setText(userForm.getPassword());
-            email.setText(userForm.getEmail());
-            cboOpcionesEdad.setSelectedItem(userForm.getEdad());
-            cboOpcionesGenero.setSelectedItem(userForm.getGenero());
-    	}
-    }
+		if (userForm != null) {
+			nombre.setText(userForm.getNombre());
+			apellidoPaterno.setText(userForm.getApellidoPaterno());
+			apellidoMaterno.setText(userForm.getApellidoMaterno());
+			password.setText(userForm.getPassword());
+			email.setText(userForm.getEmail());
+			cboOpcionesEdad.setSelectedItem(userForm.getEdad());
+			cboOpcionesGenero.setSelectedItem(userForm.getGenero());
+		}
+	}
 
 	private void save() {
-		
+		reiniciarMensajesError();
+		boolean esValido = true;
+
 		String nombreTxt = getNombre();
 		String apellidoPaternoTxt = getApellidoPaterno();
 		String apellidoMaternoTxt = getApellidoMaterno();
 		String passwordTxt = getPassword();
 		String emailTxt = getEmail();
-		String generoTxt = (String) cboOpcionesGenero.getSelectedItem();
-		String edadTtx = (String) cboOpcionesEdad.getSelectedItem();
+		String generoTxt = getGeneroSeleccionado();
+		String edadTxt = getEdadSeleccionada();
 
-		if (userForm == null) { 
-			userForm = new User(emailTxt, passwordTxt , "ADMIN", nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, edadTtx, generoTxt);
-		} else {
-			String passwordFinal = passwordTxt;
-	        if (passwordTxt.equals(userForm.getPassword())) {
-	            passwordFinal = userForm.getPassword(); 
-	        }
-	        
-	        userForm = new User(userForm.getId(), emailTxt, passwordFinal , "ADMIN", nombreTxt, apellidoPaternoTxt, apellidoMaternoTxt, edadTtx, generoTxt);
+		if (nombreTxt.isEmpty()) {
+			lblErrorNombre.setText("El nombre es obligatorio");
+			esValido = false;
 		}
-		
-		saved = true;
-		dispose();
-	}
+		if (apellidoPaternoTxt.isEmpty()) {
+			lblErrorApellidoPaterno.setText("El apellido paterno es obligatorio");
+			esValido = false;
+		}
+		if (apellidoMaternoTxt.isEmpty()) {
+			lblErrorApellidoMaterno.setText("El apellido materno es obligatorio");
+			esValido = false;
+		}
+		if (passwordTxt.isEmpty()) {
+			lblErrorPassword.setText("La contraseña es obligatoria");
+			esValido = false;
+		}
 
+		if (emailTxt.isEmpty()) {
+			lblErrorEmail.setText("El email es obligatorio");
+			esValido = false;
+		} else if (!emailTxt.contains("@")) {
+			lblErrorEmail.setText("Email inválido: Falta '@'");
+			esValido = false;
+		}
+
+		if (cboOpcionesEdad.getSelectedIndex() == 0) {
+			lblErrorComboEdad.setText("Seleccione una edad");
+			esValido = false;
+		}
+		if (cboOpcionesGenero.getSelectedIndex() == 0) {
+			lblErrorCombo.setText("Seleccione un genero");
+			esValido = false;
+		}
+
+		if (!esValido)
+			return;
+
+		try {
+			if (userForm == null) {
+				String hashedPassword = BCrypt.hashpw(passwordTxt, BCrypt.gensalt());
+
+				userForm = new User(emailTxt, hashedPassword, "ADMIN", nombreTxt, apellidoPaternoTxt,
+						apellidoMaternoTxt, edadTxt, generoTxt);
+
+				userRepository.save(userForm);
+				JOptionPane.showMessageDialog(this, "Usuario registrado con éxito en la base de datos.",
+						"Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+
+			} else {
+				String passwordFinal = passwordTxt;
+
+				if (!passwordTxt.equals(userForm.getPassword())) {
+					passwordFinal = BCrypt.hashpw(passwordTxt, BCrypt.gensalt());
+				}
+
+				userForm.setEmail(emailTxt);
+				userForm.setPassword(passwordFinal);
+				userForm.setNombre(nombreTxt);
+				userForm.setApellidoPaterno(apellidoPaternoTxt);
+				userForm.setApellidoMaterno(apellidoMaternoTxt);
+				userForm.setEdad(edadTxt);
+				userForm.setGenero(generoTxt);
+			}
+
+			saved = true;
+			dispose();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Error al guardar el usuario: " + ex.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 }
