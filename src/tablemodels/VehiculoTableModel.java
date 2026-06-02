@@ -41,6 +41,7 @@ public class VehiculoTableModel extends AbstractTableModel {
 
 	public void setVehiculos(List<Vehiculo> vehiculos) {
 		this.vehiculos = vehiculos;
+		fireTableDataChanged();
 	}
 	
 	@Override

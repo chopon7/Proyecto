@@ -15,9 +15,10 @@ public class ReporteRepository {
 		int vehiculosDentro = contarRegistros("SELECT COUNT(*) FROM espacios WHERE ocupado = 1");
 		int espaciosDisponibles = contarRegistros("SELECT COUNT(*) FROM espacios WHERE ocupado = 0");
 		int totalEspacios = contarRegistros("SELECT COUNT(*) FROM espacios");
+		int salidasRegistradas = contarRegistros("SELECT COUNT(*) FROM ganancias_estacionamiento");
 		double ganancias = calcularGananciasActuales();
 
-		return new ReporteGeneral(totalVehiculos, vehiculosDentro, espaciosDisponibles, totalEspacios, ganancias);
+		return new ReporteGeneral(totalVehiculos, vehiculosDentro, espaciosDisponibles, totalEspacios, salidasRegistradas, ganancias);
 	}
 
 	private int contarRegistros(String sql) {
@@ -43,14 +44,12 @@ public class ReporteRepository {
 	}
 	
 	
-	//Por ahora son pruebas locales que hice en mi compu esperando lo del historial
 	private double calcularGananciasActuales() {
 
 		double total = 0.00;
 
-		String sql = "SELECT IFNULL(SUM(CEIL(TIMESTAMPDIFF(MINUTE, horaEntrada, NOW()) / 60.0) * 30), 0) "
-				+ "FROM espacios "
-				+ "WHERE ocupado = 1 AND horaEntrada IS NOT NULL";
+		String sql = "SELECT IFNULL(SUM(totalPagar), 0) AS ganancias "
+				+ "FROM ganancias_estacionamiento";
 
 		try {
 			Connection conn = DatabaseConnection.getConnection();
@@ -58,7 +57,7 @@ public class ReporteRepository {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
-				total = rs.getDouble(1);
+				total = rs.getDouble("ganancias");
 			}
 
 			rs.close();

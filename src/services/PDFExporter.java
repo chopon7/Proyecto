@@ -178,16 +178,16 @@ public class PDFExporter {
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph(String.valueOf(reporte.getTotalVehiculos()))));
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("Vehículos actualmente dentro")));
-
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph(String.valueOf(reporte.getVehiculosDentro()))));
-
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Espacios disponibles")));
 
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph(reporte.getEspaciosDisponibles() + " de 30")));
+			
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
+					.add(new Paragraph("Salidas registradas")));
+
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
+					.add(new Paragraph(String.valueOf(reporte.getSalidasRegistradas()))));
 
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Tarifa por hora")));
 
@@ -205,8 +205,9 @@ public class PDFExporter {
 			doc.add(new Paragraph("Observaciones").setBold().setFontSize(13));
 
 			doc.add(new Paragraph("Este reporte muestra el estado general actual del estacionamiento, "
-					+ "los vehículos dentro se calculan con base en los espacios ocupados y "
-					+ "las ganancias se estiman tomando la tarifa de 30 pesos por hora o fracción.").setFontSize(11)
+					+ "los vehículos dentro se calculan con base en los espacios ocupados actualmente, "
+					+ "las salidas registradas corresponden a los vehículos que ya abandonaron el estacionamiento "
+					+ "y las ganancias totales se calculan tomando la tarifa de 30 pesos por hora o fracción.").setFontSize(11)
 					.setTextAlignment(TextAlignment.JUSTIFIED));
 		}
 

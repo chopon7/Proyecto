@@ -79,5 +79,52 @@ public class EspacioRepository {
 			ex.printStackTrace();
 			return false;
 		}
+		
 	}
+	
+	public double calcularCobroPorVehiculo(int idVehiculo) {
+		double total = 0.00;
+
+		String sql = "SELECT IFNULL(GREATEST(1, CEIL(TIMESTAMPDIFF(MINUTE, horaEntrada, NOW()) / 60.0)) * 30, 0) AS total "
+				+ "FROM espacios "
+				+ "WHERE idVehiculo = ? AND ocupado = TRUE AND horaEntrada IS NOT NULL";
+
+		try (Connection connection = DatabaseConnection.getConnection();
+				PreparedStatement pst = connection.prepareStatement(sql)) {
+
+			pst.setInt(1, idVehiculo);
+
+			try (ResultSet rs = pst.executeQuery()) {
+				if (rs.next()) {
+					total = rs.getDouble("total");
+				}
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return total;
+	}
+	
+	public boolean registrarGananciaSalida(String placa, double totalPagar) {
+
+		String sql = "INSERT INTO ganancias_estacionamiento (placa, totalPagar) VALUES (?, ?)";
+
+		try (Connection connection = DatabaseConnection.getConnection();
+				PreparedStatement pst = connection.prepareStatement(sql)) {
+
+			pst.setString(1, placa);
+			pst.setDouble(2, totalPagar);
+
+			int affectedRows = pst.executeUpdate();
+			return affectedRows > 0;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+	}
+	
+	
 }

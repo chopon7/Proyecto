@@ -53,20 +53,23 @@ public class VehiculoController {
 			Vehiculo vehiculoAEliminar = model.getVehiculoAt(row);
 			int idVehiculo = vehiculoAEliminar.getIdVehiculo();
 			repository.EspacioRepository espacioRepo = new repository.EspacioRepository();
+			
+			double totalPagar = espacioRepo.calcularCobroPorVehiculo(idVehiculo);
+			espacioRepo.registrarGananciaSalida(vehiculoAEliminar.getPlaca(), totalPagar);
 			espacioRepo.liberarEspacioPorVehiculo(idVehiculo);
 			boolean deleted = repo.delete(idVehiculo);
 
 			if (deleted) {
 				JOptionPane.showMessageDialog(vista,
-						"El vehículo con placas [" + vehiculoAEliminar.getPlaca() + "] ha salido del sistema.",
+						"El vehículo con placas [" + vehiculoAEliminar.getPlaca() + "] ha salido del sistema.\n"
+						+ "Total a pagar: $" + String.format("%.2f", totalPagar),
 						"Vehículo Eliminado", JOptionPane.INFORMATION_MESSAGE);
 
-				loadVehiculos();
+				model.removeRow(row);
 			} else {
 				JOptionPane.showMessageDialog(vista, "Error al intentar eliminar el registro de la base de datos.",
 						"Error", JOptionPane.ERROR_MESSAGE);
 			}
-			loadVehiculos();
 		});
 
 		this.vista.getBtnPdf().addActionListener(e -> {

@@ -152,17 +152,15 @@ public class MenuPrincipal extends JFrame {
 		JPanel homePanel = new HomeView();
 
 		usersPanel = new UserView();
+		vehiculosPanel = new VehiculoView();
 		reporteDiarioPanel = new ReporteDiarioView();
 		container.add(homePanel, HOME);
 		container.add(usersPanel, USERS);
-		container.add(reporteDiarioPanel, REPORTE_DIARIO);
-		vehiculosPanel = new VehiculoView();
-		container.add(homePanel, HOME);
-		container.add(usersPanel, USERS);
 		container.add(vehiculosPanel, VEHICULOS);
+		container.add(reporteDiarioPanel, REPORTE_DIARIO);
 
 		add(container, BorderLayout.CENTER);
-
+		
 	}
 
 	public void showView(String view) {

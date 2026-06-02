@@ -51,20 +51,21 @@ public class ReporteController {
 
 		vista.setFecha(LocalDate.now().format(formatoFecha));
 
-		vista.setResumen(String.valueOf(reporte.getTotalVehiculos()), String.valueOf(reporte.getVehiculosDentro()),
-				String.valueOf(reporte.getEspaciosDisponibles()), formatoDinero.format(reporte.getGanancias()));
+		vista.setResumen(String.valueOf(reporte.getTotalVehiculos()), String.valueOf(reporte.getEspaciosDisponibles()),
+				String.valueOf(reporte.getSalidasRegistradas()), formatoDinero.format(reporte.getGanancias()));
 
 		vista.setTextoResumen(
 				"Resumen general del estacionamiento:\n\n" 
 				+ "- Vehículos registrados: " + reporte.getTotalVehiculos() + "\n" 
-				+ "- Vehículos actualmente dentro: " + reporte.getVehiculosDentro() + "\n" 
 				+ "- Espacios disponibles: " + reporte.getEspaciosDisponibles() + " de " + reporte.getTotalEspacios() + "\n"
+				+ "- Salidas registradas: " + reporte.getSalidasRegistradas() + "\n"
 				+ "- Tarifa actual: $30 por hora o fracción\n"
-				+ "- Ganancias registradas: " + formatoDinero.format(reporte.getGanancias()) + "\n\n"
+				+ "- Ganancias cobradas: " + formatoDinero.format(reporte.getGanancias()) + "\n\n"
 				+ "Estado operativo:\n"
 				+ "- El reporte se actualiza con base en la tabla de vehículos y espacios.\n"
 				+ "- Los espacios ocupados representan los vehículos que siguen dentro del estacionamiento.\n"
-				+ "- Las ganancias se calculan tomando la hora de entrada registrada en cada espacio ocupado."
+				+ "- Las salidas se registran cuando un vehículo abandona el estacionamiento.\n"
+				+ "- Las ganancias se registran cuando un vehículo sale del estacionamiento."
 		);		
 	}
 	

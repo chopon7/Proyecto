@@ -71,10 +71,10 @@ public class ReporteDiarioView extends JPanel {
     	panelTarjetas.setBackground(new Color(27, 38, 59));
     	panelTarjetas.setPreferredSize(new Dimension(1130, 210));
 
-    	panelTarjetas.add(crearTarjeta("Vehículos registrados", "0"));
-    	panelTarjetas.add(crearTarjeta("Vehículos dentro", "0"));
-    	panelTarjetas.add(crearTarjeta("Espacios disponibles", "0"));
-    	panelTarjetas.add(crearTarjeta("Ganancias", "$0.00"));
+    	panelTarjetas.add(crearTarjeta("Vehículos Activos", "0"));
+    	panelTarjetas.add(crearTarjeta("Espacios Disponibles", "0"));
+    	panelTarjetas.add(crearTarjeta("Salidas Registradas", "0"));
+    	panelTarjetas.add(crearTarjeta("Ganancias Totales", "$0.00"));
 
     	panelContenido.add(panelTarjetas, BorderLayout.NORTH);
 
@@ -146,13 +146,13 @@ public class ReporteDiarioView extends JPanel {
         lblValor.setForeground(new Color(65, 90, 119));
         lblValor.setHorizontalAlignment(SwingConstants.CENTER);
 
-        if (titulo.equals("Vehículos registrados")) {
+        if (titulo.equals("Vehículos Activos")) {
             lblIngresos = lblValor;
-        } else if (titulo.equals("Vehículos dentro")) {
+        } else if (titulo.equals("Espacios Disponibles")) {
             lblVehiculosDentro = lblValor;
-        } else if (titulo.equals("Espacios disponibles")) {
+        } else if (titulo.equals("Salidas Registradas")) {
             lblSalidas = lblValor;
-        } else if (titulo.equals("Ganancias")) {
+        } else if (titulo.equals("Ganancias Totales")) {
             lblGanancias = lblValor;
         }
 
