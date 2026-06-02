@@ -81,7 +81,7 @@ public class LoginController {
 		String usuario = view.getUsuario();
 
 		if (usuario.trim().isEmpty()) {
-			view.setMensajeUsuario("El nombre del empleado es obligatorio");
+			view.setMensajeUsuario("El correo del empleado es obligatorio");
 		} else {
 			view.setMensajeUsuario("");
 		}
@@ -135,7 +135,7 @@ public class LoginController {
 		boolean valid = true;
 
 		if (user.getEmail().trim().isEmpty()) {
-			view.setMensajeUsuario("El empleado es obligatorio");
+			view.setMensajeUsuario("El correo del empleado es obligatorio");
 			valid = false;
 		}
 
