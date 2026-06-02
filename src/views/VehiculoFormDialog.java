@@ -152,7 +152,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Placa
 		c.gridx = 0;
 		c.gridy = 0;
-		panelComponentes.add(crearLabel("Placa:"), c);
+		panelComponentes.add(crearLabel("Ingresa la placa del auto:"), c);
 		c.gridx = 1;
 		placa = new JTextField(20);
 		panelComponentes.add(placa, c);
@@ -163,7 +163,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Marca
 		c.gridx = 0;
 		c.gridy = 2;
-		panelComponentes.add(crearLabel("Marca:"), c);
+		panelComponentes.add(crearLabel("Ingresa la marca del auto:"), c);
 		c.gridx = 1;
 		marca = new JTextField(20);
 		panelComponentes.add(marca, c);
@@ -174,7 +174,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Modelo
 		c.gridx = 0;
 		c.gridy = 4;
-		panelComponentes.add(crearLabel("Modelo:"), c);
+		panelComponentes.add(crearLabel("Ingresa el modelo del auto:"), c);
 		c.gridx = 1;
 		modelo = new JTextField(20);
 		panelComponentes.add(modelo, c);
@@ -185,7 +185,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Color
 		c.gridx = 0;
 		c.gridy = 6;
-		panelComponentes.add(crearLabel("Color:"), c);
+		panelComponentes.add(crearLabel("Ingresa el color del auto:"), c);
 		c.gridx = 1;
 		color = new JTextField(20);
 		panelComponentes.add(color, c);
@@ -196,7 +196,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Tipo de Vehículo
 		c.gridx = 0;
 		c.gridy = 8;
-		panelComponentes.add(crearLabel("Tipo de Vehículo:"), c);
+		panelComponentes.add(crearLabel("Ingresa el tipo de vehículo:"), c);
 		c.gridx = 1;
 		String[] tipos = { "Seleccione", "Automovil", "Camioneta", "Super Deportivo", "SUV", "Otro" };
 		cboTipoVehiculo = new JComboBox<>(tipos);
@@ -208,7 +208,7 @@ public class VehiculoFormDialog extends JDialog {
 		// Cajón de Estacionamiento
 		c.gridx = 0;
 		c.gridy = 10;
-		panelComponentes.add(crearLabel("Selecciona el cajón:"), c);
+		panelComponentes.add(crearLabel("Selecciona el cajón del auto:"), c);
 		c.gridx = 1;
 		cboNumeroEstacionamiento = new JComboBox<>();
 		cboNumeroEstacionamiento.addItem("Seleccione un espacio");
@@ -236,6 +236,7 @@ public class VehiculoFormDialog extends JDialog {
 
 		btnCancelar.addActionListener(e -> dispose());
 		btnGuardar.addActionListener(e -> save());
+		asignarOyentesValidacion();
 
 		JScrollPane scroll = new JScrollPane(panelComponentes);
 		add(scroll, BorderLayout.CENTER);
@@ -280,69 +281,46 @@ public class VehiculoFormDialog extends JDialog {
 
 	private void save() {
 		reiniciarMensajesError();
+
 		boolean esValido = true;
 
-		String placaTxt = placa.getText().trim();
-		String marcaTxt = marca.getText().trim();
-		String modeloTxt = modelo.getText().trim();
-		String colorTxt = color.getText().trim();
-		String tipoTxt = (String) cboTipoVehiculo.getSelectedItem();
-
-		if (placaTxt.isEmpty()) {
-			lblErrorPlaca.setText("La placa es obligatoria");
+		if (!validarPlaca())
 			esValido = false;
-		}
-
-		if (marcaTxt.isEmpty()) {
-			lblErrorMarca.setText("La marca es obligatoria");
+		if (!validarMarca())
 			esValido = false;
-		}
-
-		if (modeloTxt.isEmpty()) {
-			lblErrorModelo.setText("El modelo es obligatorio");
+		if (!validarModelo())
 			esValido = false;
-		}
-
-		if (colorTxt.isEmpty()) {
-			lblErrorColor.setText("El color es obligatorio");
+		if (!validarColor())
 			esValido = false;
-		}
-
-		if (cboTipoVehiculo.getSelectedIndex() == 0) {
-			lblErrorTipo.setText("Seleccione un tipo");
+		if (!validarTipo())
 			esValido = false;
-		}
-
-		if (vehiculoForm == null && cboNumeroEstacionamiento.getSelectedIndex() == 0) {
-			lblErrorEstacionamiento.setText("Seleccione un espacio");
+		if (!validarEstacionamiento())
 			esValido = false;
-		}
 
 		if (!esValido)
 			return;
 
 		try {
+			String placaTxt = placa.getText().trim();
+			String marcaTxt = marca.getText().trim();
+			String modeloTxt = modelo.getText().trim();
+			String colorTxt = color.getText().trim();
+			String tipoTxt = (String) cboTipoVehiculo.getSelectedItem();
+
 			if (vehiculoForm == null) {
-
-				if (vehiculoRepo.existePlaca(placaTxt)) {
-					lblErrorPlaca.setText("Esta placa ya está registrada");
-					return;
-				}
-
 				String itemSeleccionado = (String) cboNumeroEstacionamiento.getSelectedItem();
 				int numeroCajon = Integer.parseInt(itemSeleccionado.replace("Espacio ", ""));
 
 				vehiculoForm = new Vehiculo(0, placaTxt, marcaTxt, modeloTxt, colorTxt, tipoTxt);
-
 				int idGenerado = vehiculoRepo.save(vehiculoForm);
 
 				if (idGenerado != -1) {
 					vehiculoForm.setIdVehiculo(idGenerado);
 					espacioRepo.ocuparEspacio(numeroCajon, idGenerado);
-					
 				} else {
 					JOptionPane.showMessageDialog(this, "Error crítico al guardar en la Base de Datos.", "Error",
 							JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				saved = true;
 				dispose();
@@ -361,5 +339,126 @@ public class VehiculoFormDialog extends JDialog {
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private boolean validarPlaca() {
+		String placaTxt = placa.getText().trim();
+		if (placaTxt.isEmpty()) {
+			lblErrorPlaca.setText("La placa es obligatoria");
+			return false;
+		}
+
+		if (vehiculoForm == null && vehiculoRepo.existePlaca(placaTxt)) {
+			lblErrorPlaca.setText("Esta placa ya está registrada");
+			return false;
+		}
+		lblErrorPlaca.setText("");
+		return true;
+	}
+
+	private boolean validarMarca() {
+		if (marca.getText().trim().isEmpty()) {
+			lblErrorMarca.setText("La marca es obligatoria");
+			return false;
+		}
+		lblErrorMarca.setText("");
+		return true;
+	}
+
+	private boolean validarModelo() {
+		if (modelo.getText().trim().isEmpty()) {
+			lblErrorModelo.setText("El modelo es obligatorio");
+			return false;
+		}
+		lblErrorModelo.setText("");
+		return true;
+	}
+
+	private boolean validarColor() {
+		if (color.getText().trim().isEmpty()) {
+			lblErrorColor.setText("El color es obligatorio");
+			return false;
+		}
+		lblErrorColor.setText("");
+		return true;
+	}
+
+	private boolean validarTipo() {
+		if (cboTipoVehiculo.getSelectedIndex() == 0) {
+			lblErrorTipo.setText("Seleccione un tipo");
+			return false;
+		}
+		lblErrorTipo.setText("");
+		return true;
+	}
+
+	private boolean validarEstacionamiento() {
+		if (vehiculoForm == null && cboNumeroEstacionamiento.getSelectedIndex() == 0) {
+			lblErrorEstacionamiento.setText("Seleccione un espacio");
+			return false;
+		}
+		lblErrorEstacionamiento.setText("");
+		return true;
+	}
+
+	private void asignarOyentesValidacion() {
+		placa.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				validarPlaca();
+			}
+
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				validarPlaca();
+			}
+
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				validarPlaca();
+			}
+		});
+
+		marca.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				validarMarca();
+			}
+
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				validarMarca();
+			}
+
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				validarMarca();
+			}
+		});
+
+		modelo.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				validarModelo();
+			}
+
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				validarModelo();
+			}
+
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				validarModelo();
+			}
+		});
+
+		color.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				validarColor();
+			}
+
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				validarColor();
+			}
+
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				validarColor();
+			}
+		});
+
+		cboTipoVehiculo.addActionListener(e -> validarTipo());
+		cboNumeroEstacionamiento.addActionListener(e -> validarEstacionamiento());
 	}
 }

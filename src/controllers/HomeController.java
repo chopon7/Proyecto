@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import config.Config;
 import views.EstacionamientoView;
-import views.FormularioEmpleado;
 import views.FormularioRegistro;
 import views.MenuPrincipal;
 import views.Ventana;
@@ -95,9 +94,7 @@ public class HomeController {
 			}
 		});
 
-		vista.getBtnUsers().addActionListener(e -> {
-			showUsers();
-		});
+		vista.getBtnUsers().addActionListener(e -> showUsers());
 
 		vista.getBtnVehiculos().addActionListener(e -> showVehiculos());
 
@@ -108,7 +105,7 @@ public class HomeController {
 
 		vista.getRegistrarVehiculo().addActionListener(e -> {
 			FormularioRegistro formVista = new FormularioRegistro();
-			new FormularioRegistroController(formVista, vistaEstacionamiento);
+			new FormularioRegistroController(formVista, vistaEstacionamiento, vehiculoController);
 		});
 
 		vista.getEstadoEstacionamiento().addActionListener(e -> {
@@ -119,7 +116,6 @@ public class HomeController {
 				vistaEstacionamiento.requestFocus();
 			}
 		});
-
 	}
 
 	private void showUsers() {

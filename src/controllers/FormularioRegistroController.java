@@ -21,6 +21,7 @@ import models.Vehiculo;
 import repository.EspacioRepository;
 import views.EstacionamientoView;
 import repository.VehiculoRepository;
+import tablemodels.VehiculoTableModel;
 import views.FormularioRegistro;
 
 public class FormularioRegistroController {
@@ -29,9 +30,12 @@ public class FormularioRegistroController {
 	private VehiculoRepository vehiculoRepository;
 	private EspacioRepository espacioRepository;
 	private EstacionamientoView vistaEstacionamiento;
+	private VehiculoController vehiculoController;
 
-	public FormularioRegistroController(FormularioRegistro vista, EstacionamientoView vistaEstacionamiento) {
+	public FormularioRegistroController(FormularioRegistro vista, EstacionamientoView vistaEstacionamiento,
+			VehiculoController vehiculoController) {
 		this.vista = vista;
+		this.vehiculoController = vehiculoController;
 		this.vistaEstacionamiento = vistaEstacionamiento;
 		this.vehiculoRepository = new VehiculoRepository();
 		this.espacioRepository = new EspacioRepository();
@@ -275,7 +279,6 @@ public class FormularioRegistroController {
 			validar = false;
 
 		if (validar) {
-
 			String txtPlaca = vista.getPlaca().getText().trim();
 			String txtMarca = vista.getMarca().getText().trim();
 			String txtModelo = vista.getModelo().getText().trim();
@@ -287,7 +290,7 @@ public class FormularioRegistroController {
 
 			Vehiculo nuevoVehiculo = new Vehiculo(txtPlaca, txtMarca, txtModelo, txtColor, txtTipo);
 			int idVehiculoGenerado = vehiculoRepository.save(nuevoVehiculo);
-
+			
 			if (idVehiculoGenerado != -1) {
 				boolean exitoEspacio = espacioRepository.ocuparEspacio(numeroCajon, idVehiculoGenerado);
 
@@ -297,6 +300,10 @@ public class FormularioRegistroController {
 
 					if (vistaEstacionamiento != null) {
 						vistaEstacionamiento.ocuparEspacio(indiceCajon, idVehiculoGenerado, nuevoVehiculo);
+					}
+
+					if (vehiculoController != null) {
+						vehiculoController.loadVehiculos();
 					}
 
 					JOptionPane.showMessageDialog(vista, "Vehículo registrado con éxito en el cajón: " + numeroCajon,
