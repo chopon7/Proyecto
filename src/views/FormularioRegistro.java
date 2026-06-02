@@ -31,6 +31,7 @@ public class FormularioRegistro extends JFrame {
 	private JLabel lblErrorModelo;
 	private JLabel lblErrorColor;
 	private JLabel lblErrorCombo;
+	private JLabel lblErrorEstacionamiento;
 	private JTextField color;
 	private JTextField marca;
 	private JTextField modelo;
@@ -38,6 +39,7 @@ public class FormularioRegistro extends JFrame {
 	private JButton botonAtras;
 	private JTextField placa;
 	private Color botonColorNormal;
+	private JComboBox<String> cboNumeroEstacionamiento;
 	private JComboBox<String> cboOpcionesTipoCarro;
 
 	// Constructores
@@ -128,11 +130,11 @@ public class FormularioRegistro extends JFrame {
 	}
 
 	public void setLblErrorModelo(String lblErrorModelo) {
-		this.lblErrorModelo.setText(lblErrorModelo);;
+		this.lblErrorModelo.setText(lblErrorModelo);
 	}
 
 	public void setLblErrorColor(String lblErrorColor) {
-		this.lblErrorColor.setText(lblErrorColor);;
+		this.lblErrorColor.setText(lblErrorColor);
 	}
 
 	public void setLblErrorCombo(String lblErrorCombo) {
@@ -163,6 +165,18 @@ public class FormularioRegistro extends JFrame {
 		this.botonAtras = botonAtras;
 	}
 
+	public JComboBox<String> getCboNumeroEstacionamiento() {
+	    return cboNumeroEstacionamiento;
+	}
+
+	public JLabel getLblErrorEstacionamiento() {
+	    return lblErrorEstacionamiento;
+	}
+
+	public void setLblErrorEstacionamiento(String mensaje) {
+	    this.lblErrorEstacionamiento.setText(mensaje);
+	}
+	
 	public void inicializarComponentes() {
 
 		// Titulo de la ventana
@@ -232,17 +246,30 @@ public class FormularioRegistro extends JFrame {
 		c.gridy = 8;
 		panelComponentes.add(crearLabel("Ingresa el tipo de auto:"), c);
 		c.gridx = 1;
-		String[] opcionesTipoCarro = { "Seleccione", "Camioneta", "Sedan", "Super Deportivo" };
+		String[] opcionesTipoCarro = { "Seleccione", "Automovil", "Camioneta", "Super Deportivo", "SUV", "Otro" };
 		cboOpcionesTipoCarro = new JComboBox<>(opcionesTipoCarro);
 		panelComponentes.add(cboOpcionesTipoCarro, c);
 		c.gridy = 9;
 		lblErrorCombo = crearMensajeError("");
 		crearMensajeError(lblErrorCombo.getText());
 		panelComponentes.add(lblErrorCombo, c);
-
-		// Boton de registro
+		
+		// Numero de estacionamiento
 		c.gridx = 0;
 		c.gridy = 10;
+		panelComponentes.add(crearLabel("Selecciona el cajón:"), c);
+		c.gridx = 1;
+		cboNumeroEstacionamiento = new JComboBox<>();
+		cboNumeroEstacionamiento.addItem("Seleccione un espacio"); 
+		panelComponentes.add(cboNumeroEstacionamiento, c);
+		c.gridy = 11;
+		lblErrorEstacionamiento = crearMensajeError("");
+		crearMensajeError(lblErrorEstacionamiento.getText());
+		panelComponentes.add(lblErrorEstacionamiento, c);
+		
+		// Boton de registro
+		c.gridx = 0;
+		c.gridy = 12;
 		c.insets = new java.awt.Insets(20, 10, 10, 10);
 		ImageIcon ilustracionBotonEnviar = new ImageIcon("img/enviar.png");
 		Image imagenActualizadaBotonEnviar = ilustracionBotonEnviar.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
@@ -253,7 +280,7 @@ public class FormularioRegistro extends JFrame {
 
 		// Boton atras
 		c.gridx = 1;
-		c.gridy = 10;
+		c.gridy = 12;
 		ImageIcon ilustracionBotonAtras = new ImageIcon("img/atras.png");
 		Image imagenActualizadaBotonAtras = ilustracionBotonAtras.getImage().getScaledInstance(18, 18, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinalBotonAtras = new ImageIcon(imagenActualizadaBotonAtras);

@@ -12,7 +12,7 @@ public class AppFont {
 			base = Font.createFont(Font.TRUETYPE_FONT, AppFont.class.getResourceAsStream("/fonts/arimo.ttf"));
 
 		} catch (Exception e) {
-			base = new Font("Times New Roman", Font.PLAIN, 14);
+			base = new Font("Segoe UI", Font.PLAIN, 14);
 		}
 	}
 

@@ -63,6 +63,10 @@ public class UserController {
 			}
 
 		});
+		
+		this.vista.getBtnPdf().addActionListener(e ->{
+			generatePdf();
+		});
 
 	}
 
@@ -92,7 +96,6 @@ public class UserController {
 
 			try {
 				if (user == null) {
-					repo.save(savedUser);
 					model.addRow(savedUser);
 				} else {
 					int row = vista.getSelectedRow();

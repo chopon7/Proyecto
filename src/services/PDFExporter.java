@@ -26,9 +26,10 @@ import com.itextpdf.layout.properties.UnitValue;
 
 import models.User;
 import models.ReporteGeneral;
+import models.Vehiculo;
 
 public class PDFExporter {
-	
+
 	public void exportUsers(List<User> users, File file) throws IOException {
 
 		try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
@@ -81,53 +82,46 @@ public class PDFExporter {
 
 						new Cell().setTextAlignment(TextAlignment.CENTER).setBorderTop(new SolidBorder(1f))
 								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Email")),
-						
+
 						new Cell().setTextAlignment(TextAlignment.CENTER).setBorderTop(new SolidBorder(1f))
-								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Género")), 
-								
+								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Género")),
+
 						new Cell().setTextAlignment(TextAlignment.CENTER).setBorderTop(new SolidBorder(1f))
-								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Edad")),
-			};
-				
-				
+								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Edad")), };
 
 				for (Cell celda : headerFooter) {
-						table.addHeaderCell(celda);
+					table.addHeaderCell(celda);
 				}
 			}
-			
+
 			int indice = 1;
-			
-			for(User u : users) {
-				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(String.valueOf(indice))));
 
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getNombre())));
+			for (User u : users) {
+				table.addCell(
+						new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(String.valueOf(indice))));
 
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getApellidoPaterno())));
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getNombre())));
 
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getApellidoMaterno())));
+				table.addCell(
+						new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getApellidoPaterno())));
 
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getEmail())));
-                
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getGenero())));
-                
-                table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-                        .add(new Paragraph(u.getEdad())));
+				table.addCell(
+						new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getApellidoMaterno())));
 
-                indice++;
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getEmail())));
+
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getGenero())));
+
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(u.getEdad())));
+
+				indice++;
 			}
 
 			doc.add(table);
 		}
 
 	}
-	
+
 	public void exportReporteGeneral(models.ReporteGeneral reporte, File file) throws IOException {
 
 		try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
@@ -149,7 +143,7 @@ public class PDFExporter {
 
 			doc.add(new Paragraph("Reporte General del Estacionamiento").setBold().setFontSize(14)
 					.setTextAlignment(TextAlignment.CENTER));
-			
+
 			doc.add(new Paragraph("").setMarginTop(30));
 
 			float[] columnsWidth = { 4, 3 };
@@ -158,8 +152,8 @@ public class PDFExporter {
 
 			PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 
-			Cell tituloTabla = new Cell(1, 2).add(new Paragraph("Datos generales del reporte")).setFont(font).setFontSize(14)
-					.setFontColor(DeviceGray.WHITE).setBackgroundColor(new DeviceRgb(45, 111, 164))
+			Cell tituloTabla = new Cell(1, 2).add(new Paragraph("Datos generales del reporte")).setFont(font)
+					.setFontSize(14).setFontColor(DeviceGray.WHITE).setBackgroundColor(new DeviceRgb(45, 111, 164))
 					.setTextAlignment(TextAlignment.CENTER);
 
 			table.addHeaderCell(tituloTabla);
@@ -171,16 +165,15 @@ public class PDFExporter {
 								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Concepto")),
 
 						new Cell().setTextAlignment(TextAlignment.CENTER).setBorderTop(new SolidBorder(1f))
-								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Resultado")),
-				};
+								.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph("Resultado")), };
 
 				for (Cell celda : headerFooter) {
 					table.addHeaderCell(celda);
 				}
 			}
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("Vehículos registrados")));
+			table.addCell(
+					new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Vehículos registrados")));
 
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph(String.valueOf(reporte.getTotalVehiculos()))));
@@ -191,20 +184,16 @@ public class PDFExporter {
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph(String.valueOf(reporte.getVehiculosDentro()))));
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("Espacios disponibles")));
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Espacios disponibles")));
 
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph(reporte.getEspaciosDisponibles() + " de 30")));
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("Tarifa por hora")));
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Tarifa por hora")));
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("$30.00")));
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("$30.00")));
 
-			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
-					.add(new Paragraph("Ganancias totales")));
+			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("Ganancias totales")));
 
 			table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER)
 					.add(new Paragraph("$" + String.format("%.2f", reporte.getGanancias()))));
@@ -215,13 +204,68 @@ public class PDFExporter {
 
 			doc.add(new Paragraph("Observaciones").setBold().setFontSize(13));
 
-			doc.add(new Paragraph(
-					"Este reporte muestra el estado general actual del estacionamiento, "
+			doc.add(new Paragraph("Este reporte muestra el estado general actual del estacionamiento, "
 					+ "los vehículos dentro se calculan con base en los espacios ocupados y "
-					+ "las ganancias se estiman tomando la tarifa de 30 pesos por hora o fracción.")
-					.setFontSize(11)
+					+ "las ganancias se estiman tomando la tarifa de 30 pesos por hora o fracción.").setFontSize(11)
 					.setTextAlignment(TextAlignment.JUSTIFIED));
 		}
-		
+
+	}
+
+	public void exportVehiculos(List<Vehiculo> vehiculos, File file) throws IOException {
+		try (PdfDocument pdfDoc = new PdfDocument(new PdfWriter(file));
+				Document doc = new Document(pdfDoc, PageSize.LETTER.rotate())) {
+
+			// Logo opcional
+			InputStream is = getClass().getResourceAsStream("/assets/img/icono.png");
+			if (is != null) {
+				ImageData data = ImageDataFactory.create(is.readAllBytes());
+				Image img = new Image(data).scaleAbsolute(50, 50);
+				float altoPagina = PageSize.LETTER.rotate().getHeight();
+				float margen = 40;
+				img.setFixedPosition(margen, altoPagina - margen - 50);
+				doc.add(img);
+			}
+
+			// Título
+			doc.add(new Paragraph("Reporte de Vehículos").setBold().setFontSize(12)
+					.setTextAlignment(TextAlignment.CENTER));
+			doc.add(new Paragraph("").setMarginTop(30));
+
+			// Definir columnas
+			float[] columnsWidth = { 1, 3, 3, 3, 3, 3 };
+			Table table = new Table(UnitValue.createPercentArray(columnsWidth)).useAllAvailableWidth();
+
+			PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+
+			// Encabezado principal
+			Cell cell = new Cell(1, 6).add(new Paragraph("Vehículos registrados")).setFont(font).setFontSize(14)
+					.setFontColor(DeviceGray.WHITE).setBackgroundColor(new DeviceRgb(45, 111, 164))
+					.setTextAlignment(TextAlignment.CENTER);
+			table.addHeaderCell(cell);
+
+			// Encabezados de columnas
+			String[] headers = { "#", "Placa", "Marca", "Modelo", "Color", "Tipo de Vehículo" };
+			for (String h : headers) {
+				table.addHeaderCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorderTop(new SolidBorder(1f))
+						.setBackgroundColor(new DeviceGray(0.80f)).add(new Paragraph(h)));
+			}
+
+			// Filas de datos
+			int indice = 1;
+			for (Vehiculo v : vehiculos) {
+				table.addCell(
+						new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(String.valueOf(indice))));
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(v.getPlaca())));
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(v.getMarca())));
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(v.getModelo())));
+				table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(v.getColor())));
+				table.addCell(
+						new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(v.getTipoVehiculo())));
+				indice++;
+			}
+
+			doc.add(table);
+		}
 	}
 }

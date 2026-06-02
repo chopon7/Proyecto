@@ -8,16 +8,18 @@ import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 
 import config.Config;
-import views.FormularioEmpleado;
+import views.EstacionamientoView;
 import views.FormularioRegistro;
 import views.MenuPrincipal;
 import views.Ventana;
 
 public class HomeController {
 
+	private VehiculoController vehiculoController;
 	private UserController userController;
 	private ReporteController reporteController;
 	private MenuPrincipal vista;
+	private EstacionamientoView vistaEstacionamiento;
 
 	public HomeController(MenuPrincipal vista) {
 		this.vista = vista;
@@ -93,9 +95,9 @@ public class HomeController {
 			}
 		});
 
-		vista.getBtnUsers().addActionListener(e -> {
-			showUsers();
-		});
+		vista.getBtnUsers().addActionListener(e -> showUsers());
+
+		vista.getBtnVehiculos().addActionListener(e -> showVehiculos());
 
 		vista.getBtnHome().addActionListener(e -> {
 			vista.showView(MenuPrincipal.HOME);
@@ -103,7 +105,8 @@ public class HomeController {
 		});
 
 		vista.getRegistrarVehiculo().addActionListener(e -> {
-			new FormularioRegistroController(new FormularioRegistro());
+			FormularioRegistro formVista = new FormularioRegistro();
+			new FormularioRegistroController(formVista, vistaEstacionamiento, vehiculoController);
 		});
 		
 		vista.getReporteDiario().addActionListener(e -> {
@@ -111,6 +114,14 @@ public class HomeController {
 		});
 
 
+		vista.getEstadoEstacionamiento().addActionListener(e -> {
+			if (vistaEstacionamiento == null || !vistaEstacionamiento.isDisplayable()) {
+				vistaEstacionamiento = new EstacionamientoView();
+			} else {
+				vistaEstacionamiento.toFront();
+				vistaEstacionamiento.requestFocus();
+			}
+		});
 	}
 	
 	private void showReporteDiario() {
@@ -139,9 +150,19 @@ public class HomeController {
 
 	}
 
+	private void showVehiculos() {
+		if (vehiculoController == null) {
+			vehiculoController = new VehiculoController(vista.vehiculosPanel);
+		}
+		vehiculoController.loadVehiculos();
+		vista.showView(MenuPrincipal.VEHICULOS);
+		updateMenuState(MenuPrincipal.VEHICULOS);
+	}
+
 	private void updateMenuState(String viewName) {
 		vista.btnUsers.setEnabled(!viewName.equals(MenuPrincipal.USERS));
 		vista.btnHome.setEnabled(!viewName.equals(MenuPrincipal.HOME));
+		vista.btnVehiculos.setEnabled(!viewName.equals(MenuPrincipal.VEHICULOS));
 	}
 
 	private void saveWindowPreferences() {
